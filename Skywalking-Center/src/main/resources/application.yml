@@ -1,0 +1,36 @@
+server:
+    port: 1111
+eureka:
+    instance:
+        # eureka实例的主机名
+        hostname: center
+    client:
+        #register-with-eureka: false
+        #fetch-registry: false
+        serviceUrl: 
+            defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+spring:
+    application:
+        name: config-server
+    #数据库配置
+    datasource: 
+        username: root
+        password: admin123
+        url: jdbc:mysql://127.0.0.1:3306/config?useUnicode=true&characterEncoding=UTF-8
+        driver-class-name: com.mysql.jdbc.Driver
+    profiles: 
+        #配置中心激活从数据库中读取
+        active: jdbc
+        #激活本地配置
+        #active: native
+    #spring cloud config
+    cloud: 
+        config:
+            label: master
+            server:
+                # jdbc mysql实现 
+                jdbc: 
+                    sql: SELECT `KEY`, `VALUE` from PROPERTIES where APPLICATION=? and PROFILE=? and LABEL=?
+                #本地文件配置
+                #native: 
+                    #searchLocations: file://d:/config-repo        

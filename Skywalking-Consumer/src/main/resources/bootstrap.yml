@@ -1,0 +1,31 @@
+#使用bootsrap.yml,之所以不在application.yml中配置，spring boot会优先加载bootstrap.yml，不然上下文中无法读取到配置
+spring: 
+    application: 
+        name: service-1113
+    cloud: 
+        config: 
+            profile: dev
+            label: master
+            #无法连接配置中心启动失败
+            #fail-fast: true
+            discovery: 
+                #使用配置中心的配置
+                enabled: true
+                #配置中心服务id
+                serviceId: config-server
+    #使用Spring Cloud Bus自动刷新 需要 rabbitmq支持
+    #rabbitmq:
+        #host: localhost
+        #port: 5673
+        #username: guest
+        #password: guest
+#客户端配置
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://center:1111/eureka/
+#使用Spring Cloud Bus自动刷新 需要 rabbitmq支持
+#endpoints:
+  #bus:
+    #enabled: true
+    #sensitive: false

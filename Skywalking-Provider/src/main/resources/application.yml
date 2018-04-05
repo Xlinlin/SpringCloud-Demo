@@ -1,0 +1,12 @@
+#注册中心
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://center:1111/eureka/
+server: 
+  port: 1112
+
+#服务名称
+spring:
+  application:
+    name: provider-1112
