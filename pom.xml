@@ -26,6 +26,7 @@
 		<module>Skywalking-Provider</module>
 		<module>Skywalking-Consumer</module>
 		<module>Skywalking-Gateway</module>
+		<module>Skywalking-MQTT</module>
 	</modules>
 
 	<dependencyManagement>

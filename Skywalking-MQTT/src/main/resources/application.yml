@@ -1,0 +1,12 @@
+spring: 
+    mvc: 
+        view: 
+            prefix: /jsp/
+            suffix: .jsp
+server: 
+    port: 8082
+    session: 
+        timeout: 10
+    tomcat: 
+        max-threads: 800
+        uri-encoding: UTF-8
