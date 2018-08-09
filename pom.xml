@@ -28,6 +28,7 @@
 		<module>SpringCloud-Consumer</module>
 		<module>SpringCloud-Gateway</module>
 		<module>SpringCloud-MQTT</module>
+		<module>SpringCloud-Configure</module>
 	</modules>
 
 	<dependencyManagement>

@@ -33,4 +33,12 @@ spring:
                     sql: SELECT `KEY`, `VALUE` from PROPERTIES where APPLICATION=? and PROFILE=? and LABEL=?
                 #本地文件配置
                 #native: 
-                    #searchLocations: file://d:/config-repo        
+                    #searchLocations: file://d:/config-repo   
+                #git 配置
+                git:
+                    uri: 
+                    # git仓库地址下的相对地址，可以配置多个，用,分割
+                    search-paths:
+                    # 账号密码
+                    username: Your git username
+                    password: password
