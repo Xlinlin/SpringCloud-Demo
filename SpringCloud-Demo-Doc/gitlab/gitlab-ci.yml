@@ -1,0 +1,26 @@
+variables:
+  SCRIPT_PATH: $CI_PROJECT_DIR/ci #环境变量，获取当前构建的项目路径
+  
+before_script:
+    - chmod -R 755 $SCRIPT_PATH  #给可执行权限(git-runner用户)
+    - dos2unix $SCRIPT_PATH/*    #转成unix格式
+
+sonar_preview:
+  stage: deploy
+  script:
+    #- chmod -R 755 $SCRIPT_PATH  #给脚本目录所有文件可执行权限
+    #- dos2unix $SCRIPT_PATH/*  #将所有.sh脚本 转成unix格式
+    - ci/sonar_preview.sh
+  except:
+    - master
+  tags:
+    - shared
+
+sonar_analyze:
+  stage: deploy
+  script:
+    - ci/sonar_analyze.sh
+  only:
+    - master
+  tags:
+    - shared
