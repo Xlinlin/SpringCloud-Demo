@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: eureka-server
+  #配置中心获取eurak配置 eurka-server相关配置
+  cloud:
+    config:
+      #配置中心地址
+      uri: http://localhost:1110
+      #依环境读取
+      profile: dev
+      #主干分之
+      label: master
+      #文件前缀
+      name: eureka-server

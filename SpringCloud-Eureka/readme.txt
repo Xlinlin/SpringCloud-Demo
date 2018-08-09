@@ -1,10 +1,9 @@
-注册中心，配置中心一体化
+注册中心
 
 
-仓库中的配置文件会被转换成web接口，访问可以参照以下的规则：
+启动后访问：
+http://localhost:1111/
 
-/{application}/{profile}[/{label}]
-/{application}-{profile}.yml
-/{label}/{application}-{profile}.yml
-/{application}-{profile}.properties
-/{label}/{application}-{profile}.properties
+备注:
+ 启动时候由于需要加载github上的配置，启动时会很慢
+

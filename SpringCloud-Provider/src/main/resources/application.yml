@@ -10,3 +10,6 @@ server:
 spring:
   application:
     name: provider-1112
+  #服务链路跟踪到zipkin服务
+  zipkin:
+    base-url: http://localhost:1115

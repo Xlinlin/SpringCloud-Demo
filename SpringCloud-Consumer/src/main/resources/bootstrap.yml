@@ -1,20 +1,25 @@
 #使用bootsrap.yml,之所以不在application.yml中配置，spring boot会优先加载bootstrap.yml，不然上下文中无法读取到配置
 spring: 
     application: 
-        name: service-1113
+        name: consumer-1113
+    zipkin: 
+      base-url: http://localhost:1115
     cloud: 
         config: 
             profile: dev
             label: master
             # git配置需要
             name: springcloud
+            # 配置中心url
+            uri: http://localhost:1110
             #无法连接配置中心启动失败
             #fail-fast: true
-            discovery: 
+            #使用服务发现到注册中心找配置中心
+            #discovery: 
                 #使用配置中心的配置
-                enabled: true
+                #enabled: true
                 #配置中心服务id
-                serviceId: config-server
+                #serviceId: config-server
     #使用Spring Cloud Bus自动刷新 需要 rabbitmq支持
     #rabbitmq:
         #host: localhost

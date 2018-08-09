@@ -7,7 +7,8 @@
 		<artifactId>SpringCloud-Demo</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>SpringCloud-Provider</artifactId>
+	<artifactId>SpringCloud-ZipkinServer</artifactId>
+	<description>服务链路跟踪服务端</description>
 
 	<dependencies>
 		<dependency>
@@ -16,19 +17,20 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
+			<artifactId>spring-boot-starter</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
+			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 
-		<!-- zipkin服务跟踪 -->
 		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-zipkin</artifactId>
+			<groupId>io.zipkin.java</groupId>
+			<artifactId>zipkin-server</artifactId>
 		</dependency>
-
+		<dependency>
+			<groupId>io.zipkin.java</groupId>
+			<artifactId>zipkin-autoconfigure-ui</artifactId>
+		</dependency>
 	</dependencies>
 </project>

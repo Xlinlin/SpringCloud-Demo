@@ -1,0 +1,11 @@
+server: 
+  port: 1115
+##配置中心
+eureka:
+  client: 
+    serviceUrl: 
+      defaultZone: http://localhost:1111/eureka/
+###服务名称
+spring:
+  application:
+    name: zipkin-server
