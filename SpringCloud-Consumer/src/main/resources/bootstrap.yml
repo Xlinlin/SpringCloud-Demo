@@ -6,6 +6,8 @@ spring:
         config: 
             profile: dev
             label: master
+            # git配置需要
+            name: springcloud
             #无法连接配置中心启动失败
             #fail-fast: true
             discovery: 
@@ -19,11 +21,11 @@ spring:
         #port: 5673
         #username: guest
         #password: guest
-#客户端配置
+#注册中心客户端配置
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://center:1111/eureka/
+      defaultZone: http://localhost:1111/eureka/
 #使用Spring Cloud Bus自动刷新 需要 rabbitmq支持
 #endpoints:
   #bus:

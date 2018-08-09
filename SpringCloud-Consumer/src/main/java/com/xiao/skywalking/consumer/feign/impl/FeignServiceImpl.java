@@ -7,6 +7,7 @@
 
 package com.xiao.skywalking.consumer.feign.impl;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.xiao.skywalking.consumer.feign.FeignService;
@@ -22,10 +23,15 @@ import com.xiao.skywalking.consumer.feign.FeignService;
 public class FeignServiceImpl implements FeignService
 {
 
+    // @Value("${profile}") jdbc获取
+    // git获取变量
+    @Value("${springcloud.configure.test}")
+    private String test;
+
     @Override
     public String helloSkywalking(String hello)
     {
-        return "Service error!";
+        return "Service error!" + test;
     }
 
 }

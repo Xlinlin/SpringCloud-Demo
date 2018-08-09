@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class SkywalkingController
 {
+    
     @RequestMapping(path = "/skywalking")
     public String skywalking(@RequestParam String hello)
     {

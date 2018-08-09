@@ -8,7 +8,6 @@
 package com.xiao.skywalking.consumer.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,13 +32,14 @@ public class FeignContoller
     @Autowired
     RibbonService ribbonService;
 
-    @Value("${profile}")
-    private String profile;
+    // @Value("${profile}")
+    // private String profile;
 
     @RequestMapping(path = "/feign")
     public String feign(String hello)
     {
-        return feignService.helloSkywalking(hello) + ' ' + this.profile;
+        // return feignService.helloSkywalking(hello) + ' ' + this.profile;
+        return feignService.helloSkywalking(hello);
     }
 
     @RequestMapping(path = "/ribbon")

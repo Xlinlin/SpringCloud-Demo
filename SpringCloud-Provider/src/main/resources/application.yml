@@ -2,7 +2,7 @@
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://center:1111/eureka/
+      defaultZone: http://localhost:1111/eureka/
 server: 
   port: 1112
 

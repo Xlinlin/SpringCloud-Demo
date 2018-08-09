@@ -13,14 +13,14 @@ spring:
     application:
         name: config-server
     #数据库配置
-    datasource: 
-        username: root
-        password: admin123
-        url: jdbc:mysql://127.0.0.1:3306/config?useUnicode=true&characterEncoding=UTF-8
-        driver-class-name: com.mysql.jdbc.Driver
-    profiles: 
+    #datasource: 
+        #username: root
+        #password: admin123
+        #url: jdbc:mysql://127.0.0.1:3306/config?useUnicode=true&characterEncoding=UTF-8
+        #driver-class-name: com.mysql.jdbc.Driver
+    #profiles: 
         #配置中心激活从数据库中读取
-        active: jdbc
+        #active: jdbc
         #激活本地配置
         #active: native
     #spring cloud config
@@ -29,16 +29,16 @@ spring:
             label: master
             server:
                 # jdbc mysql实现 
-                jdbc: 
-                    sql: SELECT `KEY`, `VALUE` from PROPERTIES where APPLICATION=? and PROFILE=? and LABEL=?
+                #jdbc: 
+                    #sql: SELECT `KEY`, `VALUE` from PROPERTIES where APPLICATION=? and PROFILE=? and LABEL=?
                 #本地文件配置
                 #native: 
                     #searchLocations: file://d:/config-repo   
                 #git 配置
                 git:
-                    uri: 
+                    uri: https://github.com/Xlinlin/spring-cloud-demo.git
                     # git仓库地址下的相对地址，可以配置多个，用,分割
-                    search-paths:
+                    search-paths: SpringCloud-Configure
                     # 账号密码
-                    username: Your git username
-                    password: password
+                    username: Xlinlin
+                    password: Xiao880214..
