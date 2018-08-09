@@ -1,8 +1,9 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.xiao.skywalking.demo</groupId>
-	<artifactId>Skywalking</artifactId>
+	<artifactId>SpringCloud-Demo</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
@@ -21,12 +22,12 @@
 	</parent>
 
 	<modules>
-		<module>Skywalking-Common</module>
-		<module>Skywalking-Center</module>
-		<module>Skywalking-Provider</module>
-		<module>Skywalking-Consumer</module>
-		<module>Skywalking-Gateway</module>
-		<module>Skywalking-MQTT</module>
+		<module>SpringCloud-Common</module>
+		<module>SpringCloud-Center</module>
+		<module>SpringCloud-Provider</module>
+		<module>SpringCloud-Consumer</module>
+		<module>SpringCloud-Gateway</module>
+		<module>SpringCloud-MQTT</module>
 	</modules>
 
 	<dependencyManagement>

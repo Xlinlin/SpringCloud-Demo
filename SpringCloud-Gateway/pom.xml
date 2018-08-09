@@ -3,10 +3,10 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.xiao.skywalking.demo</groupId>
-		<artifactId>Skywalking</artifactId>
+		<artifactId>SpringCloud-Demo</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>Skywalking-Gateway</artifactId>
+	<artifactId>SpringCloud-Gateway</artifactId>
 
 	<dependencies>
 		<dependency>
