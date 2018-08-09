@@ -18,4 +18,4 @@ eureka:
         serviceUrl:
             #集群配置 
             #defaultZone: http://${eureka.cluster.node1}/eureka/,http://${eureka.cluster.node2}/eureka/,http://${eureka.cluster.node3}/eureka/
-            defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+            defaultZone: http://localhost:1111/eureka/
