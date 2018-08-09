@@ -1,0 +1,28 @@
+server:
+  port: 1114
+spring: 
+  kafka:
+    #kafka服务器配置  192.168.1.1:9092
+    bootstrap-servers: 
+    - ip:port
+    consumer: 
+      #默认组
+      group-id: test-group
+      key-deserializer:
+        org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer:
+        org.apache.kafka.common.serialization.StringDeserializer
+      #自动提交，单节点设置成false
+      enable-auto-commit: false
+      auto-commit-interval: 100
+      auto-offset-reset: earliest
+    producer:
+      #批量发送消息
+      batch-size: 65536
+      buffer-memory: 524288
+      key-serializer: 
+        org.apache.kafka.common.serialization.StringSerializer
+      value-serializer:
+        org.apache.kafka.common.serialization.StringSerializer
+        
+      

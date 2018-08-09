@@ -29,6 +29,8 @@
 		<module>SpringCloud-Gateway</module>
 		<module>SpringCloud-MQTT</module>
 		<module>SpringCloud-Configure</module>
+		<module>SpringCloud-Kafka-Elk</module>
+		<module>SpringCloud-Demo-Doc</module>
 	</modules>
 
 	<dependencyManagement>

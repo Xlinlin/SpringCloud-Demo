@@ -1,0 +1,13 @@
+spring:
+  cloud:
+    config:
+      uri: http://39.108.36.134:8808/omni-config-server
+      profile: @env@
+      label: master
+      name: omni-member-service
+  application: 
+    name: omni-member-service
+  logstash: 
+    server: @logstashServer@
+    kafka-servers: @kafkaServer@
+    logs-topic: @kafkaLogTopic@
