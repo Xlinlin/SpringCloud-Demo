@@ -14,3 +14,5 @@ springcloud skywalking mqtt  demo
 2. 新增git配置中心
 3. 新增kafka elk demo配置以及文档
 4. 文档结构整理
+5. 分离注册中心和配置中心
+7. 添加zipkin服务跟踪
