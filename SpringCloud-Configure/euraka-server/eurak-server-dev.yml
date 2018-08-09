@@ -1,0 +1,21 @@
+eureka:
+    #集群配置
+    #cluster:
+       #node1: localhost:1110
+       #node2: localhost:1109
+       #node3: localhost:1108
+    #单机配置
+    instance:
+        # eureka实例的主机名
+        hostname: center
+        #prefer-ip-address: true
+        #instance-id: ${spring.cloud.client.ipAddress}:${server.port}
+    client:
+        #由于该应用为注册中心,所以设置为false,代表不向注册中心注册自己
+        register-with-eureka: false
+        #由于注册中心的职责就是维护服务实例,它并不需要去检索服务,所以也设置为false
+        fetch-registry: false
+        serviceUrl:
+            #集群配置 
+            #defaultZone: http://${eureka.cluster.node1}/eureka/,http://${eureka.cluster.node2}/eureka/,http://${eureka.cluster.node3}/eureka/
+            defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
