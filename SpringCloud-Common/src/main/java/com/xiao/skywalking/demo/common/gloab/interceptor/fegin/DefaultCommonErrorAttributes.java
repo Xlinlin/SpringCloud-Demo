@@ -1,0 +1,24 @@
+package com.xiao.skywalking.demo.common.gloab.interceptor.fegin;
+
+import cn.hutool.core.bean.BeanUtil;
+import com.xiao.skywalking.demo.common.exception.CommonExceptionEnum;
+import com.xiao.skywalking.demo.common.gloab.response.ResponseData;
+import org.springframework.boot.autoconfigure.web.DefaultErrorAttributes;
+import org.springframework.web.context.request.RequestAttributes;
+
+import java.util.Map;
+
+/**
+ * 重写spring得默认响应提示信息
+ *
+ * @author zhdong
+ */
+public class DefaultCommonErrorAttributes extends DefaultErrorAttributes
+{
+
+    @Override
+    public Map<String, Object> getErrorAttributes(RequestAttributes requestAttributes, boolean includeStackTrace)
+    {
+        return BeanUtil.beanToMap(ResponseData.error(CommonExceptionEnum.SERVICE_ERROR.getMessage()));
+    }
+}
