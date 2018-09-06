@@ -34,7 +34,8 @@
 		<module>SpringCloud-Kafka-Elk</module>
 		<module>SpringCloud-Demo-Doc</module>
 		<module>SpringCloud-ECC</module>
-	</modules>
+        <module>SpringCloud-Mybatis</module>
+    </modules>
 
 	<dependencyManagement>
 		<dependencies>

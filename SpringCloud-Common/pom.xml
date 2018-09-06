@@ -12,7 +12,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-            <!--排除这个slf4j-log4j12-->
+            <!--排除这个slf4j-log4j12 使用logback slf4j包冲突警告问题，另外还有一个zookeeper的包-->
             <exclusions>
                 <exclusion>
                     <groupId>org.slf4j</groupId>
