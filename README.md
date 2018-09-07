@@ -16,3 +16,11 @@ springcloud skywalking mqtt  demo
 4. 文档结构整理
 5. 分离注册中心和配置中心
 7. 添加zipkin服务跟踪
+
+
+20180905
+1. 自定义注解实现aop日志
+2. 自定义注解实现实体类参数校验
+3. 添加mybatis自定生成映射实体类、mapper等
+4. 添加全局异常处理
+5. 添加fegin自定义数据解析
