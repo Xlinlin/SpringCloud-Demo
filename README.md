@@ -27,3 +27,6 @@ springcloud skywalking mqtt  demo
 
 20180907
 1. 添加注解，作为参数校验入口
+
+20180910
+1. 解决服务之间调用fegin+hystrix 熔断异常拦截处理
