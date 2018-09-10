@@ -1,0 +1,48 @@
+Caused by: java.lang.IllegalStateException: Ambiguous mapping. Cannot map 'xxx' method 异常问题：
+
+错误原因是这里继承的接口类是一个controller接口，继承时会继承到父类的
+
+@RequestMapping("/api")
+SpringMvc在做mapping映射的时候发现ConsumerFeignService和ConsumerFeignServiceFallBack的mapping重复了，所以抛出异常，如何解决呢？
+
+解决的方法有2个：
+
+一是更改ConsumerFeignServiceFallBack的mapping配置，代码如下：
+@Component
+@RequestMapping("fallback/api")
+public class ConsumerFeignServiceFallBack implements ConsumerFeignService {
+  @Override
+  public User getUserById(long id) {
+    return new User();
+  }
+ 
+  @Override
+  public String echo(String name) {
+    return "echo error: " + name;
+  }
+}
+二是使用fallbackFactory，代码如下：
+@Component
+public class ConsumerFeignServiceFallBack implements FallbackFactory<ConsumerFeignService> {
+ 
+  @Override
+  public ConsumerFeignService create(Throwable cause) {
+    return new ConsumerFeignService() {
+      @Override
+      public User getUserById(long id) {
+        return new User();
+      }
+ 
+      @Override
+      public String echo(String name) {
+        return "echo error: " + name;
+      }
+    };
+  }
+}
+运行后，关闭服务提供者，发现熔断并没有生效，没有像单独使用@HystrixCommand时进入fallback方法，查了很多方式，发现原来是feign的hystix的配置开关没有打开
+
+解决方法，在application.yml中增加配置如下：
+feign:
+ hystrix:
+  enabled: true
