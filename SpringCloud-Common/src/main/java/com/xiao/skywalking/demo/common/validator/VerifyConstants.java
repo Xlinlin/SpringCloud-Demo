@@ -17,35 +17,6 @@ package com.xiao.skywalking.demo.common.validator;
  */
 public interface VerifyConstants
 {
-    /**
-     * MDM业务编码前缀
-     */
-    int MDM_CODE_PREFIX = 76;
-
-    /**
-     * 前端管理平台业务编码前缀
-     */
-    int ADMIN_CODE_PREFIX = 75;
-
-    /**
-     * 会员中心业务编码前缀
-     */
-    int MEMBER_CODE_PREFIX = 77;
-
-    /**
-     * 支付业务编码前缀
-     */
-    int PAYMENT_CODE_PREFIX = 73;
-
-    /**
-     * 内容管理业务编码前缀
-     */
-    int CONTENT_CODE_PREFIX = 78;
-
-    /**
-     *
-     */
-    int SHARE_CODE_PREFIX = 79;
 
     /**
      * 电话校验

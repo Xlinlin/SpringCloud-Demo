@@ -15,7 +15,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
- * 全局的的异常拦截器（拦截所有的控制器）（带有@RequestMapping注解的方法上都会拦截）
+ * 全局的的异常拦截器（拦截所有的控制器）
+ * （带有@RequestMapping注解的方法上都会拦截）
  *
  * @author zhdong
  */
@@ -35,7 +36,7 @@ public class DefaultControllerAdvice
     @ResponseBody
     public ResponseData serviceException(CommonException e)
     {
-        log.info("系统异常:", e);
+        log.error("系统异常:", e);
         return new ErrorResponseData(e.getCode(), e.getErrorMessage());
     }
 
@@ -47,12 +48,22 @@ public class DefaultControllerAdvice
     @ResponseBody
     public ResponseData hystrixRuntimeException(HystrixRuntimeException e)
     {
-        log.info("系统异常:", e);
+        log.error("系统异常:", e);
         Throwable cause = e.getCause();
         //return new ErrorResponseData(e.getCode(), e.getErrorMessage());
         if (cause instanceof CommonException)
         {
             return serviceException((CommonException) cause);
+        }
+        cause = e.getFallbackException();
+        if (null != cause)
+        {
+            // 解决服务之间调用，自定义熔断内抛出的异常处理
+            Throwable e1 = cause.getCause().getCause();
+            if (null != e1 && e1 instanceof CommonException)
+            {
+                return serviceException((CommonException) e1);
+            }
         }
         return notFount(e);
     }
