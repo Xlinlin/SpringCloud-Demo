@@ -31,7 +31,13 @@ springcloud skywalking mqtt  demo
 20180910
 1. 解决服务之间调用fegin+hystrix 熔断异常拦截处理
 
-20180910
+20180914
 1. 服务调用之间的rest请求，参数为对象时需要添加@RequestBody注解
-eg:
-saveRegionCity(@RequestBody RegionCityDto regionCityDto)
+``eg:
+``saveRegionCity(@RequestBody RegionCityDto regionCityDto)
+2. 服务间调用接口的返回值，不能使接口返回，必须要使用实现类返回，fegin客户端获取不到数据返回Null
+``eg:
+`` public User getUser(@RequestBody UserQuery query);
+`` User必须为实现类，不能为接口
+
+
