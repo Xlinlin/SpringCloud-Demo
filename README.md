@@ -30,3 +30,8 @@ springcloud skywalking mqtt  demo
 
 20180910
 1. 解决服务之间调用fegin+hystrix 熔断异常拦截处理
+
+20180910
+1. 服务调用之间的rest请求，参数为对象时需要添加@RequestBody注解
+eg:
+saveRegionCity(@RequestBody RegionCityDto regionCityDto)
