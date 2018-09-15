@@ -33,11 +33,11 @@ springcloud skywalking mqtt  demo
 
 20180914
 1. 服务调用之间的rest请求，参数为对象时需要添加@RequestBody注解
-```eg:
-```saveRegionCity(@RequestBody RegionCityDto regionCityDto)
+``eg:
+``saveRegionCity(@RequestBody RegionCityDto regionCityDto)
 2. 服务间调用接口的返回值，不能使接口返回，必须要使用实现类返回，fegin客户端获取不到数据返回Null
-```eg:
-``` public User getUser(@RequestBody UserQuery query);-User必须为实现类，不能为接口
+``eg:
+``public User getUser(@RequestBody UserQuery query);-User必须为实现类，不能为接口
 3. 添加fastjson解析，解决部分调用对象内包含对象传值为空问题
 
 
