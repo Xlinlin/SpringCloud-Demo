@@ -31,5 +31,5 @@ spring:
                     # git仓库地址下的相对地址，可以配置多个，用,分割
                     search-paths: SpringCloud-Configure/consumer,SpringCloud-Configure/euraka-server
                     # 账号密码
-                    username: Xlinlin
-                    password: Xiao880214..
+                    username: userName
+                    password: password
