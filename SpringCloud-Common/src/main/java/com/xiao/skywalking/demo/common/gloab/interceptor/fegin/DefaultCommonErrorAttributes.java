@@ -12,13 +12,14 @@ import java.util.Map;
  * 重写spring得默认响应提示信息
  *
  * @author zhdong
+ * @Date 2018/8/30 23:14
  */
 public class DefaultCommonErrorAttributes extends DefaultErrorAttributes
 {
 
     @Override
-    public Map<String, Object> getErrorAttributes(RequestAttributes requestAttributes, boolean includeStackTrace)
-    {
+    public Map<String, Object> getErrorAttributes(RequestAttributes requestAttributes, boolean includeStackTrace) {
         return BeanUtil.beanToMap(ResponseData.error(CommonExceptionEnum.SERVICE_ERROR.getMessage()));
+
     }
 }

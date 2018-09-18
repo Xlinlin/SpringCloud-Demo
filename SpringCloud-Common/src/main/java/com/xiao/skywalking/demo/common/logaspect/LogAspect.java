@@ -1,7 +1,10 @@
 package com.xiao.skywalking.demo.common.logaspect;
 
-import com.alibaba.fastjson.JSON;
+import com.xiao.skywalking.demo.common.exception.CommonException;
+import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import org.apache.commons.lang3.time.StopWatch;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
@@ -13,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
+import java.sql.Timestamp;
 
 /**
  * [简要描述]: 切面日志处理类<br/>
@@ -45,29 +49,27 @@ public class LogAspect
 
     // around 切面强化
     @Around("logAnnotatison()")
-    public Object execute(ProceedingJoinPoint joinPoint)
+    public Object execute(ProceedingJoinPoint joinPoint) throws Throwable
     {
 
-        StringBuffer sbLog = new StringBuffer();
-        //用的最多 通知的签名
+        LogInfo logInfo = new LogInfo();
+        logInfo.setRequestTime(new Timestamp(System.currentTimeMillis()));
+        //通知签名
         Signature signature = joinPoint.getSignature();
         //代理的是哪一个方法
         String methodName = signature.getName();
         //AOP代理类的名字
         String className = joinPoint.getTarget().getClass().getName();
-        sbLog.append("Class: ");
-        sbLog.append(className);
-        sbLog.append(";Method: ");
-        sbLog.append(methodName);
+        logInfo.setClsName(className);
+        logInfo.setMethodName(methodName);
         //获取方法参数
         Object[] args = joinPoint.getArgs();
-        sbLog.append(";Params: ");
-        sbLog.append(null == args ? "" : JSON.toJSONString(args));
+        logInfo.setParams(args);
         Object retrunobj = null;
         //计时工具
         StopWatch clock = new StopWatch();
-        clock.start();
         Throwable tempE = null;
+        clock.start();
         try
         {
             // 注意和finally中的执行顺序 finally是在return中的计算结束返回前执行
@@ -76,13 +78,43 @@ public class LogAspect
         catch (Throwable e)
         {
             tempE = e;
+            throw e;
         }
+        finally
+        {
+            boolean isError = setResultAndError(joinPoint, logInfo, retrunobj, clock, tempE);
+            logInfo.setResponseTime(new Timestamp(System.currentTimeMillis()));
+            if (isError)
+            {
+                //记录日志
+                logService.error(logInfo.toString(), tempE);
+            }
+            else
+            {
+                logService.info(logInfo.toString());
+            }
+        }
+        return retrunobj;
+    }
+
+    /**
+     * [简要描述]:记录日志<br/>
+     * [详细描述]:<br/>
+     *
+     * @param joinPoint :
+     * @param logInfo :
+     * @param retrunobj :
+     * @param clock :
+     * @param tempE :
+     * @return true 未知异常
+     * llxiao  2018/9/8 - 9:53
+     **/
+    private boolean setResultAndError(ProceedingJoinPoint joinPoint, LogInfo logInfo, Object retrunobj, StopWatch clock,
+            Throwable tempE)
+    {
         clock.stop();
-        sbLog.append(";Return: ");
-        sbLog.append(retrunobj == null ? "" : JSON.toJSONString(retrunobj));
-        sbLog.append(";CostTime: ");
-        sbLog.append(clock.getTime());
-        sbLog.append("ms");
+        logInfo.setResult(retrunobj);
+        logInfo.setCostTime(clock.getTime());
         MethodSignature ms = (MethodSignature) joinPoint.getSignature();
         //从切面中获取当前方法
         Method method = ms.getMethod();
@@ -92,17 +124,60 @@ public class LogAspect
         //自定义的一些消息
         if (StringUtils.isNotBlank(customerInfo))
         {
-            sbLog.append(";CustomerMsg: ");
-            sbLog.append(customerInfo);
+            logInfo.setRemark(customerInfo);
         }
         if (null != tempE)
         {
-            logService.error(sbLog.toString(), tempE);
+            // 业务异常处理不需要打印堆栈信息
+            if (tempE instanceof CommonException)
+            {
+                CommonException ce = (CommonException) tempE;
+                logInfo.setErrorCode(ce.getCode());
+                logInfo.setErrorMsg(ce.getErrorMessage());
+            }
+            else
+            {
+                // 未知异常打印堆栈信息
+                logInfo.setErrorMsg(tempE.getMessage());
+                return true;
+            }
         }
-        else
+        return false;
+    }
+
+    /**
+     * 日志信息
+     */
+    @Data
+    private static class LogInfo
+    {
+        //类名
+        private String clsName;
+        //方法名
+        private String methodName;
+        //请求参数
+        private Object[] params;
+        //返回值
+        private Object result;
+        //调用花费时间 ms
+        private Long costTime;
+        //其他信息
+        private String remark;
+
+        //请求时间
+        private Timestamp requestTime;
+        //响应时间
+        private Timestamp responseTime;
+
+        //错误码
+        private int errorCode;
+        //错误消息
+        private String errorMsg;
+
+        @Override
+        public String toString()
         {
-            logService.info(sbLog.toString());
+            return ToStringBuilder.reflectionToString(this, ToStringStyle.JSON_STYLE);
         }
-        return retrunobj;
     }
 }

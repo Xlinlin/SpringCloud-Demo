@@ -3,12 +3,10 @@ package com.xiao.skywalking.demo.common.gloab.interceptor.config;
 import com.xiao.skywalking.demo.common.gloab.interceptor.fegin.CommonFeignErrorDecoder;
 import com.xiao.skywalking.demo.common.gloab.interceptor.fegin.CommonFeignHeaderProcessInterceptor;
 import com.xiao.skywalking.demo.common.gloab.interceptor.fegin.DefaultCommonErrorAttributes;
-import feign.Feign;
 import feign.RequestInterceptor;
-import feign.hystrix.HystrixFeign;
+import feign.codec.ErrorDecoder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Scope;
 
 /**
  * feign的错误编码配置（为了feign接收到错误的返回，转化成roses可识别的ServiceException）
@@ -17,16 +15,19 @@ import org.springframework.context.annotation.Scope;
  * @Date 2018/8/30 11:11
  */
 @Configuration
-public class FeignConfig
-{
+public class FeignConfig {
 
     /**
      * roses自定义错误解码器
      */
+    //    @Bean
+    //    @Scope("prototype")
+    //    public Feign.Builder feignHystrixBuilder() {
+    //        return HystrixFeign.builder().errorDecoder(new CommonFeignErrorDecoder());
+    //    }
     @Bean
-    @Scope("prototype")
-    public Feign.Builder feignHystrixBuilder() {
-        return HystrixFeign.builder().errorDecoder(new CommonFeignErrorDecoder());
+    public ErrorDecoder errorDecoder(){
+        return new CommonFeignErrorDecoder();
     }
 
     /**

@@ -6,6 +6,7 @@ import com.xiao.skywalking.demo.common.exception.CommonException;
 import com.xiao.skywalking.demo.common.exception.CommonExceptionEnum;
 import com.xiao.skywalking.demo.common.gloab.response.ErrorResponseData;
 import com.xiao.skywalking.demo.common.gloab.response.ResponseData;
+import feign.RetryableException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * 全局的的异常拦截器（拦截所有的控制器）
@@ -58,25 +61,50 @@ public class DefaultControllerAdvice
         cause = e.getFallbackException();
         if (null != cause)
         {
+            log.error("服务调用熔断异常：", cause);
             // 解决服务之间调用，自定义熔断内抛出的异常处理
-            Throwable e1 = cause.getCause().getCause();
-            if (null != e1 && e1 instanceof CommonException)
+            if (null != cause.getCause())
             {
-                return serviceException((CommonException) e1);
+                Throwable e1 = cause.getCause().getCause();
+                if (null != e1 && e1 instanceof CommonException)
+                {
+                    return serviceException((CommonException) e1);
+                }
             }
         }
-        return notFount(e);
+        return new ErrorResponseData(CommonExceptionEnum.REMOTE_SERVICE_NULL
+                .getCode(), CommonExceptionEnum.REMOTE_SERVICE_NULL.getMessage());
+    }
+
+    /**
+     * 拦截RetryableException异常
+     */
+    @ExceptionHandler(RetryableException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseBody
+    public ResponseData retryableException(RetryableException e)
+    {
+        log.error("系统异常:", e);
+        return new ErrorResponseData(CommonExceptionEnum.REMOTE_SERVICE_TIMEOUT
+                .getCode(), CommonExceptionEnum.REMOTE_SERVICE_TIMEOUT.getMessage());
     }
 
     /**
      * 拦截未知的运行时异常
      */
     @ExceptionHandler(Exception.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ResponseBody
-    public ResponseData notFount(Exception e)
+    public ResponseData notFount(Exception e, HttpServletResponse reponse)
     {
-        log.error("系统未知异常:", e);
+        if (HttpStatus.NOT_FOUND.value() == reponse.getStatus())
+        {
+            log.error(CommonExceptionEnum.NO_FOUNT.getMessage(), e);
+            return new ErrorResponseData(CommonExceptionEnum.NO_FOUNT.getCode(), CommonExceptionEnum.NO_FOUNT
+                    .getMessage());
+        }
+        log.error(CommonExceptionEnum.SYSTEM_ERROR.getMessage(), e);
+        // 设置httpresponse头为500信息
+        reponse.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
         return new ErrorResponseData(CommonExceptionEnum.SYSTEM_ERROR.getCode(), CommonExceptionEnum.SYSTEM_ERROR
                 .getMessage());
     }

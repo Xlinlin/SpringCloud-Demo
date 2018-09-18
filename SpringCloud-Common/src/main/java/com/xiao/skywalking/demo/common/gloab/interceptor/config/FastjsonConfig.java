@@ -2,7 +2,6 @@ package com.xiao.skywalking.demo.common.gloab.interceptor.config;
 
 import com.alibaba.fastjson.parser.ParserConfig;
 import com.alibaba.fastjson.serializer.SerializerFeature;
-import com.alibaba.fastjson.serializer.ValueFilter;
 import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -44,12 +43,19 @@ public class FastjsonConfig
     public FastJsonConfig fastjsonConfig()
     {
         FastJsonConfig fastJsonConfig = new FastJsonConfig();
-        fastJsonConfig
-                .setSerializerFeatures(SerializerFeature.PrettyFormat, SerializerFeature.WriteMapNullValue, SerializerFeature.DisableCircularReferenceDetect);
+        fastJsonConfig.setSerializerFeatures(
+                //SerializerFeature.PrettyFormat,  //格式化输出 ，仅限调试使用
+                SerializerFeature.WriteMapNullValue,  //是否输出值为null的字段,默认为false
+                SerializerFeature.DisableCircularReferenceDetect, //消除循环引用
+                SerializerFeature.WriteNullListAsEmpty //List字段如果为null,输出为[],而非null
+        );
         fastJsonConfig.setDateFormat("yyyy-MM-dd HH:mm:ss");
-        ValueFilter valueFilter = (object, name, value) -> null == value ? "" : value;
         fastJsonConfig.setCharset(Charset.forName("utf-8"));
-        fastJsonConfig.setSerializeFilters(valueFilter);
+        //不需要将null转换为空字符
+//        ValueFilter valueFilter = (object, name, value) -> {
+//            return null == value ? "" : value;
+//        };
+//        fastJsonConfig.setSerializeFilters(valueFilter);
         return fastJsonConfig;
     }
 
