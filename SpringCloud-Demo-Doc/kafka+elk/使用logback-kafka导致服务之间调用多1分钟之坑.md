@@ -27,4 +27,5 @@
 6. 疑惑：
    `其实很不明白，为啥我明明给的是一个不可用的broker地址，为啥还可以创建cluster和producer成功，猜测应该是保证高可用`
 7. elk+kafka配置参考：SpringCloud-Kafka-Elk项目配置
+8. kafka的metadata更新策略，请参考：https://blog.csdn.net/chunlongyu/article/details/52622422
    
