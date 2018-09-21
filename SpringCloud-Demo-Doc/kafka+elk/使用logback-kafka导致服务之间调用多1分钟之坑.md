@@ -6,7 +6,7 @@
   `最终发现的是，logback写入kafka日志，而kafka的配置是单机且是个不可用的服务问题所导致`<br>
 4. 分析：<br>
   `debug跟踪源码，发现即使kafka的服务配置是错误的，也依旧能创建成功cluster和producer，最终在producer进行send的时候触发
-  Metadata的更新，二者之间的version不一致，需要无限循环更新并调用Object.wait(timeout)方法阻塞直到超时`<br>
+  Metadata的更新，二者之间的version不一致，循环更新并调用Object.wait(timeout)方法阻塞直到超时`<br>
   超时源码部分：org.apache.kafka.clients.Metadata.awaitUpdate<br>
   ``` 
            long remainingWaitMs = maxWaitMs;
