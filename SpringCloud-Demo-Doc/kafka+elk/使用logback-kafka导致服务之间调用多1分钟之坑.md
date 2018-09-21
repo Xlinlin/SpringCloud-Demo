@@ -21,9 +21,10 @@
    ```
    remainingWaitMs的超时间取的是默认的max.block.ms时间 60000ms<br>
 5. 建议解决方法： <br>
-   >>>*`5.1: 使用logbach的异步输出，防止kafka不可用时阻塞主线程日志(本案暂时采用)`<br>
-   >>>*`5.2: 缩短wait的超时时间，通过配置metadata.fetch.timeout.ms`<br>
-   >>>*`5.3: 保证kafka的高可用`
+ >>*`5.1: 使用logbach的异步输出，防止kafka不可用时阻塞主线程日志(本案暂时采用)`<br>
+ >>*`5.2: 缩短wait的超时时间，通过配置metadata.fetch.timeout.ms`<br>
+ >>*`5.3: 保证kafka的高可用`
+ >>*`5.4: 更换方案，直接读取日志文件`
 6. 疑惑：<br>
    `其实很不明白，为啥我明明给的是一个不可用的broker地址，为啥还可以创建cluster和producer成功，猜测应该是保证高可用`<br>
 7. elk+kafka配置参考：SpringCloud-Kafka-Elk项目配置<br>
