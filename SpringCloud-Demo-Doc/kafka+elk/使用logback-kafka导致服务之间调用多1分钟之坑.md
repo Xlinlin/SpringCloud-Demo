@@ -27,6 +27,6 @@
  >>*`5.4: 更换方案，直接读取日志文件`<br>
 6. 疑惑：<br>
    `其实很不明白，为啥我明明给的是一个不可用的broker地址，为啥还可以创建cluster和producer成功，猜测应该是保证高可用`<br>
-7. elk+kafka配置参考：SpringCloud-Kafka-Elk项目配置<br>
+7. elk+kafka配置参考：[SpringCloud-Kafka-Elk项目配置](https://github.com/Xlinlin/spring-cloud-demo/tree/master/SpringCloud-Kafka-Elk)<br>
 8. [kafka的metadata更新策略](https://blog.csdn.net/chunlongyu/article/details/52622422)<br>
    
