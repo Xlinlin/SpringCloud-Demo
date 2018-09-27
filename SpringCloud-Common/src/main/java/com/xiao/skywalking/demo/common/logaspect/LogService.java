@@ -18,7 +18,7 @@ public interface LogService
      * @return void
      * llxiao  2018/9/2 - 16:57
      **/
-    public void debug(String debugMsg);
+    void debug(String debugMsg);
 
     /**
      * [简要描述]:info 日志记录<br/>
@@ -28,7 +28,7 @@ public interface LogService
      * @return void
      * llxiao  2018/9/2 - 16:55
      **/
-    public void info(String message);
+    void info(String message);
 
     /**
      * [简要描述]:error 日志记录<br/>
@@ -39,5 +39,12 @@ public interface LogService
      * @return void
      * llxiao  2018/9/2 - 16:55
      **/
-    public void error(String errorMsg, Throwable e);
+    void error(String errorMsg, Throwable e);
+
+    /**
+     * 警告日志
+     *
+     * @param message
+     */
+    void warn(String message);
 }

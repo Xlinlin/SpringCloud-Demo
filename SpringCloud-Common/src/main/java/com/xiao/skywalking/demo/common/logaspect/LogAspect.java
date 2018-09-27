@@ -1,10 +1,8 @@
 package com.xiao.skywalking.demo.common.logaspect;
 
+import com.alibaba.fastjson.JSON;
 import com.xiao.skywalking.demo.common.exception.CommonException;
-import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 import org.apache.commons.lang3.time.StopWatch;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
@@ -14,8 +12,13 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.sql.Timestamp;
 
 /**
@@ -84,17 +87,56 @@ public class LogAspect
         {
             boolean isError = setResultAndError(joinPoint, logInfo, retrunobj, clock, tempE);
             logInfo.setResponseTime(new Timestamp(System.currentTimeMillis()));
+            setHostInfo(logInfo);
             if (isError)
             {
                 //记录日志
-                logService.error(logInfo.toString(), tempE);
+                logService.error(JSON.toJSONString(logInfo), tempE);
             }
             else
             {
-                logService.info(logInfo.toString());
+                logService.info(JSON.toJSONString(logInfo));
             }
         }
         return retrunobj;
+    }
+
+    /**
+     * [简要描述]:设置一些网络参数设置<br/>
+     * [详细描述]:<br/>
+     *
+     * @param logInfo :
+     * @return void
+     * llxiao  2018/9/20 - 9:30
+     **/
+    private void setHostInfo(LogInfo logInfo)
+    {
+        // 本机IP信息
+        try
+        {
+            InetAddress local = InetAddress.getLocalHost();
+            if (null != local)
+            {
+                logInfo.setServerHost(local.getHostName());
+                logInfo.setServerIp(local.getHostAddress());
+            }
+        }
+        catch (UnknownHostException e)
+        {
+            logService.warn("UnknownHostException");
+        }
+
+        // 请求IP信息
+        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        HttpServletRequest request = attributes.getRequest();
+        if (null != request)
+        {
+            logInfo.setClientIp(request.getRemoteAddr());
+            logInfo.setClientHost(request.getRemoteHost());
+            logInfo.setRequestUri(request.getRequestURI());
+            logInfo.setClientPort(request.getRemotePort());
+            logInfo.setServerPort(request.getLocalPort());
+        }
     }
 
     /**
@@ -128,6 +170,7 @@ public class LogAspect
         }
         if (null != tempE)
         {
+            logInfo.setStatus(LogInfo.FAILED);
             // 业务异常处理不需要打印堆栈信息
             if (tempE instanceof CommonException)
             {
@@ -143,41 +186,5 @@ public class LogAspect
             }
         }
         return false;
-    }
-
-    /**
-     * 日志信息
-     */
-    @Data
-    private static class LogInfo
-    {
-        //类名
-        private String clsName;
-        //方法名
-        private String methodName;
-        //请求参数
-        private Object[] params;
-        //返回值
-        private Object result;
-        //调用花费时间 ms
-        private Long costTime;
-        //其他信息
-        private String remark;
-
-        //请求时间
-        private Timestamp requestTime;
-        //响应时间
-        private Timestamp responseTime;
-
-        //错误码
-        private int errorCode;
-        //错误消息
-        private String errorMsg;
-
-        @Override
-        public String toString()
-        {
-            return ToStringBuilder.reflectionToString(this, ToStringStyle.JSON_STYLE);
-        }
     }
 }

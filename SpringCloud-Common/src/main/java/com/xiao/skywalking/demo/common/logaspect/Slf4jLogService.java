@@ -48,6 +48,17 @@ public class Slf4jLogService implements LogService
     }
 
     /**
+     * 警告日志
+     *
+     * @param message
+     */
+    @Override
+    public void warn(String message)
+    {
+        log.warn(message);
+    }
+
+    /**
      * [简要描述]:error 日志记录<br/>
      * [详细描述]:<br/>
      *
