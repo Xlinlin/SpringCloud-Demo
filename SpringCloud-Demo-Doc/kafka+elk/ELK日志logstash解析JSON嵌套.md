@@ -92,47 +92,9 @@ output {
                "goodsNo" => "1000011",
         "commodityTitle" => "古龙香水300ml",
                 "haitao" => 0,
-             "goodsDtos" => [
-            [0] {
-                      "goodsNo" => "1000010",
-                "specification" => "500ml"
-            },
-            [1] {
-                      "goodsNo" => "1000011",
-                "specification" => "300ml"
-            }
-        ],
-              "taxation" => 0.0,
-               "zPicUrl" => [
-            [0] "http://omni-test.oss-cn-shenzhen.aliyuncs.com//omni/commdity/picture/commdity/SP5484/JL10001_z_01.jpg",
-            [1] "http://omni-test.oss-cn-shenzhen.aliyuncs.com//omni/commdity/picture/commdity/SP5484/JL10001_z_01.jpg"
-        ],
             "salesPoint" => "热卖商品",
                "brandId" => 1,
            "commodityNo" => "10000",
-                "labels" => [
-            [0] {
-                "labelColor" => "#C0FF3E",
-                   "labelNo" => "100",
-                 "labelName" => "护肤",
-                        "id" => 1,
-                    "status" => 1
-            },
-            [1] {
-                "labelColor" => "#AB82FF",
-                   "labelNo" => "101",
-                 "labelName" => "保湿",
-                        "id" => 2,
-                    "status" => 1
-            },
-            [2] {
-                "labelColor" => "#8FBC8F",
-                   "labelNo" => "102",
-                 "labelName" => "女士",
-                        "id" => 3,
-                    "status" => 1
-            }
-        ],
               "orgPrice" => 88.05,
           "categoryName" => "口红",
               "shopCode" => "10000",
@@ -148,4 +110,4 @@ output {
 
 3. 遇到的坑：<br>
 太相信ToStringBuilder的 Json格式，导致多次配置json都解析失败，最终使用fast.JSON做日志打印<br>
-更多配置参考[common]()和[elk]()工程代码
+更多配置参考[common](https://github.com/Xlinlin/spring-cloud-demo/tree/master/SpringCloud-Common)和[elk](https://github.com/Xlinlin/spring-cloud-demo/tree/master/SpringCloud-Kafka-Elk)工程代码
