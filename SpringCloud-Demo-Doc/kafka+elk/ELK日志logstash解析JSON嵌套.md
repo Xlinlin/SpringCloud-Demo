@@ -31,6 +31,19 @@ filter {
       source => "message"
       remove_field => ["message"]
     }
+    # 删除多余字段
+    mutate {
+        remove_field => "kafkaServer"
+        remove_field => "logger"
+        remove_field => "kafkaLogTopic"
+        remove_field => "level"
+        remove_field => "@version"
+        remove_field => "X-Span-Export"
+        remove_field => "X-B3-SpanId"
+        remove_field => "X-B3-ParentSpanId"
+        remove_field => "X-B3-TraceId"
+        remove_field => "levelVal"
+    }
 }
 output {
     # 输出到es
