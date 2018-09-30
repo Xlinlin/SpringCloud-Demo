@@ -1,14 +1,15 @@
 /*
- * Winner 
+ * Winner
  * 文件名  :ProviderApp.java
  * 创建人  :llxiao
  * 创建时间:2018年3月30日
-*/
+ */
 
 package com.xiao.skywalking.provider;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 
 /**
@@ -21,6 +22,8 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 @SpringBootApplication
 // @EnableEurekaClient 表明自己是一个eurekaclient
 @EnableEurekaClient
+//开启springboot-cache
+@EnableCaching
 public class ProviderApp
 {
     public static void main(String[] args)
