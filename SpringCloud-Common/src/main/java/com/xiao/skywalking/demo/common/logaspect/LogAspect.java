@@ -67,7 +67,7 @@ public class LogAspect
         logInfo.setMethodName(methodName);
         //获取方法参数
         Object[] args = joinPoint.getArgs();
-        logInfo.setParams(args);
+        logInfo.setParams(JSON.toJSONString(args));
         Object retrunobj = null;
         //计时工具
         StopWatch clock = new StopWatch();
@@ -155,7 +155,7 @@ public class LogAspect
             Throwable tempE)
     {
         clock.stop();
-        logInfo.setResult(retrunobj);
+        logInfo.setResult(JSON.toJSONString(retrunobj));
         logInfo.setCostTime(clock.getTime());
         MethodSignature ms = (MethodSignature) joinPoint.getSignature();
         //从切面中获取当前方法
