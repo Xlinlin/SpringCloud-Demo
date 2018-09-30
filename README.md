@@ -48,4 +48,5 @@ saveRegionCity(@RequestBody RegionCityDto regionCityDto)``
 20180927
 1. [elk+logstash+logback解析嵌套json数据](https://github.com/Xlinlin/spring-cloud-demo/blob/master/SpringCloud-Demo-Doc/kafka%2Belk/ELK%E6%97%A5%E5%BF%97logstash%E8%A7%A3%E6%9E%90JSON%E5%B5%8C%E5%A5%97.md)
 
-
+20180930
+1. 添加guava+spring-cache本地缓存实现，[参考入口](https://blog.csdn.net/mafei6827/article/details/80868931)
