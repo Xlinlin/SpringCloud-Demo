@@ -1,0 +1,23 @@
+server:
+  port: 7770
+elastic:
+  search:
+    #配置集群中的一个节点即可，通过集群名称自动连接其他节点，注意此处的端口为tcp端口不是http的端口，默认会绑定9300
+    host: 172.16.250.52:9300
+    cluster:
+      name: purcotton-test-es
+    total: 2
+    highlight:
+      pretags: <span style=\"color:red\">
+      posttags: </span>
+    analyze:
+      #0默认分词器，1中文分词器
+      type: 0
+eureka:
+  instance:
+    hostname: localhost
+    instance-id: ${spring.cloud.client.ipAddress}:${server.port}
+    prefer-ip-address: true
+  client:
+    serviceUrl:
+      defaultZone: http://120.77.46.245:8888/eureka/

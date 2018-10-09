@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true">
+    <include
+            resource="org/springframework/boot/logging/logback/defaults.xml"/>
+
+    <!-- logback加载优先于application.yml文件，因此需要从bootstrap.yml文件中读取spring.application.name信息 -->
+    <springProperty scope="context" name="springAppName"
+                    source="spring.application.name"/>
+
+    <!-- kafka配置 -->
+    <springProperty scope="context" name="kafkaServer"
+                    source="spring.logstash.kafka-servers"/>
+    <springProperty scope="context" name="kafkaLogTopic"
+                    source="spring.logstash.logs-topic"/>
+
+    <!-- 日志在工程中的输出位置 -->
+    <property name="LOG_FILE"
+              value="${BUILD_FOLDER:-build}/${springAppName}"/>
+
+    <!-- 控制台的日志输出样式 -->
+    <property name="CONSOLE_LOG_PATTERN"
+              value="%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr([${springAppName:-},%X{X-B3-TraceId:-},%X{X-Span-Export:-}]){yellow} %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}"/>
+
+    <!-- 控制台Appender -->
+    <appender name="console"
+              class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+            <charset>utf8</charset>
+        </encoder>
+    </appender>
+
+    <!-- 发送kafka -->
+    <appender name="kafkaAppender"
+              class="com.github.danielwegener.logback.kafka.KafkaAppender">
+        <encoder
+                class="com.github.danielwegener.logback.kafka.encoding.LayoutKafkaMessageEncoder">
+            <layout class="net.logstash.logback.layout.LogstashLayout">
+                <includeContext>true</includeContext>
+                <includeCallerData>false</includeCallerData>
+                <includeMdc>true</includeMdc>
+                <!-- 自定义属性 -->
+                <!-- <customFields>{"serverName":"${springAppName}"}</customFields> -->
+                <fieldNames
+                        class="net.logstash.logback.fieldnames.ShortenedFieldNames"/>
+            </layout>
+            <charset>UTF-8</charset>
+        </encoder>
+        <!--kafka topic 需要与配置文件里面的topic一致 否则kafka会沉默并鄙视你 -->
+        <topic>${kafkaLogTopic}</topic>
+        <!-- 路由分区策略，可依据HostName、ContextName、ThreadName、LoggerName，默认NoKey -->
+        <!-- <keyingStrategy -->
+        <!-- class="com.github.danielwegener.logback.kafka.keying.NoKeyKeyingStrategy"
+            /> -->
+        <!-- 交付策略 一种熔断策略(连接不是上默认发送到控制台/AsynchronousDeliveryStrategy)，一种阻塞策略(直到发送成功/BlockingDeliveryStrategy) -->
+        <deliveryStrategy
+                class="com.github.danielwegener.logback.kafka.delivery.AsynchronousDeliveryStrategy"/>
+        <!-- kafka连接地址 -->
+        <producerConfig>bootstrap.servers=${kafkaServer}</producerConfig>
+        <!-- 开启后所有不能快速通过网络抵达kafka集群的消息都会被分发到appender -->
+        <producerConfig>block.on.buffer.full=false</producerConfig>
+
+        <!--  备胎appender,当消息不能发送时，发送到默认控制台，不阻塞主线程 -->
+        <appender-ref ref="console"/>
+    </appender>
+
+    <!-- 使用异步来记录其他信息-->
+    <appender name="async" class="ch.qos.logback.classic.AsyncAppender">
+        <discardingThreshold>0</discardingThreshold>
+        <queueSize>1000</queueSize>
+        <includeCallerData>true</includeCallerData>
+        <appender-ref ref="kafkaAppender"/>
+    </appender>
+
+    <!-- <logger name="org.springframework.web" level="ERROR" /> -->
+    <logger name="org.apache.http" level="ERROR"/>
+    <logger name="com.netflix.discovery" level="ERROR"/>
+    <logger name="org.apache.tomcat" level="ERROR"/>
+    <logger name="org.apache.zookeeper" level="ERROR"/>
+
+    <!-- basis日志输出 -->
+    <logger name="com.purcotton.omni" level="info"
+            additivity="false">
+        <!-- 异步输出到kafka，不能阻塞流程 -->
+        <!--<appender-ref ref="async"/>-->
+        <appender-ref ref="console"/>
+    </logger>
+
+    <root level="info">
+        <appender-ref ref="console"/>
+    </root>
+</configuration>
