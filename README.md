@@ -51,3 +51,7 @@ saveRegionCity(@RequestBody RegionCityDto regionCityDto)``
 20180930
 1. 添加guava+spring-cache本地缓存实现，[参考入口](https://blog.csdn.net/mafei6827/article/details/80868931)
 2. 记录springcloud 1.x版本解决feignclient下requestmapping与springmvc的定义冲突问题，[参考入口](http://blog.didispace.com/spring-cloud-feignclient-problem/?utm_source=tuicool&utm_medium=referral)
+
+20181009
+1. 添加ES实现电商[搜索基础服务](https://github.com/Xlinlin/spring-cloud-demo/tree/master/SpringCloud-SearchService)
+2. 添加Mockito实现api的junit测试
