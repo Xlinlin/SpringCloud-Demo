@@ -1,17 +1,17 @@
 package com.xiao.spring.cloud.search.es.service;
 
+import cn.hutool.core.collection.CollectionUtil;
 import com.alibaba.fastjson.JSON;
-import com.purcotton.search.dto.ElasticSearchDoc;
-import com.purcotton.search.dto.PaginationDo;
-import com.purcotton.search.dto.SearchRequestDo;
-import com.purcotton.search.dto.SearchResultDo;
-import com.purcotton.search.es.client.ElasticSearchClient;
-import com.purcotton.search.es.common.AnalyzeType;
-import com.purcotton.search.es.common.ESConstants;
-import com.purcotton.search.es.common.OrderField;
-import com.purcotton.search.service.SearchService;
+import com.xiao.spring.cloud.search.dto.ElasticSearchDoc;
+import com.xiao.spring.cloud.search.dto.PaginationDo;
+import com.xiao.spring.cloud.search.dto.SearchRequestDo;
+import com.xiao.spring.cloud.search.dto.SearchResultDo;
+import com.xiao.spring.cloud.search.es.client.ElasticSearchClient;
+import com.xiao.spring.cloud.search.es.common.AnalyzeType;
+import com.xiao.spring.cloud.search.es.common.ESConstants;
+import com.xiao.spring.cloud.search.es.common.OrderField;
+import com.xiao.spring.cloud.search.service.SearchService;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.action.admin.indices.analyze.AnalyzeResponse;
 import org.elasticsearch.action.search.SearchRequestBuilder;
@@ -382,7 +382,7 @@ public class SearchServiceEsImpl implements SearchService, ESConstants
     private QueryBuilder setQueryBuilder(List<String> openKeywords, SearchRequestDo request)
     {
         BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery();
-        if (CollectionUtils.isNotEmpty(openKeywords))
+        if (CollectionUtil.isNotEmpty(openKeywords))
         {
             QueryBuilder multiMatch;
             for (String word : openKeywords)

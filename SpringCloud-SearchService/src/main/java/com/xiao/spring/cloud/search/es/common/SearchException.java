@@ -1,6 +1,6 @@
 package com.xiao.spring.cloud.search.es.common;
 
-import com.purcotton.omni.common.exception.AbstractServiceException;
+import com.xiao.skywalking.demo.common.exception.AbstractServiceException;
 
 /**
  * [简要描述]: 搜索服务异常枚举

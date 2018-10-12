@@ -10,3 +10,4 @@ spring:
   logstash:
     kafka-servers: @kafkaServer@
     logs-topic: @kafkaLogTopic@
+redisson.fileName: redisson-cluster

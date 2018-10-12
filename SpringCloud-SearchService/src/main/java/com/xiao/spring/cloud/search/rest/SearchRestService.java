@@ -1,9 +1,9 @@
 package com.xiao.spring.cloud.search.rest;
 
-import com.purcotton.omni.common.aop.log.LogAnnotation;
-import com.purcotton.search.dto.PaginationDo;
-import com.purcotton.search.dto.SearchRequestDo;
-import com.purcotton.search.service.SearchService;
+import com.xiao.skywalking.demo.common.logaspect.LogAnnotation;
+import com.xiao.spring.cloud.search.dto.PaginationDo;
+import com.xiao.spring.cloud.search.dto.SearchRequestDo;
+import com.xiao.spring.cloud.search.service.SearchService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,7 +1,7 @@
 package com.xiao.spring.cloud.search.service;
 
-import com.purcotton.search.dto.PaginationDo;
-import com.purcotton.search.dto.SearchRequestDo;
+import com.xiao.spring.cloud.search.dto.PaginationDo;
+import com.xiao.spring.cloud.search.dto.SearchRequestDo;
 
 /**
  * [简要描述]: 搜索服务
