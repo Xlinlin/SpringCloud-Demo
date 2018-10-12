@@ -29,7 +29,7 @@ spring:
                 git:
                     uri: https://github.com/Xlinlin/spring-cloud-demo.git
                     # git仓库地址下的相对地址，可以配置多个，用,分割
-                    search-paths: SpringCloud-Configure/consumer,SpringCloud-Configure/euraka-server
+                    search-paths: SpringCloud-Configure/consumer,SpringCloud-Configure/euraka-server,SpringCloud-Configure/redisson
                     # 公开的项目可以不需要账号密码
                     #username: uname
                     #password: passwd
