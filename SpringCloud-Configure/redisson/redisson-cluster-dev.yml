@@ -1,0 +1,60 @@
+# 线程池数量，默认值: 当前处理核数量 * 2
+##threads: 0
+# Netty线程池数量，默认值: 当前处理核数量 * 2
+##nettyThreads: 0
+# Redisson的对象编码类是用于将对象进行序列化和反序列化，默认：JsonJacksonCodec
+##codec: !<org.redisson.codec.JsonJacksonCodec> {}
+# 传输模式 默认NIO
+# 可选参数：
+# TransportMode.NIO,
+# TransportMode.EPOLL - 需要依赖里有netty-transport-native-epoll包（Linux）
+# TransportMode.KQUEUE - 需要依赖里有 netty-transport-native-kqueue包（macOS）
+##transportMode: "NIO"
+# 监控锁的看门狗超时，单位：毫秒，默认3000ms.该参数只适用于分布式锁的加锁请求中未明确使用leaseTimeout参数的情况
+##lockWatchdogTimeout: 3000
+# 保持订阅发布顺序
+##keepPubSubOrder: true
+# 集群模式
+clusterServersConfig:
+  idleConnectionTimeout: 10000
+  pingTimeout: 1000
+  connectTimeout: 10000
+  timeout: 3000
+  retryAttempts: 3
+  retryInterval: 1500
+  reconnectionTimeout: 3000
+  #执行失败最大次数。默认值：3
+  failedAttempts: 3
+  # 单个连接最大订阅数量，默认值5
+  subscriptionsPerConnection: 5
+  clientName: null
+  #负载均衡算法类的选择  3.5.7不支持
+  #默认值： org.redisson.connection.balancer.RoundRobinLoadBalancer
+  #在多Redis服务节点的环境里，可以选用以下几种负载均衡方式选择一个节点：
+  #org.redisson.connection.balancer.WeightedRoundRobinBalancer - 权重轮询调度算法
+  #org.redisson.connection.balancer.RoundRobinLoadBalancer - 轮询调度算法
+  #org.redisson.connection.balancer.RandomLoadBalancer - 随机调度算法
+  #loadBalancer: !<org.redisson.connection.balancer.RoundRobinLoadBalancer> {}
+  slaveSubscriptionConnectionMinimumIdleSize: 1
+  slaveSubscriptionConnectionPoolSize: 50
+  slaveConnectionMinimumIdleSize: 32
+  slaveConnectionPoolSize: 64
+  masterConnectionMinimumIdleSize: 32
+  masterConnectionPoolSize: 64
+  #读取操作的负载均衡模式，默认值： SLAVE（只在从服务节点里读取）
+  #可用值为： SLAVE - 只在从服务节点里读取。 MASTER - 只在主服务节点里读取。 MASTER_SLAVE - 在主从服务节点里都可以读取。
+  readMode: "SLAVE"
+  #订阅操作的负载均衡模式,默认值：SLAVE（只在从服务节点里订阅）
+  #可用值为： SLAVE - 只在从服务节点里订阅。 MASTER - 只在主服务节点里订阅
+  subscriptionMode: "SLAVE"
+  #启用SSL终端识别 默认值：true
+  #sslEnableEndpointIdentification: false
+  nodeAddresses:
+  - "redis://localhost:7379"
+  - "redis://localhost:7380"
+  - "redis://localhost:7381"
+  - "redis://localhost1:7379"
+  - "redis://localhost1:7380"
+  - "redis://localhost1:7381"
+  #集群扫描间隔时间，默认1000ms
+  scanInterval: 1000

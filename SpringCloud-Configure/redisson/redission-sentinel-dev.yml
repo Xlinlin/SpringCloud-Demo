@@ -1,0 +1,38 @@
+# 线程池数量，默认值: 当前处理核数量 * 2
+##threads: 0
+# Netty线程池数量，默认值: 当前处理核数量 * 2
+##nettyThreads: 0
+# Redisson的对象编码类是用于将对象进行序列化和反序列化，默认：JsonJacksonCodec
+##codec: !<org.redisson.codec.JsonJacksonCodec> {}
+# 传输模式 默认NIO
+# 可选参数：
+# TransportMode.NIO,
+# TransportMode.EPOLL - 需要依赖里有netty-transport-native-epoll包（Linux）
+# TransportMode.KQUEUE - 需要依赖里有 netty-transport-native-kqueue包（macOS）
+##transportMode: "NIO"
+# 监控锁的看门狗超时，单位：毫秒，默认3000ms.该参数只适用于分布式锁的加锁请求中未明确使用leaseTimeout参数的情况
+##lockWatchdogTimeout: 3000
+# 保持订阅发布顺序
+##keepPubSubOrder: true
+# sentinel模式
+sentinelServersConfig:
+  idleConnectionTimeout: 10000
+  pingTimeout: 1000
+  connectTimeout: 10000
+  timeout: 3000
+  retryAttempts: 3
+  retryInterval: 1500
+  subscriptionsPerConnection: 5
+  clientName: null
+  subscriptionConnectionMinimumIdleSize: 1
+  subscriptionConnectionPoolSize: 50
+  slaveConnectionMinimumIdleSize: 32
+  slaveConnectionPoolSize: 64
+  masterConnectionMinimumIdleSize: 32
+  masterConnectionPoolSize: 64
+  readMode: "SLAVE"
+  subscriptionMode: "SLAVE"
+  sentinelAddresses:
+  - "redis://localhost:26379"
+  masterName: "mymaster"
+  database: 0
