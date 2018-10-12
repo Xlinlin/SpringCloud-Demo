@@ -55,3 +55,13 @@ saveRegionCity(@RequestBody RegionCityDto regionCityDto)``
 20181009
 1. 添加ES实现电商[搜索基础服务](https://github.com/Xlinlin/spring-cloud-demo/tree/master/SpringCloud-SearchService)
 2. 添加Mockito实现api的junit测试
+
+20181012
+1. redisson yml配置加载，支持单机、集群、云托管、sentinel模式<br>
+2. 配置文件中添加配置文件即可开启redisson的配置：<br>
+`` redisson.fileName: redission-cluster(自定义)``
+3. 提供缓存基本服务和分布式服务: <br>
+``> CacheService 提供缓存基础服务`` <br>
+``> DistributedService 提供分布式**可重入公平/非公平锁**、**读写锁**、**闭锁**``<br>
+[代码实现参考](https://github.com/Xlinlin/spring-cloud-demo/tree/master/SpringCloud-Common/src/main/java/com/xiao/skywalking/demo/common/cache)<br>
+[junit测试参考](https://github.com/Xlinlin/spring-cloud-demo/tree/master/SpringCloud-SearchService/src/test/java/com/xiao/springcloud/test/cache)<br>
