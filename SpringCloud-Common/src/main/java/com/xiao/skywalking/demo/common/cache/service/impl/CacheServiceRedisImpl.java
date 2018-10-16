@@ -1,15 +1,16 @@
 package com.xiao.skywalking.demo.common.cache.service.impl;
 
+import cn.hutool.core.collection.CollectionUtil;
 import com.xiao.skywalking.demo.common.cache.conf.RedissonConfig;
+import com.xiao.skywalking.demo.common.cache.dto.EntryDto;
 import com.xiao.skywalking.demo.common.cache.service.CacheService;
-import org.redisson.api.RBucket;
-import org.redisson.api.RMap;
-import org.redisson.api.RSet;
-import org.redisson.api.RedissonClient;
+import org.apache.commons.lang3.StringUtils;
+import org.redisson.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
@@ -44,8 +45,12 @@ public class CacheServiceRedisImpl implements CacheService
     @Override
     public String get(String key)
     {
-        RBucket<String> bucket = redissonClient.getBucket(key);
-        return bucket.get();
+        if (null != redissonClient && StringUtils.isNotBlank(key))
+        {
+            RBucket<String> bucket = redissonClient.getBucket(key);
+            return bucket.get();
+        }
+        return "";
     }
 
     /**
@@ -60,8 +65,32 @@ public class CacheServiceRedisImpl implements CacheService
     @Override
     public void set(String key, String value)
     {
-        RBucket<String> bucket = redissonClient.getBucket(key);
-        bucket.set(value);
+        if (redissonClient != null && StringUtils.isNotBlank(key) && StringUtils.isNotBlank(value))
+        {
+            RBucket<String> bucket = redissonClient.getBucket(key);
+            bucket.set(value);
+        }
+    }
+
+    /**
+     * [简要描述]:批量设置string到缓存<br/>
+     * [详细描述]:<br/>
+     *
+     * @param list : 批量string数据
+     * llxiao  2018/10/15 - 10:07
+     **/
+    @Override
+    public void batchSet(List<EntryDto<String>> list)
+    {
+        if (redissonClient != null && CollectionUtil.isNotEmpty(list))
+        {
+            RBatch batch = redissonClient.createBatch();
+            for (EntryDto<String> entry : list)
+            {
+                batch.getBucket(entry.getKey()).setAsync(entry.getValue());
+            }
+            batch.execute();
+        }
     }
 
     /**
@@ -71,7 +100,6 @@ public class CacheServiceRedisImpl implements CacheService
      * @param key : K
      * @param value : V
      * @param leaseTime : 存活时间，单位秒
-     * @return void
      * llxiao  2018/10/11 - 16:02
      **/
     @Override
@@ -102,7 +130,6 @@ public class CacheServiceRedisImpl implements CacheService
      *
      * @param key : key
      * @param value : 值
-     * @return void
      * llxiao  2018/10/11 - 15:59
      **/
     @Override
@@ -113,13 +140,33 @@ public class CacheServiceRedisImpl implements CacheService
     }
 
     /**
+     * [简要描述]:批量设置Object到缓存<br/>
+     * [详细描述]:<br/>
+     *
+     * @param objs : 数据集合
+     * llxiao  2018/10/15 - 10:08
+     **/
+    @Override
+    public <T> void batchSetObj(List<EntryDto<Object>> objs)
+    {
+        if (redissonClient != null && CollectionUtil.isNotEmpty(objs))
+        {
+            RBatch batch = redissonClient.createBatch();
+            for (EntryDto<Object> entry : objs)
+            {
+                batch.getBucket(entry.getKey()).setAsync(entry.getValue());
+            }
+            batch.execute();
+        }
+    }
+
+    /**
      * [简要描述]:添加一个对象到缓存<br/>
      * [详细描述]:<br/>
      *
      * @param key : key
      * @param value : 值
      * @param leaseTime : 存活时间，单位秒
-     * @return void
      * llxiao  2018/10/11 - 15:59
      **/
     @Override
@@ -152,7 +199,6 @@ public class CacheServiceRedisImpl implements CacheService
      * @param key : K
      * @param field : 属性名
      * @param value : 属性值
-     * @return void
      * llxiao  2018/10/11 - 16:32
      **/
     @Override
@@ -167,13 +213,13 @@ public class CacheServiceRedisImpl implements CacheService
      * [详细描述]:<br/>
      *
      * @param key : K
-     * @return java.util.Map<java.lang.String , T>
+     * @return Map
      * llxiao  2018/10/11 - 19:45
      **/
     @Override
     public <T> Map<String, T> hgetAll(String key)
     {
-        return redissonClient.getMap(key);
+        return (Map) redissonClient.getMap(key).readAllMap();
     }
 
     /**
@@ -182,7 +228,6 @@ public class CacheServiceRedisImpl implements CacheService
      *
      * @param key ：key
      * @param maps : 集合
-     * @return void
      * llxiao  2018/10/11 - 19:47
      **/
     @Override
@@ -193,16 +238,36 @@ public class CacheServiceRedisImpl implements CacheService
     }
 
     /**
+     * [简要描述]:批量hset<br/>
+     * [详细描述]:<br/>
+     *
+     * @param maps :  KEY,MAP集合
+     * llxiao  2018/10/15 - 11:16
+     **/
+    @Override
+    public <T> void batchHset(List<EntryDto<Map<String, Object>>> maps)
+    {
+        if (null != redissonClient && CollectionUtil.isNotEmpty(maps))
+        {
+            RBatch batch = redissonClient.createBatch();
+            for (EntryDto<Map<String, Object>> entry : maps)
+            {
+                batch.getMap(entry.getKey()).putAllAsync(entry.getValue());
+            }
+            batch.execute();
+        }
+    }
+
+    /**
      * [简要描述]:Set中添加一个元素<br/>
      * [详细描述]:<br/>
      *
      * @param key : K
      * @param value : 值
-     * @return void
      * llxiao  2018/10/11 - 19:57
      **/
     @Override
-    public <T> void setAdd(String key, T value)
+    public <T> void addSet(String key, T value)
     {
         RSet<T> set = redissonClient.getSet(key);
         set.add(value);
@@ -217,9 +282,9 @@ public class CacheServiceRedisImpl implements CacheService
      * llxiao  2018/10/11 - 19:59
      **/
     @Override
-    public <T> Set<T> setGet(String key)
+    public <T> Set<T> getSet(String key)
     {
-        return redissonClient.getSet(key);
+        return (Set) redissonClient.getSet(key).readAll();
     }
 
     /**
@@ -230,9 +295,77 @@ public class CacheServiceRedisImpl implements CacheService
      * @param value : 元素
      **/
     @Override
-    public <T> void setRemove(String key, T value)
+    public <T> void removeSet(String key, T value)
     {
         redissonClient.getSet(key).remove(value);
+    }
+
+    /**
+     * [简要描述]:批量从缓存获取对象集合<br/>
+     * [详细描述]:<br/>
+     *
+     * @param keys : KEY
+     * @return java.util.List<T>
+     * llxiao  2018/10/15 - 10:00
+     **/
+    @Override
+    public <T> List<T> batchGet(List<String> keys)
+    {
+        RBatch batch = redissonClient.createBatch();
+        for (String key : keys)
+        {
+            batch.getBucket(key).getAsync();
+        }
+        BatchResult result = batch.execute();
+        return result.getResponses();
+    }
+
+    /**
+     * [简要描述]:批量从缓存获取MAP集合<br/>
+     * [详细描述]:<br/>
+     *
+     * @param keys : KEY
+     * @return java.util.List<java.util.Map>
+     * llxiao  2018/10/15 - 10:01
+     **/
+    @Override
+    public <T> List<Map<String, T>> batchGetMap(List<String> keys)
+    {
+        RBatch batch = redissonClient.createBatch();
+        for (String key : keys)
+        {
+            batch.getMap(key).readAllMapAsync();
+        }
+        BatchResult result = batch.execute();
+        return result.getResponses();
+    }
+
+    /**
+     * [简要描述]:删除一个对象<br/>
+     * [详细描述]:<br/>
+     *
+     * @param key : key
+     * llxiao  2018/10/15 - 14:40
+     **/
+    @Override
+    public void delObject(String key)
+    {
+        RBucket bucket = redissonClient.getBucket(key);
+        bucket.deleteAsync();
+    }
+
+    /**
+     * [简要描述]:清空一个map<br/>
+     * [详细描述]:<br/>
+     *
+     * @param key : KEY
+     * llxiao  2018/10/15 - 14:41
+     **/
+    @Override
+    public void delMap(String key)
+    {
+        RMap map = redissonClient.getMap(key);
+        map.deleteAsync();
     }
 
 }
