@@ -65,3 +65,6 @@ saveRegionCity(@RequestBody RegionCityDto regionCityDto)``
 ``> DistributedService 提供分布式**可重入公平/非公平锁**、**读写锁**、**闭锁**``<br>
 [代码实现参考](https://github.com/Xlinlin/spring-cloud-demo/tree/master/SpringCloud-Common/src/main/java/com/xiao/skywalking/demo/common/cache)<br>
 [junit测试参考](https://github.com/Xlinlin/spring-cloud-demo/tree/master/SpringCloud-SearchService/src/test/java/com/xiao/springcloud/test/cache)<br>
+
+20181016
+1. redis缓存 redisson客户端添加批处理
