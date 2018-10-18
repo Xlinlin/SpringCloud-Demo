@@ -7,17 +7,17 @@
 
 20181018  添加本地缓存
 1. 引入spring cache和guava jar包
-``
-       <dependency> <br>
-            <groupId>com.google.guava</groupId> <br>
-            <artifactId>guava</artifactId> <br>
-            <version>25.1-jre</version> <br>
+```
+       <dependency> 
+            <groupId>com.google.guava</groupId> 
+            <artifactId>guava</artifactId> 
+            <version>25.1-jre</version> 
+        </dependency> 
+        <dependency> 
+            <groupId>org.springframework.boot</groupId> 
+            <artifactId>spring-boot-starter-cache</artifactId> 
         </dependency> <br>
-        <dependency> <br>
-            <groupId>org.springframework.boot</groupId> <br>
-            <artifactId>spring-boot-starter-cache</artifactId> <br>
-        </dependency> <br>
-``
+```
 2. 代码方法上使用
 ``
 @Cacheable(value = "methodName", key = "'methodName'.concat({#param1}).concat({#parma2})")
