@@ -56,5 +56,16 @@
             <artifactId>redisson</artifactId>
             <version>3.5.7</version>
         </dependency>
+
+        <!--guava缓存cache-->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>25.1-jre</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-cache</artifactId>
+        </dependency>
     </dependencies>
 </project>
