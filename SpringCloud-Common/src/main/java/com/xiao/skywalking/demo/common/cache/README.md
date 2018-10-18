@@ -16,9 +16,9 @@
         <dependency> 
             <groupId>org.springframework.boot</groupId> 
             <artifactId>spring-boot-starter-cache</artifactId> 
-        </dependency> <br>
+        </dependency> 
 ```
 2. 代码方法上使用
-``
+```
 @Cacheable(value = "methodName", key = "'methodName'.concat({#param1}).concat({#parma2})")
-``
+```
