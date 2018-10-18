@@ -68,3 +68,6 @@ saveRegionCity(@RequestBody RegionCityDto regionCityDto)``
 
 20181016
 1. redis缓存 redisson客户端添加批处理
+
+20181018
+1. [spring-cache+guava 添加本地缓存](https://github.com/Xlinlin/spring-cloud-demo/tree/master/SpringCloud-Common/src/main/java/com/xiao/skywalking/demo/common/cache)
