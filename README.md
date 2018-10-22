@@ -71,3 +71,8 @@ saveRegionCity(@RequestBody RegionCityDto regionCityDto)``
 
 20181018
 1. [spring-cache+guava 添加本地缓存](https://github.com/Xlinlin/spring-cloud-demo/tree/master/SpringCloud-Common/src/main/java/com/xiao/skywalking/demo/common/cache)
+
+20181022
+1. 升级Springboot2.0  详情参考springboot2.0分之
+2. 调整common包，可打成jar包
+3. 添加启动shell脚本，参考common包script目录下.sh文件
