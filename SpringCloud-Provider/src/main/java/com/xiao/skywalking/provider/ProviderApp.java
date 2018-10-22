@@ -19,7 +19,7 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
  * @author llxiao
  * @version 1.0, 2018年3月30日
  */
-@SpringBootApplication
+@SpringBootApplication()
 // @EnableEurekaClient 表明自己是一个eurekaclient
 @EnableEurekaClient
 //开启springboot-cache

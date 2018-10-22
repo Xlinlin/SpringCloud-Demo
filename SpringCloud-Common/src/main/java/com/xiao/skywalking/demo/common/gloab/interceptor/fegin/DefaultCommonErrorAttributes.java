@@ -3,8 +3,9 @@ package com.xiao.skywalking.demo.common.gloab.interceptor.fegin;
 import cn.hutool.core.bean.BeanUtil;
 import com.xiao.skywalking.demo.common.exception.CommonExceptionEnum;
 import com.xiao.skywalking.demo.common.gloab.response.ResponseData;
-import org.springframework.boot.autoconfigure.web.DefaultErrorAttributes;
-import org.springframework.web.context.request.RequestAttributes;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.web.servlet.error.DefaultErrorAttributes;
+import org.springframework.web.context.request.WebRequest;
 
 import java.util.Map;
 
@@ -12,14 +13,18 @@ import java.util.Map;
  * 重写spring得默认响应提示信息
  *
  * @author zhdong
- * @Date 2018/8/30 23:14
  */
+@Slf4j
 public class DefaultCommonErrorAttributes extends DefaultErrorAttributes
 {
-
     @Override
-    public Map<String, Object> getErrorAttributes(RequestAttributes requestAttributes, boolean includeStackTrace) {
+    public Map<String, Object> getErrorAttributes(WebRequest webRequest, boolean includeStackTrace)
+    {
+        Throwable e = getError(webRequest);
+        if (null != e)
+        {
+            log.error("服务内部异常", e);
+        }
         return BeanUtil.beanToMap(ResponseData.error(CommonExceptionEnum.SERVICE_ERROR.getMessage()));
-
     }
 }

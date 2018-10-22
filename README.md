@@ -71,3 +71,8 @@ saveRegionCity(@RequestBody RegionCityDto regionCityDto)``
 
 20181018
 1. [spring-cache+guava 添加本地缓存](https://github.com/Xlinlin/spring-cloud-demo/tree/master/SpringCloud-Common/src/main/java/com/xiao/skywalking/demo/common/cache)
+
+20181022
+1. springboot 2.0 改造。
+2. 最大的影响就是euraka和feign以及zipkin，zipkin服务端结合mq暂未调试
+3. 另外guava结合的内存缓存也有所变更。

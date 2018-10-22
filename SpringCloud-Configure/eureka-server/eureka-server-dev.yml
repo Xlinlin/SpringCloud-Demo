@@ -9,7 +9,7 @@ eureka:
         # eureka实例的主机名
         hostname: center
         #prefer-ip-address: true
-        #instance-id: ${spring.cloud.client.ipAddress}:${server.port}
+        #instance-id: ${spring.cloud.client.ip-address}:${server.port}
     client:
         #由于该应用为注册中心,所以设置为false,代表不向注册中心注册自己
         register-with-eureka: false

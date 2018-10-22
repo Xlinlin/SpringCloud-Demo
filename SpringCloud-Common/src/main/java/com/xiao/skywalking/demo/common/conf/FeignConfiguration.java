@@ -1,13 +1,7 @@
 package com.xiao.skywalking.demo.common.conf;
 
-import feign.Feign;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.boot.autoconfigure.web.WebMvcRegistrations;
-import org.springframework.boot.autoconfigure.web.WebMvcRegistrationsAdapter;
-import org.springframework.cloud.netflix.feign.FeignClient;
+import org.springframework.boot.autoconfigure.web.servlet.WebMvcRegistrations;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
 /**
@@ -15,23 +9,34 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
  * [详细描述]: 可能产生的问题：<br>
  * 1.由于服务消费者并不提供这些接口，对于开发者来说容易造成误解<br>
  * 2.由于加载了一些外部服务的接口定义，还存在与自身接口定义冲突的潜在风险<br>
+ *
  * @author llxiao
  * @version 1.0, 2018/9/30 09:58
  * @since JDK 1.8
  */
-@Configuration
-@ConditionalOnClass({ Feign.class })
+//@Configuration
+//@ConditionalOnClass({ Feign.class })
+// springboot 2.0.3版本删除
+@Deprecated
 public class FeignConfiguration
 {
     @Bean
     public WebMvcRegistrations feignWebRegistrations()
     {
-        return new WebMvcRegistrationsAdapter()
+        //        return new WebMvcRegistrationsAdapter()
+        //        {
+        //            @Override
+        //            public RequestMappingHandlerMapping getRequestMappingHandlerMapping()
+        //            {
+        //                return new FeignRequestMappingHandlerMapping();
+        //            }
+        //        };
+        return new WebMvcRegistrations()
         {
             @Override
             public RequestMappingHandlerMapping getRequestMappingHandlerMapping()
             {
-                return new FeignRequestMappingHandlerMapping();
+                return null;
             }
         };
     }
@@ -42,7 +47,8 @@ public class FeignConfiguration
         protected boolean isHandler(Class<?> beanType)
         {
             // 不能被@FeignClient注解修饰的类才会进行解析加载
-            return super.isHandler(beanType) && !AnnotatedElementUtils.hasAnnotation(beanType, FeignClient.class);
+            //            return super.isHandler(beanType) && !AnnotatedElementUtils.hasAnnotation(beanType, FeignClient.class);
+            return false;
         }
     }
 }

@@ -1,29 +1,27 @@
 /*
- * Winner 
+ * Winner
  * 文件名  :ElkKafkaApplication.java
  * 创建人  :llxiao
  * 创建时间:2018年8月9日
-*/
+ */
 
 package com.xiao.springcloud.demo.kafka.elk;
 
-import java.util.Optional;
-
+import com.xiao.springcloud.demo.kafka.elk.kafka.KafkaProducerTest;
+import com.xiao.springcloud.demo.kafka.elk.kafka.LogCompent;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
-import org.springframework.cloud.netflix.feign.EnableFeignClients;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
-import com.xiao.springcloud.demo.kafka.elk.kafka.KafkaProducerTest;
-import com.xiao.springcloud.demo.kafka.elk.kafka.LogCompent;
-
-import lombok.extern.slf4j.Slf4j;
+import java.util.Optional;
 
 /**
  * [简要描述]:<br/>
@@ -38,7 +36,6 @@ import lombok.extern.slf4j.Slf4j;
 @EnableDiscoveryClient
 // fegin客户端
 @EnableFeignClients
-
 @EnableEurekaClient
 @EnableScheduling
 @Slf4j

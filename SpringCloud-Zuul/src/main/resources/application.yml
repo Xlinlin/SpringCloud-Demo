@@ -1,0 +1,15 @@
+#zuul 网关
+spring: 
+  application: 
+    name: service-zuul  #服务注册中心测试名
+  zipkin:
+    base-url: http://localhost:1115   #关联zipkin链路跟踪
+server:
+  port: 2000
+eureka:
+    instance: 
+        # eureka实例的主机名
+        hostname: api-gateway
+    client:
+        serviceUrl: 
+            defaultZone: http://localhost:1111/eureka/

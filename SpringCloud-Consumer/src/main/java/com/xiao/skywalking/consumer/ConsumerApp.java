@@ -1,9 +1,9 @@
 /*
- * Winner 
+ * Winner
  * 文件名  :ConsumerApp.java
  * 创建人  :llxiao
  * 创建时间:2018年3月30日
-*/
+ */
 
 package com.xiao.skywalking.consumer;
 
@@ -12,7 +12,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
-import org.springframework.cloud.netflix.feign.EnableFeignClients;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.client.RestTemplate;
 
@@ -36,8 +36,7 @@ public class ConsumerApp
      * 实例化RestTemplate使用@LoadBalanced开启负载均衡
      * [简要描述]:<br/>
      * [详细描述]:<br/>
-     * 
-     * @author llxiao
+     *
      * @return
      */
     @Bean

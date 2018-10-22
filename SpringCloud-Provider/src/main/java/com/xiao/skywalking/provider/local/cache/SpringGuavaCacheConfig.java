@@ -2,7 +2,6 @@ package com.xiao.skywalking.provider.local.cache;
 
 import com.google.common.cache.CacheBuilder;
 import org.springframework.cache.CacheManager;
-import org.springframework.cache.guava.GuavaCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

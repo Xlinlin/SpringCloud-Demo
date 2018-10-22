@@ -12,7 +12,7 @@
     <dependencies>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-eureka</artifactId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -39,6 +39,13 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-cache</artifactId>
+        </dependency>
+
+
+        <dependency>
+            <groupId>com.xiao.skywalking.demo</groupId>
+            <artifactId>SpringCloud-Common</artifactId>
+            <version>${project.version}</version>
         </dependency>
 
     </dependencies>

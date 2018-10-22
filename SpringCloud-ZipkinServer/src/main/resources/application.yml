@@ -1,11 +1,35 @@
 server: 
   port: 1115
 ##配置中心
-eureka:
-  client: 
-    serviceUrl: 
-      defaultZone: http://localhost:1111/eureka/
+#eureka:
+  #client:
+    #serviceUrl:
+      #defaultZone: http://localhost:1111/eureka/
 ###服务名称
 spring:
   application:
     name: zipkin-server
+  sleuth:
+    enabled: false
+    #采样率
+    sampler:
+      percentage: 1.0
+    cloud:
+      stream:
+        kafka:
+          binder:
+            # zk集群
+            zkNodes: 192.168.206.201:2181,192.168.206.202:2181,192.168.206.203:2181
+            # kafka集群
+            brokers: 192.168.206.201:9092,192.168.206.202:9092,192.168.206.203:9092
+zipkin:
+  storage:
+    type: elasticsearch
+    elasticsearch:
+      hosts: http://192.168.206.203:9200
+      #username: elastic
+      #password: changeme
+      cluster: elk
+      index: omni-zipkin
+      index-shards: 1
+      index-replicas: 1
