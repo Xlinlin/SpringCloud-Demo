@@ -76,3 +76,6 @@ saveRegionCity(@RequestBody RegionCityDto regionCityDto)``
 1. 升级Springboot2.0  详情参考springboot2.0分之
 2. 调整common包，可打成jar包
 3. 添加启动shell脚本，参考common包script目录下.sh文件
+
+20181027
+1. bootstarp.sh 脚本参数简化
