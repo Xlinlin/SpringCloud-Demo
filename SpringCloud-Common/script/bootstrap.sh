@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ## app home path
-SERVICE_HOME=/home/omni-services
+SERVICE_HOME=/home/service
 ## app name
 SERVICE_NAME=content-management-service
 
@@ -36,7 +36,7 @@ case "$1" in
         fi
 
         echo "Starting $PROG ..."
-        nohup  $JAVA_HOME/bin/java -server -Xms512m -Xmx512m -jar $JARFILE > content-management-service.log 2>&1 &
+        nohup  $JAVA_HOME/bin/java -server -Xms512m -Xmx512m -jar $JARFILE > $SERVICE_NAME.log 2>&1 &
 
         RETVAL=$?
         if [ $RETVAL -eq 0 ]; then
