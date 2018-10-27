@@ -1,10 +1,15 @@
 #!/bin/bash
+
 ## app home path
-cd /home/admin/appname/application
-## app log path  eg:/home/admin/services/appname.log
-PROG=/home/admin/appname/application
-## app pid path eg:/home/admin/services/appname.log
-PIDFILE=/home/admin/services/appname/appname.pid
+SERVICE_HOME=/home/omni-services
+## app name
+SERVICE_NAME=content-management-service
+
+cd $SERVICE_HOME/$SERVICE_NAME
+PROG=$SERVICE_HOME/$SERVICE_NAME
+PIDFILE=$SERVICE_HOME/$SERVICE_NAME/$SERVICE_NAME.pid
+JARFILE=$SERVICE_HOME/$SERVICE_NAME/$SERVICE_NAME.jar
+
 
 ## get app status
 status() {
@@ -31,7 +36,7 @@ case "$1" in
         fi
 
         echo "Starting $PROG ..."
-        nohup  $JAVA_HOME/bin/java -server -Xms512m -Xmx512m -jar /home/admin/services/content-management-service/content-management-service.jar  > content-management-service.log 2>&1 &
+        nohup  $JAVA_HOME/bin/java -server -Xms512m -Xmx512m -jar $JARFILE > content-management-service.log 2>&1 &
 
         RETVAL=$?
         if [ $RETVAL -eq 0 ]; then
