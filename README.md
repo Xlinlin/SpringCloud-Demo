@@ -79,3 +79,9 @@ saveRegionCity(@RequestBody RegionCityDto regionCityDto)``
 
 20181027
 1. bootstarp.sh 脚本参数简化
+
+20181029
+1. 优化bootstrap.sh脚本
+2. 添加jenkins构建后自动部署脚本
+3. 添加jenkins构建后远程自动部署脚本
+[详情](https://github.com/Xlinlin/spring-cloud-demo/tree/master/SpringCloud-Common/script)
