@@ -1,12 +1,11 @@
 # spring-cloud-demo
 ## 不定期更新与记录在springcloud开发中所遇到的坑以及解决方法
 
-
-1. spring-cloud and skywalking demo
+初始化添加
+1. spring-cloud skywalking demo
 2. add mqtt suports
 3. add 微信小程序 suports mqtt
 4. kafka elk支持
-
 
 
 20180809
