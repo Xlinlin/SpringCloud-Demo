@@ -84,3 +84,6 @@ saveRegionCity(@RequestBody RegionCityDto regionCityDto)``
 2. 添加jenkins构建后自动部署脚本
 3. 添加jenkins构建后远程自动部署脚本
 [详情](https://github.com/Xlinlin/spring-cloud-demo/tree/master/SpringCloud-Common/script)
+
+20181114
+1. Sharding-sphere尝试
