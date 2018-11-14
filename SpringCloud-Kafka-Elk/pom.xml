@@ -50,6 +50,12 @@
             <artifactId>SpringCloud-Common</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>com.xiao.skywalking.demo</groupId>
+            <artifactId>SpringCloud-Common</artifactId>
+            <version>1.5.13.RELEASE</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
     <profiles>

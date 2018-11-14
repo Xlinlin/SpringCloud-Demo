@@ -36,6 +36,7 @@
 		<module>SpringCloud-Demo-Doc</module>
         <module>SpringCloud-Mybatis</module>
         <module>SpringCloud-SearchService</module>
+        <module>SpringCloud-Sharding-Sphere</module>
     </modules>
 
 	<dependencyManagement>
