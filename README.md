@@ -77,7 +77,7 @@ saveRegionCity(@RequestBody RegionCityDto regionCityDto)``
 3. 添加启动shell脚本，参考common包script目录下.sh文件
 
 20181027
-1. bootstarp.sh 脚本参数简化
+1. bootstrap.sh 脚本参数简化
 
 20181029
 1. 优化bootstrap.sh脚本
@@ -87,3 +87,7 @@ saveRegionCity(@RequestBody RegionCityDto regionCityDto)``
 
 20181114
 1. Sharding-sphere尝试
+
+20181115
+1. bootstrap.sh 脚本添加jvm参数配置，以及停止时旧日志文件的备份
+2. 本地和远程自动部署时，不进行原服务包的删除，按时间戳进行备份原来的可执行包

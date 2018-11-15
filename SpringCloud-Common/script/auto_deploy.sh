@@ -17,16 +17,20 @@ echo "=====service resouce jar path: $JARPATH"
 echo "=====service bootstrap file: $BOOTSTRAP_FILE"
 echo "=====service jar: $JARFILE"
 
-##停止原来的服务
+## 停止原来的服务
 echo "-----Stop service"
 bash $BOOTSTRAP_FILE stop
 
-echo "-----Delete source jar file path: $JARFILE"
-rm -rf JARFILE
+## 备份原来的Jar包
+echo "-----Bach source jar file: $JARFILE"
+mv $JARFILE $SERVICE_HOME/$SERVICE_NAME-`date "+%Y-%m-%d %H:%M:%S"`.jar
 
+## 复制新包
 echo "-----Copy $JARPATH to $SERVICE_HOME"
-cp $JARPATH $SERVICE_HOME 
+cp $JARPATH $SERVICE_HOME
 COPYRULST=$?
+
+## 复制OK，开始启动
 if [ $COPYRULST -eq 0 ]; 
 then
     echo "-----Copy success,wait start service....."
