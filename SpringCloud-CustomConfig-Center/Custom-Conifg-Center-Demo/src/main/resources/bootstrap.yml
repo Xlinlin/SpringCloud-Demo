@@ -1,0 +1,12 @@
+server:
+  port: 9001
+spring:
+  cloud:
+    config:
+      uri: http://localhost:9000/config/
+      profile: @env@
+      label: master
+      name: config-center-service
+  application:
+    name: config-center-service
+#logging.level.root: debug

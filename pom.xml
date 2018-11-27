@@ -37,6 +37,7 @@
         <module>SpringCloud-Mybatis</module>
         <module>SpringCloud-SearchService</module>
         <module>SpringCloud-Sharding-Sphere</module>
+        <module>SpringCloud-CustomConfig-Center</module>
     </modules>
 
 	<dependencyManagement>
