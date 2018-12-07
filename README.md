@@ -91,3 +91,6 @@ saveRegionCity(@RequestBody RegionCityDto regionCityDto)``
 20181115
 1. bootstrap.sh 脚本添加jvm参数配置，以及停止时旧日志文件的备份
 2. 本地和远程自动部署时，不进行原服务包的删除，按时间戳进行备份原来的可执行包
+
+20181127
+1. springcloud-config 自定义mysql实现，[详情](https://github.com/Xlinlin/SpringCloud-Demo/tree/master/SpringCloud-CustomConfig-Center)
