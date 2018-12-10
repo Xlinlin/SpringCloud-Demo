@@ -94,3 +94,8 @@ saveRegionCity(@RequestBody RegionCityDto regionCityDto)``
 
 20181127
 1. springcloud-config 自定义mysql实现，[详情](https://github.com/Xlinlin/SpringCloud-Demo/tree/master/SpringCloud-CustomConfig-Center)
+
+
+20181210
+1. 工程结果整理
+2. 添加springboot+quartz自定义实现 任务调度

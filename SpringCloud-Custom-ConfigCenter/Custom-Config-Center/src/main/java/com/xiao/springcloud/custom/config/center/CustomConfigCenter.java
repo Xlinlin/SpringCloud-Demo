@@ -1,6 +1,7 @@
 package com.xiao.springcloud.custom.config.center;
 
 import com.xiao.springcloud.custom.config.center.annotation.CustomEnableConfigServer;
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
 
@@ -17,4 +18,8 @@ import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
 @EnableEurekaServer
 public class CustomConfigCenter
 {
+    public static void main(String[] args)
+    {
+        SpringApplication.run(CustomConfigCenter.class,args);
+    }
 }

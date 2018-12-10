@@ -1,0 +1,11 @@
+spring:
+  #配置中心
+  #cloud:
+    #config:
+      #uri:
+      #profile: @env@
+      #label: master
+      #name: omni-job-service
+  application:
+    name: omni-job-service
+

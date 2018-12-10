@@ -37,8 +37,9 @@
         <module>SpringCloud-Mybatis</module>
         <module>SpringCloud-SearchService</module>
         <module>SpringCloud-Sharding-Sphere</module>
-        <module>SpringCloud-CustomConfig-Center</module>
-    </modules>
+        <module>SpringCloud-Custom-ConfigCenter</module>
+		<module>SpringCloud-Quartz-JobService</module>
+	</modules>
 
 	<dependencyManagement>
 		<dependencies>
@@ -51,13 +52,4 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
-
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-		</plugins>
-	</build>
 </project>
