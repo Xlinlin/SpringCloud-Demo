@@ -99,3 +99,6 @@ saveRegionCity(@RequestBody RegionCityDto regionCityDto)``
 20181210
 1. 工程结果整理
 2. 添加springboot+quartz自定义实现 任务调度
+
+20190119
+1. 新增Redisson集成springdata，使用RedisTemplate,[详情](https://github.com/Xlinlin/SpringCloud-Demo/tree/master/SpringCloud-Redisson)

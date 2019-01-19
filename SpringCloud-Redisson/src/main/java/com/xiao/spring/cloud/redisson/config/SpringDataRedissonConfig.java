@@ -41,6 +41,11 @@ public class SpringDataRedissonConfig
     {
         RedisTemplate redisTemplate = new RedisTemplate();
         redisTemplate.setConnectionFactory(redissonConnectionFactory);
+        // 自定义的各种序列化
+        //        redisTemplate.setKeySerializer(stringRedisSerializer);
+        //        redisTemplate.setValueSerializer(jdkSerializationRedisSerializer);
+        //        redisTemplate.setHashKeySerializer(stringRedisSerializer);
+        //        redisTemplate.setHashValueSerializer(stringRedisSerializer);
         return redisTemplate;
     }
 }
