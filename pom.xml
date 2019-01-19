@@ -39,7 +39,8 @@
         <module>SpringCloud-Sharding-Sphere</module>
         <module>SpringCloud-Custom-ConfigCenter</module>
 		<module>SpringCloud-Quartz-JobService</module>
-	</modules>
+        <module>SpringCloud-Redisson</module>
+    </modules>
 
 	<dependencyManagement>
 		<dependencies>
