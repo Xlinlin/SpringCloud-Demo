@@ -102,3 +102,6 @@ saveRegionCity(@RequestBody RegionCityDto regionCityDto)``
 
 20190119
 1. 新增Redisson集成springdata，使用RedisTemplate,[详情](https://github.com/Xlinlin/SpringCloud-Demo/tree/master/SpringCloud-Redisson)
+
+20190124
+1. 新增RedisTemplate 使用pipeline批量操作redis数据
