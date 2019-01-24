@@ -105,3 +105,4 @@ saveRegionCity(@RequestBody RegionCityDto regionCityDto)``
 
 20190124
 1. 新增RedisTemplate 使用pipeline批量操作redis数据
+2. 添加常用工具类 AES加解密、MD5等
