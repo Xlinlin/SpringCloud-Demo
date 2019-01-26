@@ -106,3 +106,7 @@ saveRegionCity(@RequestBody RegionCityDto regionCityDto)``
 20190124
 1. 新增RedisTemplate 使用pipeline批量操作redis数据
 2. 添加常用工具类 AES加解密、MD5等
+
+20190126
+1. 改造zipkin链路跟踪实现：SpringCloud Sleuth Stream Zipkin Kafka Elasticsearch 实现简单链路跟踪。<br>
+[参考]()

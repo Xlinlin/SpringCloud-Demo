@@ -1,16 +1,15 @@
 /*
- * Winner 
+ * Winner
  * 文件名  :ZipkinServerApplication.java
  * 创建人  :llxiao
  * 创建时间:2018年8月9日
-*/
+ */
 
 package com.xiao.springcloud.zs;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
-
+import org.springframework.cloud.sleuth.zipkin.stream.EnableZipkinStreamServer;
 import zipkin.server.internal.EnableZipkinServer;
 
 /**
@@ -23,9 +22,10 @@ import zipkin.server.internal.EnableZipkinServer;
  */
 @SpringBootApplication
 // 关联上配置中心
-@EnableEurekaClient
+//@EnableEurekaClient
 // 加上注解@EnableZipkinServer，开启ZipkinServer的功能
-@EnableZipkinServer
+//@EnableZipkinServer
+@EnableZipkinStreamServer
 public class ZipkinServerApplication
 {
     public static void main(String[] args)

@@ -10,6 +10,19 @@ server:
 spring:
   application:
     name: provider-1112
-  #服务链路跟踪到zipkin服务
-  zipkin:
-    base-url: http://localhost:1115
+#  #服务链路跟踪到zipkin服务
+#  zipkin:
+#    base-url: http://localhost:1115
+  ##  zipkin 链路跟踪配置
+  sleuth:
+    enabled: true
+    #采样率，越高会有性能影响
+    sampler:
+      percentage: 1.0
+  cloud:
+    ## kafka zk配置 配合zipkin
+    stream:
+      kafka:
+        binder:
+          brokers: 192.168.206.203:9092
+          zkNodes: 192.168.206.203:2181
