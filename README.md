@@ -109,4 +109,4 @@ saveRegionCity(@RequestBody RegionCityDto regionCityDto)``
 
 20190126
 1. 改造zipkin链路跟踪实现：SpringCloud Sleuth Stream Zipkin Kafka Elasticsearch 实现简单链路跟踪。<br>
-[参考]()
+[参考](https://github.com/Xlinlin/SpringCloud-Demo/blob/master/SpringCloud-ZipkinServer/README.md)
