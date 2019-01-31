@@ -68,14 +68,30 @@ public class ElasticSearchDoc
     private String subTitle;
 
     /**
-     * 价格
+     * 原价
      */
-    private float price;
+    private double oldPrice;
+
+    /**
+     * 售价
+     */
+    private double salePrice;
+
+    /**
+     * 标签集合
+     * K 标签名称，V 标签颜色
+     */
+    private String salesLabels;
+
+    /**
+     * 索引名称/或店铺名称
+     */
+    private String index;
 
     /**
      * 上架时间
      */
-    private Date listTime;
+    private Date saleTime;
 
     /**
      * 新品 1新品，0默认
@@ -103,12 +119,12 @@ public class ElasticSearchDoc
     private String discountRate;
 
     /**
-     * 标签集合
+     * 海淘、跨境购
      */
-    private String salesTagName;
+    private int haitao;
 
-    /**
-     * 索引名称
-     */
-    private String index;
+    private String categoryName;
+    private String categoryNo;
+    private String brandName;
+    private String brandNo;
 }
