@@ -37,7 +37,7 @@ spring:
     A. 改造原springcloud client，在发起restTemplate的时候，将客户端服务的端口上报到配置服务端，并添加refresh刷新的接口，其实际是调用了ContextRefresher.refresh()方法<br>
     B. 配置服务端保存应用+环境+应用服务的IP：PORT信息到数据库<br>
     C. 配置管理界面修改应用配置，进行发布配置刷新客户端配置<br>
-    D. 客户端引用starter-config jar包，并在需要刷新的配置类上添加@RefreshScope注解。参考config-center-simple使用方法<br>
+    D. 客户端引用starter-config jar包，并在需要刷新的配置类上添加@RefreshScope注解。[custom-config-simple](https://github.com/Xlinlin/SpringCloud-Demo/tree/master/SpringCloud-Custom-ConfigCenter/custom-config-simple)使用方法<br>
     E. 服务端发起刷新配置应用，通过应用+环境查找该应用下提供的所有应用服务，调用refresh刷新客户端的配置，如果调用失败标记该服务下线，下一次不进行刷新操作<br>
     F. springcloud的刷新参考资料：<br>
         [数据源刷新参考](https://www.jianshu.com/p/5acd4db7cd5e)<br>
