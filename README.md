@@ -93,7 +93,7 @@ saveRegionCity(@RequestBody RegionCityDto regionCityDto)``
 2. 本地和远程自动部署时，不进行原服务包的删除，按时间戳进行备份原来的可执行包
 
 20181127
-1. springcloud-config 自定义mysql实现，[详情](https://github.com/Xlinlin/SpringCloud-Demo/tree/master/SpringCloud-CustomConfig-Center)
+1. springcloud-config 自定义mysql实现，[详情](https://github.com/Xlinlin/SpringCloud-Demo/tree/master/SpringCloud-Custom-ConfigCenter)
 
 
 20181210
@@ -112,4 +112,4 @@ saveRegionCity(@RequestBody RegionCityDto regionCityDto)``
 [参考](https://github.com/Xlinlin/SpringCloud-Demo/blob/master/SpringCloud-ZipkinServer/README.md)
 
 20190131
-1. 自定义注册中心重构，[详情](https://github.com/Xlinlin/SpringCloud-Demo/tree/master/SpringCloud-CustomConfig-Center)
+1. 自定义注册中心重构，[详情](https://github.com/Xlinlin/SpringCloud-Demo/tree/master/SpringCloud-Custom-ConfigCenter)
