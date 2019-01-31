@@ -1,0 +1,47 @@
+<template>
+    <div>
+        <el-tabs value="base" type="border-card">
+            <el-tab-pane label="基本信息" name="base" :style="tabStyle" >
+                <el-form ref="form" :model="form" label-width="100px" >
+                    <el-form-item label="信息标题">
+                        <el-input v-model="form.name"  style="width:400px;" ></el-input>
+                    </el-form-item>
+                    <el-form-item label="信息图片">
+                        <el-input v-model="form.name"  style="width:400px;"  ></el-input>
+                    </el-form-item>
+                    <el-form-item label="发布时间">
+                        <el-date-picker v-model="form.publish"
+                                type="datetime" placeholder="选择日期" style="width:400px;" >
+                        </el-date-picker>
+                    </el-form-item>
+                    <el-form-item label="信息排序">
+                        <el-input-number v-model="form.sort"></el-input-number>
+                    </el-form-item>
+                    <el-form-item label="是否显示">
+                        <el-switch v-model="form.showFlag"></el-switch>
+                    </el-form-item>
+                </el-form>
+            </el-tab-pane>
+            <el-tab-pane label="SEO属性" name="seo" :style="tabStyle" >
+                <el-form ref="form" :model="form" label-width="100px" >
+                    <el-form-item label="SEO标题">
+                        <el-input v-model="form.title"  style="width:400px;" ></el-input>
+                    </el-form-item>
+                    <el-form-item label="SEO关键词">
+                        <el-input type="textarea" rows="4" v-model="form.keyword"  style="width:400px;" ></el-input>
+                    </el-form-item>
+                    <el-form-item label="SEO描述">
+                        <el-input type="textarea" rows="4"  v-model="form.desc"  style="width:400px;" ></el-input>
+                    </el-form-item>
+                </el-form>
+            </el-tab-pane>
+        </el-tabs>
+        <div style="padding: 10px;position: fixed;top: 100px;right: 50px;">
+            <el-button-group>
+                <el-button ref="submit" type="primary" icon="el-icon-check" size="small" @click="submit" >保存</el-button>
+                <el-button type="error" icon="el-icon-close" size="small" @click="App.closeCurrentTagNav()" >取消</el-button>
+            </el-button-group>
+        </div>
+    </div>
+</template>
+<script type="text/javascript" src="pages/template/detail.js"></script>

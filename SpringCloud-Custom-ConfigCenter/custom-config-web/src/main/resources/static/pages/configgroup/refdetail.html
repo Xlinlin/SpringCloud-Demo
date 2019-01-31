@@ -1,0 +1,71 @@
+<template>
+    <div>
+        <el-card class="box-card">
+            <div slot="header">
+                <el-button-group>
+                    <el-button size="mini" type="primary" icon="el-icon-edit" @click="refItem()">添加关联</el-button>
+                </el-button-group>
+                <br><br>
+                <div>
+                <span style="float: left">
+                <el-form :model="form" ref="form" size="small" style="width: 100%;" inline>
+                    <el-form-item>
+                        <el-input size="small" v-model="form.itemKey" placeholder="配置项键"
+                                  style="width:230px;"></el-input>
+                    </el-form-item>
+                </el-form>
+                </span>
+                    <span style="float: left">
+                <el-button-group>
+                    <!-- 添加API的页面 -->
+                    <el-button size="small" type="primary" icon="el-icon-search" @click="onSubmit"
+                               style="margin-left: 20px">查询
+                    </el-button>
+                    <el-button size="small" type="primary" icon="el-icon-refresh" @click="resetForm('form')">重置
+                    </el-button>
+                </el-button-group>
+                </span>
+                </div>
+                <br><br>
+            </div>
+            <el-table size="mini" ref="table" :data="tableData" stripe @selection-change="selectChagne"
+                      highlight-current-row style="width: 100%" :height="tableHeight-40">
+                <el-table-column type="index" width="50"></el-table-column>
+                <el-table-column type="selection" width="55"></el-table-column>
+                <el-table-column prop="itemKey" label="配置项键" width="180">
+                </el-table-column>
+                <el-table-column prop="itemValue" label="配置项值" width="200">
+                </el-table-column>
+                <el-table-column prop="itemDesc" label="描述" width="180">
+                </el-table-column>
+                <el-table-column prop="createTime" label="创建时间" width="150">
+                </el-table-column>
+                <el-table-column prop="updateTime" label="更新时间" width="150">
+                </el-table-column>
+                <el-table-column prop="status" label="状态" width="50" :formatter="fomatterStatus">
+                </el-table-column>
+                <el-table-column prop="itemType" label="应用类型" width="80" :formatter="fomatterItemType">
+                </el-table-column>
+                <el-table-column label="操作" fixed="right" width="150">
+                    <template slot-scope="scope">
+                        <el-button-group>
+                            <el-button size="mini" type="primary"
+                                       @click="refItem(scope.row)">关联配置
+                            </el-button>
+                        </el-button-group>
+                    </template>
+                </el-table-column>
+            </el-table>
+            <el-pagination
+                    @size-change="handleSizeChange"
+                    @current-change="handleCurrentChange"
+                    :page-sizes="[5, 10, 20, 50]"
+                    layout="total, sizes, prev, pager, next, jumper"
+                    :current-page="tableCurrentPage"
+                    :page-size="tablePageSize"
+                    :total="tableTotal">
+            </el-pagination>
+        </el-card>
+    </div>
+</template>
+<script type="text/javascript" src="pages/configgroup/refdetail.js"></script>

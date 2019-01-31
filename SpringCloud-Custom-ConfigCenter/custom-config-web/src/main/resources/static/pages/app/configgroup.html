@@ -1,0 +1,183 @@
+<template>
+
+    <el-tabs v-model="activeName" @tab-click="handleClick">
+        <el-tab-pane label="公共配置" name="itemGroup">
+            <div>
+                <!-- 公共配置 -->
+                <el-card class="box-card">
+                    <div slot="header">
+                        <el-button-group>
+                            <!-- 添加API的页面 -->
+                            <el-button size="mini" type="success" icon="el-icon-plus" @click="addConfGroup"
+                                       style="margin-left: 20px">新增配置组
+                            </el-button>
+                            <!-- 添加API的页面 -->
+                            <el-button size="mini" type="primary" icon="el-icon-search" @click="findApi"
+                                       style="margin-left: 20px">搜索
+                            </el-button>
+                        </el-button-group>
+                        <br/><br/>
+                    </div>
+                    <div>
+                        <el-form :model="searchForm" ref="searchForm" size="small" style="width: 100%;" inline>
+                            <el-form-item>
+                                <el-input label="配置组名称" size="small" v-model="searchForm.groupName" placeholder="配置组名称"
+                                          style="width:230px;"></el-input>
+                            </el-form-item>
+                            <el-form-item>
+                                <el-input label="配置组描述" size="small" v-model="searchForm.groupDesc" placeholder="配置组描述"
+                                          style="width:230px;"></el-input>
+                            </el-form-item>
+                        </el-form>
+                    </div>
+                    <el-table size="mini" ref="table" :data="pager.list" stripe @selection-change="selectChagne"
+                              highlight-current-row style="width: 100%" :height="tableHeight-65">
+                        <el-table-column type="index" width="50"></el-table-column>
+                        <el-table-column type="selection" width="55"></el-table-column>
+                        <el-table-column prop="groupName" label="配置项组名称" width="200">
+                        </el-table-column>
+                        <el-table-column prop="groupDesc" label="配置组描述" width="200">
+                        </el-table-column>
+                        <el-table-column prop="createTime" label="创建时间" width="200">
+                        </el-table-column>
+                        <el-table-column prop="updateTime" label="更新时间" width="200">
+                        </el-table-column>
+                        <el-table-column label="操作" width="200">
+                            <template slot-scope="scope">
+                                <el-button-group>
+                                    <el-button size="mini" type="success" icon="el-icon-setting"
+                                               @click="configDetail(scope.row)">查看配置
+                                    </el-button>
+                                    <el-button size="mini" type="danger"
+                                               @click="del(scope.row)">删除关联
+                                    </el-button>
+                                </el-button-group>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                    <el-pagination background layout="sizes, prev, pager, next, total"
+                                   :total="pager.total"></el-pagination>
+                </el-card>
+                <el-dialog title="关联的配置项" :visible.sync="configModel">
+                    <el-table size="mini" ref="configTable" :data="configPager.list" stripe :height="tableHeight-65">
+                        <el-table-column property="itemKey" label="配置项键" width="150"></el-table-column>
+                        <el-table-column property="itemValue" label="配置项值" width="200"></el-table-column>
+                        <el-table-column property="itemDesc" label="描述"></el-table-column>
+                        <el-table-column property="itemType" label="应用类型">
+                            <!-- 0通用，1开发环境，2测试环境，3生产环境，4其他 -->
+                            <template slot-scope="scope">
+                                <p v-if="scope.row.itemType == 0">
+                                    通用配置
+                                </p>
+                                <p v-if="scope.row.itemType == 1">
+                                    开发配置
+                                </p>
+                                <p v-if="scope.row.itemType == 2">
+                                    测试配置
+                                </p>
+                                <p v-if="scope.row.itemType == 3">
+                                    生产配置
+                                </p>
+                                <p v-if="scope.row.itemType == 4">
+                                    其他
+                                </p>
+                            </template>
+                        </el-table-column>
+                        <el-table-column property="updateTime" label="更新时间"></el-table-column>
+                        <el-table-column label="操作">
+                            <template slot-scope="scope">
+                                <el-button-group>
+                                    <el-button size="mini" type="primary" icon="el-icon-edit"
+                                               @click="updateConfig(scope.row)">修改
+                                    </el-button>
+                                </el-button-group>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </el-dialog>
+            </div>
+        </el-tab-pane>
+        <el-tab-pane label="私有配置" name="itemPrivate">
+            <div>
+                <el-card class="box-card">
+                    <div slot="header">
+                        <el-button-group>
+                            <!-- 添加API的页面 -->
+                            <el-button size="mini" type="success" icon="el-icon-plus" @click="addPrivateConf"
+                                       style="margin-left: 20px">新增配置
+                            </el-button>
+                            <!-- 添加API的页面 -->
+                            <el-button size="mini" type="primary" icon="el-icon-search" @click="findPrivateConf"
+                                       style="margin-left: 20px">搜索
+                            </el-button>
+                        </el-button-group>
+                        <br/><br/>
+                    </div>
+                    <div>
+                        <el-form :model="priSearchForm" ref="priSearchForm" size="small" style="width: 100%;" inline>
+                            <el-form-item>
+                                <el-input label="配置KEY" size="small" v-model="priSearchForm.itemKey" placeholder="配置KEY"
+                                          style="width:230px;"></el-input>
+                            </el-form-item>
+                            <el-form-item>
+                                <el-input label="配置描述" size="small" v-model="priSearchForm.itemDesc" placeholder="配置描述"
+                                          style="width:230px;"></el-input>
+                            </el-form-item>
+                        </el-form>
+                    </div>
+                    <el-table size="mini" ref="table" :data="privatePager.list" stripe
+                              @selection-change="selPrivateChange"
+                              highlight-current-row style="width: 100%" :height="tableHeight-65">
+                        <el-table-column type="index" width="50"></el-table-column>
+                        <el-table-column type="selection" width="55"></el-table-column>
+                        <el-table-column prop="itemKey" label="配置项KEY" width="200">
+                        </el-table-column>
+                        <el-table-column prop="itemValue" label="配置项值" width="200">
+                        </el-table-column>
+                        <el-table-column prop="itemDesc" label="配置描述" width="200">
+                        </el-table-column>
+                        <el-table-column prop="createTime" label="创建时间" width="200">
+                        </el-table-column>
+                        <el-table-column prop="updateTime" label="更新时间" width="200">
+                        </el-table-column>
+                        <el-table-column label="操作" width="200">
+                            <template slot-scope="scope">
+                                <el-button-group>
+                                    <el-button size="mini" type="success" icon="el-icon-setting"
+                                               @click="editPrivate(scope.row)">修改
+                                    </el-button>
+                                    <el-button size="mini" type="danger" icon="el-icon-setting"
+                                               @click="delPrivate(scope.row)">删除
+                                    </el-button>
+                                </el-button-group>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                    <el-pagination background layout="sizes, prev, pager, next, total"
+                                   :total="privatePager.total"></el-pagination>
+                </el-card>
+
+                <el-dialog title="新增私有配置" :visible.sync="privateModel">
+                    <el-form :rules="rules" ref="privTabDate" :model="privTabDate" label-width="100px">
+                        <el-form-item label="配置项键" prop="itemKey">
+                            <el-input v-model="privTabDate.itemKey" style="width:400px;"></el-input>
+                        </el-form-item>
+                        <el-form-item label="配置项值" prop="itemValue">
+                            <el-input v-model="privTabDate.itemValue" style="width:400px;"></el-input>
+                        </el-form-item>
+                        <el-form-item label="配置描述">
+                            <el-input v-model="privTabDate.itemDesc" style="width:400px;"></el-input>
+                        </el-form-item>
+                    </el-form>
+                    <div slot="footer" class="dialog-footer">
+                        <el-button @click="privateModel = false">取 消</el-button>
+                        <el-button type="primary" @click="submitPrivate()">确 定</el-button>
+                    </div>
+                </el-dialog>
+            </div>
+        </el-tab-pane>
+    </el-tabs>
+
+
+</template>
+<script type="text/javascript" src="pages/app/configgroup.js"></script>

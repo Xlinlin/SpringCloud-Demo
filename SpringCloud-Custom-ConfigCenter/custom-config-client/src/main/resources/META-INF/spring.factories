@@ -1,0 +1,8 @@
+# Auto Configure
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.xiao.custom.config.client.configuration.ConfigClientAutoConfiguration
+
+# Bootstrap components
+org.springframework.cloud.bootstrap.BootstrapConfiguration=\
+com.xiao.custom.config.client.configuration.ConfigServiceBootstrapConfiguration,\
+com.xiao.custom.config.client.configuration.DiscoveryClientConfigServiceBootstrapConfiguration

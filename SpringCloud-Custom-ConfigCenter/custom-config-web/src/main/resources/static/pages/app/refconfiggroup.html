@@ -1,0 +1,95 @@
+<template>
+    <div>
+        <el-card class="box-card">
+            <div slot="header">
+                <el-button-group>
+                    <!-- 添加API的页面 -->
+                    <el-button size="mini" type="success" icon="el-icon-setting" @click="batchRef"
+                               style="margin-left: 20px">批量关联
+                    </el-button>
+                    <!-- 添加API的页面 -->
+                    <el-button size="mini" type="primary" icon="el-icon-search" @click="findApi"
+                               style="margin-left: 20px">搜索
+                    </el-button>
+                </el-button-group>
+                <br/><br/>
+            </div>
+            <div>
+                <el-form :model="searchForm" ref="searchForm" size="small" style="width: 100%;" inline>
+                    <el-form-item>
+                        <el-input size="small" v-model="searchForm.groupName" placeholder="配置组名称"
+                                  style="width:230px;"></el-input>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-input size="small" v-model="searchForm.groupDesc" placeholder="配置组描述"
+                                  style="width:230px;"></el-input>
+                    </el-form-item>
+                </el-form>
+            </div>
+            <el-table size="mini" ref="table" :data="pager.list" stripe @selection-change="selectChagne"
+                      highlight-current-row style="width: 100%" :height="tableHeight-65">
+                <el-table-column type="index" min-width="5%"></el-table-column>
+                <el-table-column type="selection" min-width="5%"></el-table-column>
+                <el-table-column prop="groupName" label="配置项组名称" min-width="20%">
+                </el-table-column>
+                <el-table-column prop="groupDesc" label="配置组描述" min-width="20%">
+                </el-table-column>
+                <el-table-column prop="createTime" label="创建时间" min-width="15%">
+                </el-table-column>
+                <el-table-column prop="updateTime" label="更新时间" min-width="15%">
+                </el-table-column>
+                <el-table-column label="操作" min-width="20%">
+                    <template slot-scope="scope">
+                        <el-button-group>
+                            <el-button size="mini" type="primary" icon="el-icon-setting"
+                                       @click="configDetail(scope.row)">查看配置项
+                            </el-button>
+                            <el-button size="mini" type="success"
+                                       @click="ref(scope.row)">添加关联
+                            </el-button>
+                        </el-button-group>
+                    </template>
+                </el-table-column>
+            </el-table>
+            <el-pagination background layout="sizes, prev, pager, next, total" :total="pager.total"></el-pagination>
+        </el-card>
+        <el-dialog title="关联的配置项" :visible.sync="configModel">
+            <el-table size="mini" ref="configTable" :data="configPager.list" stripe :height="tableHeight-65">
+                <el-table-column property="itemKey" label="配置项键" width="150"></el-table-column>
+                <el-table-column property="itemValue" label="配置项值" width="200"></el-table-column>
+                <el-table-column property="itemDesc" label="描述"></el-table-column>
+                <el-table-column property="itemType" label="应用类型" width="100">
+                    <!-- 0通用，1开发环境，2测试环境，3生产环境，4其他 -->
+                    <template slot-scope="scope">
+                        <p v-if="scope.row.itemType == 0">
+                            通用配置
+                        </p>
+                        <p v-if="scope.row.itemType == 1">
+                            开发配置
+                        </p>
+                        <p v-if="scope.row.itemType == 2">
+                            测试配置
+                        </p>
+                        <p v-if="scope.row.itemType == 3">
+                            生产配置
+                        </p>
+                        <p v-if="scope.row.itemType == 4">
+                            其他
+                        </p>
+                    </template>
+                </el-table-column>
+                <el-table-column property="updateTime" label="更新时间"></el-table-column>
+                <el-table-column label="操作">
+                    <template slot-scope="scope">
+                        <el-button-group>
+                            <el-button size="mini" type="primary" icon="el-icon-edit"
+                                       @click="updateConfig(scope.row)">修改
+                            </el-button>
+                        </el-button-group>
+                    </template>
+                </el-table-column>
+            </el-table>
+        </el-dialog>
+    </div>
+</template>
+<script type="text/javascript" src="pages/app/refconfiggroup.js"></script>

@@ -6,7 +6,6 @@
         <artifactId>SpringCloud-Demo</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-    <groupId>com.xiao.skywalking.demo</groupId>
     <artifactId>SpringCloud-Common</artifactId>
     <packaging>jar</packaging>
 

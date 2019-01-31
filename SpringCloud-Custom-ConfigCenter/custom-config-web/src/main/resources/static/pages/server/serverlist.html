@@ -1,0 +1,120 @@
+<template>
+    <div>
+        <el-card class="box-card">
+            <div slot="header">
+                <el-button-group>
+                    <el-button size="mini" type="primary" icon="el-icon-plus" @click="open('新增服务器配置')">新增</el-button>
+                    <el-button size="mini" type="success" icon="el-icon-search" @click="onSubmit"
+                               style="margin-left: 20px">查询
+                    </el-button>
+                    <el-button size="mini" type="info" icon="el-icon-refresh" @click="resetForm('form')">重置
+                    </el-button>
+                    <!-- 添加API的页面 -->
+                    <!--<el-button size="small" type="primary" @click="onSubmit" style="margin-left: 20px">查询-->
+                    <!--</el-button>-->
+                    <!--<el-button size="small" type="primary" @click="resetForm('form')" style="margin-left: 20px">重置-->
+                    <!--</el-button>-->
+                </el-button-group>
+                <el-row>
+                    <el-dialog
+                            title="添加服务器"
+                            :visible.sync=addServer
+                            close-on-click-modal="false"
+                            modal="true"
+                            width="30%"
+                            center="true">
+
+                        <el-form :rules="rules" ref="addServerform" :model="addServerform" label-width="100px">
+                            <el-form-item label="服务器IP" prop="serverHost">
+                                <el-input v-model="addServerform.serverHost" style="width:280px;"></el-input>
+                            </el-form-item>
+                            <el-form-item label="服务器描述" prop="serverDesc">
+                                <el-input v-model="addServerform.serverDesc" style="width:280px;"></el-input>
+                            </el-form-item>
+                            <el-form-item label="选择区域" required prop="regionId">
+                                <el-select v-model="addServerform.regionId" placeholder="请选择区域">
+                                    <el-option
+                                            v-for="regionId in regions"
+                                            :key="regionId.value"
+                                            :label="regionId.label"
+                                            :value="regionId.value">
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                        </el-form>
+
+                        <span slot="footer" class="dialog-footer">
+                            <el-button @click="addServer = false" size="small">取 消</el-button>
+                            <el-button type="primary" @click="submit('addServerform')" size="small">确 定</el-button>
+                        </span>
+                    </el-dialog>
+                </el-row>
+                <br/>
+            </div>
+            <el-form :model="form" ref="form" size="small" style="width: 100%;" inline>
+                <el-form-item label="服务IP">
+                    <el-input size="small" v-model="form.serverHost" placeholder="请输入服务器IP地址"
+                              style="width:230px;"></el-input>
+                </el-form-item>
+                <el-form-item label="服务描述信息">
+                    <el-input size="small" v-model="form.serverDesc" placeholder="请输入描述信息"
+                              style="width:230px;"></el-input>
+                </el-form-item>
+                <!--<el-form-item>-->
+                <!--<el-date-picker-->
+                <!--v-model="form.createTime"-->
+                <!--type="date"-->
+                <!--placeholder="开始时间"-->
+                <!--value-format="yyyy-MM-dd">-->
+                <!--</el-date-picker>-->
+                <!--</el-form-item>-->
+                <!--<el-form-item>-->
+                <!--<el-date-picker-->
+                <!--v-model="form.updateTime"-->
+                <!--type="date"-->
+                <!--placeholder="结束时间"-->
+                <!--value-format="yyyy-MM-dd">-->
+                <!--</el-date-picker>-->
+                <!--</el-form-item>-->
+            </el-form>
+            <!-- 添加API的页面 -->
+            <!--  <el-button size="small" type="primary" @click="onSubmit" style="margin-left: 20px">查询
+             </el-button>
+             <el-button size="small" type="primary" @click="resetForm('form')">重置</el-button> -->
+            <el-table size="mini" ref="table" :data="tableData" stripe @selection-change="selectChagne"
+                      highlight-current-row style="width: 100%" :height="tableHeight-65">
+                <el-table-column type="index" label="序号" min-width="5%"></el-table-column>
+                <el-table-column property="serverHost" label="服务器IP" min-width="15%">
+                </el-table-column>
+                <el-table-column property="serverDesc" label="服务器描述" min-width="20%">
+                </el-table-column>
+                <el-table-column property="regionName" label="所属区域" min-width="10%">
+                </el-table-column>
+                <el-table-column property="createTime" label="创建时间" min-width="15%">
+                </el-table-column>
+                <el-table-column property="updateTime" label="更新时间" min-width="15%">
+                </el-table-column>
+                <el-table-column label="操作" min-width="20%">
+                    <template slot-scope="scope">
+                        <el-button-group>
+                            <el-button size="mini" type="primary" @click="open('修改配置项',scope.row)">更新
+                            </el-button>
+                            <el-button size="mini" type="danger" @click="del(scope.row)">删除
+                            </el-button>
+                        </el-button-group>
+                    </template>
+                </el-table-column>
+            </el-table>
+            <el-pagination
+                    @size-change="handleSizeChange"
+                    @current-change="handleCurrentChange"
+                    :page-sizes="[5, 10, 20, 50]"
+                    layout="total, sizes, prev, pager, next, jumper"
+                    :current-page="tableCurrentPage"
+                    :page-size="tablePageSize"
+                    :total="tableTotal">
+            </el-pagination>
+        </el-card>
+    </div>
+</template>
+<script type="text/javascript" src="pages/server/server.js"></script>

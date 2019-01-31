@@ -1,0 +1,102 @@
+<template>
+    <div>
+        <el-card class="box-card">
+            <div slot="header">
+                <el-button-group>
+                    <el-button size="mini" type="primary" icon="el-icon-plus" @click="addRegion = true">新增</el-button>
+                    <!--<el-button size="mini" type="danger" icon="el-icon-delete" @click="deleteRow()">删除</el-button>-->
+                    <!-- 添加API的页面 -->
+                    <el-button size="mini" type="success" icon="el-icon-search" @click="onSubmit"
+                               style="margin-left: 20px">查询
+                    </el-button>
+                    <el-button size="mini" type="info" icon="el-icon-refresh" @click="resetForm('form')">重置
+                    </el-button>
+                </el-button-group>
+                <el-dialog
+                        title="添加区域"
+                        :visible.sync="addRegion"
+                        close-on-click-modal="false"
+                        modal="true"
+                        width="30%"
+                        :before-close="addRegionClose">
+
+                    <el-form ref="addRegionForm" :model="addRegionForm" size="small" :rules="regionRules">
+                        <el-form-item label="区域名称" prop="regionName">
+                            <el-input v-model="addRegionForm.regionName" placeholder="区域名称" style="width:360px;"
+                                      clearable="true"></el-input>
+                        </el-form-item>
+                        <el-form-item label="区域描述" prop="regionDesc">
+                            <el-input v-model="addRegionForm.regionDesc" placeholder="区域描述" style="width:360px;"
+                                      clearable="true"></el-input>
+                        </el-form-item>
+                    </el-form>
+
+                    <span slot="footer" class="dialog-footer">
+                        <el-button @click="addRegionClose" size="mini">取 消</el-button>
+                        <el-button type="primary" @click="addRegionFrom" size="small">确 定</el-button>
+                    </span>
+                </el-dialog>
+
+                <!--查找的输入框-->
+                <br/><br/>
+                <el-form inline :model="form" ref="form" size="small">
+                    <el-form-item label="区域名称">
+                        <el-input v-model="form.regionName" placeholder="区域名称" style="width:230px;"></el-input>
+                    </el-form-item>
+                    <!--<el-form-item label="开始时间">-->
+                        <!--<el-date-picker v-model="form.createTime" type="date" placeholder="开始时间"-->
+                                        <!--style="width:230px;" value-format="yyyy-MM-dd"></el-date-picker>-->
+                    <!--</el-form-item>-->
+                    <!--<el-form-item label="结束时间">-->
+                        <!--<el-date-picker v-model="form.updateTime" type="date" placeholder="结束时间"-->
+                                        <!--style="width:230px;" value-format="yyyy-MM-dd"></el-date-picker>-->
+                    <!--</el-form-item>-->
+                    <!--<el-from-item>-->
+                        <!--<el-button type="primary" @click="onSubmit" style="margin-left: 20px" icon="el-icon-search"-->
+                                   <!--size="mini">查 询-->
+                        <!--</el-button>-->
+                    <!--</el-from-item>-->
+                </el-form>
+            </div>
+            <!-- 数据列表 -->
+            <el-table size="mini" ref="table" :data="tableData" highlight-current-row style="width: 100%"
+                      :height="tableHeight-65" size="mini" @selection-change="selectChagne">
+                <el-table-column type="selection" min-width="10%"></el-table-column>
+                <el-table-column prop="id" label="序号" min-width="10%">
+                </el-table-column>
+                <el-table-column prop="regionName" label="区域名称" min-width="15%">
+                </el-table-column>
+                <el-table-column prop="regionDesc" label="区域描述" min-width="15%">
+                </el-table-column>
+                <el-table-column prop="createTime" label="创建时间" min-width="15%">
+                </el-table-column>
+                <el-table-column prop="updateTime" label="更新时间" min-width="15%">
+                </el-table-column>
+                <el-table-column fixed="right" label="操作" min-width="20%">
+                    <template slot-scope="scope">
+                        <el-button-group>
+                            <el-button size="mini" type="primary" icon="el-icon-edit" @click="handleClick(scope.row)">编辑
+                            </el-button>
+                            <el-button size="mini" type="danger" icon="el-icon-delete"
+                                       @click.native.prevent="deleteRow(scope.row)">删除
+                            </el-button>
+                        </el-button-group>
+                    </template>
+                </el-table-column>
+            </el-table>
+            <!-- 分页栏 -->
+            <!--<el-col :span="24" align="right">-->
+            <el-pagination
+                    @size-change="handleSizeChange"
+                    @current-change="handleCurrentChange"
+                    :current-page="tableCurrentPage"
+                    :page-sizes="[5, 10, 20, 50]"
+                    :page-size="tablePageSize"
+                    layout="total, sizes, prev, pager, next, jumper"
+                    :total="tableTotal"
+            ></el-pagination>
+            <!--</el-col>-->
+        </el-card>
+    </div>
+</template>
+<script type="text/javascript" src="pages/region/region.js"></script>

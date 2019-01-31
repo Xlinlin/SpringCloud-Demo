@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>前台页面代码检查</title>
+    <script type="text/javascript" src="../../plugin/common/env.js" ></script>
+    <script type="text/javascript" src="../../plugin/jquery/3.3.1/jquery.min.js" ></script>
+    <style>
+        #outPut p{
+            font-size: 12px;
+            color: red;
+        }
+    </style>
+</head>
+<body>
+<div id="outPut">
+
+</div>
+
+<script>
+
+    function readUrl(chr){
+        chr.forEach( (item)=>{
+            checkSystem("#"+item);
+        })
+    }
+
+    function checkSystem(url){
+        var url = url;
+        if ( url ){
+            url = url.substring(1);
+            $.get(contextPath+"pages/"+url,function(txt){
+                var html,devor;
+                $(txt).each(function(i){
+                    if ( this.nodeName == "#comment"){
+                        var di = this.nodeValue.indexOf("开发人：");
+                        devor = this.nodeValue.substring(di+4,this.nodeValue.indexOf('\n',di));
+                    }
+                    if ( this.tagName == "SCRIPT"){
+                        html = $(this).html()
+                        return false;
+                    }
+                });
+                var context = $('<div style="display: none;"></div>').html(html).appendTo('body');
+                layoutRule(url,context,devor);
+            })
+        }
+    }
+
+    function outPut(url,error,devor){
+        //if ( devor == "董志华" )
+        $('#outPut').append($("<p></p>").text("["+devor+"]"+url+"，错误："+error));
+    }
+
+    function layoutRule(url,context,devor){
+        var lay = $(context).find('cust-layout');
+        if (lay.length == 0){
+            outPut(url,'页面没有cust-layout标签',devor)
+            return;
+        }
+        if ( undefined == lay.attr('ref') ){
+            outPut(url,'cust-layout没有ref属性',devor)
+        }
+        if ( undefined == lay.attr(':on-change-height') ){
+            outPut(url,'cust-layout没有绑定on-change-height钩子函数',devor)
+        }
+        if ( lay.find('modal,common-submit-modal').length > 0 ){
+            outPut(url,'cust-layout里面不要写modal,common-submit-modal',devor)
+        }
+        if ( lay.find('div[slot="query"]').length > 0 ){
+            layoutQueryRule(url,lay.find('div[slot="query"]'),devor);
+        }
+        layoutHeadRule(url,context);
+        if ( lay.find('[slot="content"]').length == 0 ){
+            outPut(url,'cust-layout里面没有<div slot="content" >',devor)
+        }else{
+            layoutTableRule(url,lay.find('div[slot="content"]'),devor);
+        }
+
+    }
+
+    function layoutHeadRule(url,context,devor){
+        if ( $('span[slot="header"]',context).length == 0){
+            outPut(url,'cust-layout>没有加<span slot="header">',devor);
+            return
+        }
+
+        if ( $('ButtonGroup',context).length == 0){
+            outPut(url,'cust-layout>header>你的按钮没有分组',devor)
+        }
+    }
+
+    function layoutQueryRule(url,context,devor){
+        var form = $('i-form,form',context);
+        if ( form.attr(':label-width') == undefined && form.attr('label-width') == null ){
+
+            outPut(url,'cust-layout>query>form的label-width为空:',devor)
+        }
+        if ( undefined == form.attr('inline') ){
+            outPut(url,'cust-layout>query>form的inline为空',devor)
+        }
+        if ( form.find('form-item,FormItem').length == 0 ){
+            outPut(url,'cust-layout>query>form下面没有form-item',devor)
+        }else{
+            form.find('form-item,FormItem').children().each(function(){
+                if ( this.getAttribute('type') == 'hidden' )
+                    return true;
+                if ( this.tagName.toLowerCase() == 'checkbox')
+                    return true;
+                let s = $(this).attr('size');
+                if ( undefined == s ){
+                    outPut(url,'cust-layout>query>form>form-item>'+this.tagName+"，没有size属性",devor)
+                }if ( s != 'small' )
+                    outPut(url,'cust-layout>query>form>form-item>'+this.tagName+"，size!=small",devor)
+            });
+        }
+        layoutTableRule(url,context,devor);
+    }
+
+    function layoutTableRule(url,context,devor){
+        var table = $('i-table',context);
+        if ( table.length > 0){
+            if ( undefined == table.attr('border') ){
+                outPut(url,'表格没有加线条',devor)
+            }
+            if ( table.attr('size') != 'small'){
+                outPut(url,'表格size没有设置为small',devor)
+            }
+            if ( undefined == table.attr(':height') ){
+                outPut(url,'表格没有自动调高度',devor)
+            }
+            if ( undefined != table.attr('width') || undefined != table.attr(':width') ){
+                outPut(url,'不要给表格增加width属性',devor)
+            }
+            layoutPageRule(url,context,devor);
+        }
+
+    }
+
+    function layoutPageRule(url,context,devor){
+        var page = $('Page',context);
+        if ( page.length == 0){
+            outPut(url,'表格没有加分页',devor)
+        }else{
+            if ( 'small' != page.attr('size') || undefined == page.attr('transfer') || undefined == page.attr('show-elevator') ||
+                undefined == page.attr('show-total') || undefined == page.attr('show-sizer') ){
+                console.log("url:"+url+"begin")
+                console.log("size:"+page.attr('size'))
+                console.log("transfer:"+page.attr('transfer'))
+                console.log("elevator:"+page.attr('show-elevator'))
+                console.log("total:"+page.attr('show-total'))
+                console.log("sizer:"+page.attr('show-sizer'))
+                console.log("url:"+url+"end")
+                outPut(url,"分页需要这些属性size=\"small\" transfer show-total show-sizer show-elevator",devor);
+            }
+        }
+    }
+
+    readUrl(['mdm/warehouse_mgt/warehouse_mgt.html','mdm/administration/administration.html','mdm/brand/brand.html','mdm/region_maintenance/region_maintenance.html','mdm/data_dict/data_dict.html','mdm/sys_parameter/sys_parameter.html','mdm/store_mgt/store_mgt.html','mdm/store_param/store_param.html','mdm/commodity/commodity.html','mdm/commodity_catalog/commodity_catalog.html','mdm/commodity_attr/commodity_attr.html','mdm/clear_corp/clear_corp.html','mpc/shop_decoration/catalog_mgt/catalog_mgt.html','mpc/shop_decoration/sowing_map/sowing_map.html','mpc/shop_decoration/hot_recommend/hot_recommend.html','mpc/shop_decoration/module_content_mgt/module_content_mgt.html','mpc/shop_decoration/exclusive_brand/exclusive_brand.html','mpc/shop_decoration/catalog_recommend/catalog_recommend.html','mpc/shop_decoration/bigpic_recommend/bigpic_recommend.html','mpc/shop_operator/catalog_mgt/catalog_mgt.html','mpc/shop_operator/cat_commodity_rel/cat_commodity_rel.html','mpc/mall_store_mgt/mall_store_mgt.html','mpc/commdity_mgt/commdity/commdity.html','mpc/commdity_mgt/commdity_put_pull/commdity_put_pull.html','mpc/commdity_mgt/commdity_stock/commdity_stock.html','mpc/commdity_mgt/commdity_pic/commdity_pic.html','mpc/commdity_mgt/commdity_label/commdity_label.html','mpc/commdity_comment/commdity_comment.html','mpc/commdity_mgt/commdity_hotWord/commdity_hotWord.html','mpc/order_mgt/order_list/order_list.html','mpc/order_mgt/order_cancel/order_cancel.html','uc/user_mgt/user/user.html','uc/sys_config/system/system.html','uc/sys_config/menu/menu.html','uc/sys_config/module/module.html','uc/sys_config/role/role.html','uc/sys_config/function/function.html','uc/data_mgt/region/region.html','uc/data_mgt/city/city.html','uc/data_mgt/warehouse/warehouse.html','uc/data_mgt/brand/brand.html','uc/data_mgt/shop/shop.html','mem/member/concern/concern.html','mem/member/register/register.html','mem/member/order_search/order_search.html','mem/member/address_list/address_list.html','mem/coupon/rule/rule.html','mem/coupon/coupon/coupon.html','mem/public_number/public_number/public_number.html','mem/public_number/template/template.html','mps/price_maint/price_maint.html','mps/mem_card/mem_rule/card_rule.html','mps/score_mgt/rule/rule.html','mps/score_mgt/special_schema/special_schema.html','mps/market_activity/activity/activity.html']);
+
+</script>
+</body>
+</html>

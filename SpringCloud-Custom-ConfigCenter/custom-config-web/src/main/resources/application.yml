@@ -1,0 +1,40 @@
+eureka:
+  instance:
+    instance-id: ${spring.cloud.client.ipAddress}:${server.port}
+    prefer-ip-address: true
+    ##设置心跳的周期间隔(默认90s)[如果10s没响应默认服务宕机]
+    #lease-expiration-duration-in-seconds: 10
+    #设置心跳时间间隔(默认30s)[心跳时间2s]
+    #lease-renewal-interval-in-seconds: 2
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:9000/eureka/
+    #开启健康检查（需要spring-boot-starter-actuator依赖）
+    #healthcheck:
+      #enable: true
+spring:
+  application:
+    name: config-web
+  cloud:
+    #开启重试机制，它默认是关闭的
+    loadbalancer:
+      retry:
+        enable: true
+# 开启熔断功能
+feign:
+  #hystrix:
+    #enabled: true
+  compression:
+    #请求GZIP压缩
+    request:
+      enabled: true
+      #支持压缩类型
+      mime-types: text/xml,application/xml,application/json
+      #压缩数据大小的下限
+      min-request-size: 2048
+    #响应gzip压缩
+    response:
+      enabled: true
+# hystrix超时设置,断路器的超时时间需要大于ribbon的超时时间，不然不会触发重试
+hystrix:
+  command.default.execution.isolation.thread.timeoutInMilliseconds: 60000

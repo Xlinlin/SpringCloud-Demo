@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <script>
+        //浏览器检查，是否支持es6表达式
+        try {
+            eval('var a1 = { func(){ }, func2: () => { } };');
+            [].findIndex(function(){});
+            window.location = "../../";
+        } catch (e) {
+        }
+    </script>
+</head>
+<body>
+    <p>你的浏览器版本太低，请升级高版本</p>
+    <p>推荐使用chrome浏览器68.xx以上版本,FireFox浏览器61.xx以上版本</p>
+    <p>
+        点击<a href="http://omni-test.oss-cn-shenzhen.aliyuncs.com/omni/zip/browser/chrome/chrome_installer.bkill.com.zip" >这里</a>，下载chrome浏览器
+    </p>
+    <!--<p>-->
+        <!--点击<a>这里</a>，下载FireFox浏览器-->
+    <!--</p>-->
+</body>
+</html>

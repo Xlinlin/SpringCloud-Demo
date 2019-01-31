@@ -1,0 +1,13 @@
+server:
+  port: 9002
+spring:
+  cloud:
+    config:
+      uri: http://localhost:9000/config/
+      profile: @env@
+      label: master
+      name: config-center-web
+  application:
+    name: config-center-web
+#logging.level.root: debug
+logging.level.com.netflix.eureka.registry: ERROR

@@ -1,0 +1,52 @@
+<template>
+    <div>
+        <el-tabs value="base" type="border-card">
+            <el-tab-pane label="基本信息" name="base" :style="tabStyle">
+                <el-form ref="appData" :model="appData" label-width="100px" :rules="rules">
+                    <el-form-item label="应用名" required prop="application">
+                        <el-input v-model="appData.application" style="width:400px;" clearable placeholder="请输入应用名"></el-input>
+                    </el-form-item>
+                    <el-form-item label="标签">
+                        <el-input v-model="appData.label" style="width:400px;" placeholder="默认master"></el-input>
+                    </el-form-item>
+                    <el-form-item label="选择环境" required prop="profile">
+                        <el-select v-model="appData.profile" placeholder="请选择环境" style="width:230px;" clearable>
+                            <el-option label="开发环境" value="dev"></el-option>
+                            <el-option label="测试环境" value="test"></el-option>
+                            <el-option label="生产环境" value="prod"></el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="选择区域" required prop="region">
+                        <el-select v-model="appData.region" clearable placeholder="请选择区域" clearable>
+                            <el-option
+                                    v-for="region in regions"
+                                    :key="region.value"
+                                    :label="region.label"
+                                    :value="region.value">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+                    <!--<el-form-item label="关联配置">-->
+                        <!--<el-button type="primary" icon="el-icon-setting" size="small" @click="relation">选择配置项组-->
+                        <!--</el-button>-->
+                    <!--</el-form-item>-->
+                    <el-form-item label="应用描述" prop="applicationName" clearable>
+                        <el-input v-model="appData.applicationName" style="width:400px;"></el-input>
+                    </el-form-item>
+                </el-form>
+            </el-tab-pane>
+            <div style="padding: 10px;">
+                <el-button-group>
+                    <el-button ref="submit" type="primary" icon="el-icon-check" size="small" @click="submit('appData')">
+                        保存
+                    </el-button>
+                    <el-button type="error" icon="el-icon-close" size="small" @click="App.closeCurrentTagNav()">取消
+                    </el-button>
+                </el-button-group>
+            </div>
+        </el-tabs>
+
+    </div>
+
+</template>
+<script type="text/javascript" src="pages/app/add.js"></script>

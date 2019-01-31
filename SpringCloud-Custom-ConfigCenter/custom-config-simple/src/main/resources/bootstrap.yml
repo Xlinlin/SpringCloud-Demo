@@ -1,0 +1,14 @@
+server:
+  port: 9003
+spring:
+  cloud:
+    config:
+      uri: http://172.16.80.194:9000/config
+      profile: dev
+      label: master
+      name: winner-config-center-simple
+  application:
+    name: winner-config-center-simple
+management:
+  security:
+    enabled: false

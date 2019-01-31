@@ -1,0 +1,29 @@
+spring:
+  datasource:
+    url: jdbc:mysql://192.168.206.210:3306/config_center?useSSL=false&useUnicode=true&characterEncoding=UTF-8
+    username: admin
+    password: Admin@123
+    driver-class-name: com.mysql.jdbc.Driver
+    # 使用druid数据源
+    type: com.alibaba.druid.pool.DruidDataSource
+  cloud:
+    #开启重试机制，它默认是关闭的
+    loadbalancer:
+      retry:
+        enable: true
+eureka:
+  instance:
+    hostname: localhost
+    instance-id: ${spring.cloud.client.ipAddress}:${server.port}
+    prefer-ip-address: true
+    ##设置心跳的周期间隔(默认90s)[如果10s没响应默认服务宕机]
+    #lease-expiration-duration-in-seconds: 90
+    #设置心跳时间间隔(默认30s)[心跳时间2s]
+    #lease-renewal-interval-in-seconds: 30
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:9000/eureka/
+    #开启健康检查（需要spring-boot-starter-actuator依赖）
+    #healthcheck:
+      #enable: true
+logging.level.com.netflix.eureka.registry: ERROR

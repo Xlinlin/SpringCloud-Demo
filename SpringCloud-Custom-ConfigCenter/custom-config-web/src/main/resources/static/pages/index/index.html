@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>用户中心</title>
+    <link rel="shortcut icon" href="/favicon.ico"/>
+    <link rel="bookmark" href="/favicon.ico"/>
+    <script type="text/javascript" src="plugin/babel/polyfill.min.js" ></script>
+    <script type="text/javascript" src="plugin/common/env.js" ></script>
+    <script type="text/javascript" src="plugin/jquery/3.3.1/jquery.min.js" ></script>
+    <script type="text/javascript" src="plugin/common/common.js" ></script>
+    <link rel="stylesheet" type="text/css" href="plugin/element/styles/index.css" />
+    <script type="text/javascript" src="plugin/iview/js/vue.min.js" ></script>
+    <script type="text/javascript" src="plugin/element/js/index.js" ></script>
+    <script type="text/javascript" src="plugin/jquery/jquery.history.js" ></script>
+    <script type="text/javascript" src="plugin/mock/mock-min.js"></script>
+    <script type="text/javascript" src="mock/mock.js"></script>
+    <script type="text/javascript" src="mock/index.js"></script>
+    <link rel="stylesheet" type="text/css" href="pages/index/index.css" />
+    <link rel="stylesheet" type="text/css" href="plugin/element/styles/fonts/iconfont.css" />
+    <!-- UE -->
+    <!--<script type="text/javascript" src="plugin/ueditor/UE/ueditor.config.js" ></script>-->
+    <!--<script type="text/javascript" src="plugin/ueditor/UE/ueditor.all.js" ></script>-->
+    <!--<script type="text/javascript" src="plugin/ueditor/UE/lang/zh-cn/zh-cn.js" ></script>-->
+    <!--<script type="text/javascript" src="plugin/ueditor/UE/ueditor.parse.min.js" ></script>-->
+
+    <!-- NED -->
+    <!--<script type="text/javascript" charset="utf-8" src="plugin/neditor/neditor.config.js"></script>-->
+    <!--<script type="text/javascript" charset="utf-8" src="plugin/neditor/neditor.all.js"> </script>-->
+    <!--<script type="text/javascript" charset="utf-8" src="plugin/neditor/neditor.service.js"></script>-->
+    <!--&lt;!&ndash;建议手动加在语言，避免在ie下有时因为加载语言失败导致编辑器加载失败&ndash;&gt;-->
+    <!--&lt;!&ndash;这里加载的语言文件会覆盖你在配置项目里添加的语言类型，比如你在配置项目里配置的是英文，这里加载的中文，那最后就是中文&ndash;&gt;-->
+    <!--<script type="text/javascript" charset="utf-8" src="plugin/neditor/i18n/zh-cn/zh-cn.js"></script>-->
+    <!-- NED -->
+
+</head>
+
+<body >
+    <div id="app" class="main" >
+        <el-container >
+            <el-aside :width="menuWidth+'px'" class="main-aside" >
+                <el-scrollbar :wrap-style="wrapStyle" view-class="view-box" :native="false" >
+                    <el-menu :default-active="activeName" :default-openeds="openedNames" @select="menuSelect"
+                             background-color="#383e4b" :collapse-transition="false"
+                             text-color="#fff" ref="elMenu"
+                             active-text-color="#ffd04b" :collapse="collapsed" >
+                        <template v-for="item in menuList" >
+                            <el-submenu :index="item.menuId" v-if="item.children && item.children.length" >
+                                <template slot="title">
+                                    <i v-if="item.iconCls" :class="item.iconCls"></i>
+                                    <span slot="title" v-text="item.name" ></span>
+                                </template>
+                                <el-menu-item :index="sub.menuId" v-for="sub in item.children">
+                                    <i v-if="sub.iconCls" :class="sub.iconCls"></i>
+                                    <span slot="title" :title="sub.name" v-text="sub.name" ></span>
+                                </el-menu-item>
+                            </el-submenu>
+                            <el-menu-item v-else :index="item.menuId" >
+                                <i v-if="item.iconCls" :class="item.iconCls"></i>
+                                <span slot="title" :title="item.name" v-text="item.name" ></span>
+                            </el-menu-item>
+                        </template>
+                    </el-menu>
+                </el-scrollbar>
+                <div class="close-menu" @click="closeMenu" >
+                   <div>
+                       <i class="el-icon-d-arrow-left" v-if="!collapsed" ></i>
+                       <i class="el-icon-d-arrow-right" v-if="collapsed" ></i>
+                   </div>
+                </div>
+            </el-aside>
+            <el-main style="padding:0px;margin:0px;">
+                <el-container>
+                    <el-header style="padding:0px;height: 40px;width: 100%">
+                        <div class="tag-nav-wrapper" >
+                            <tags-nav ref="tagsNav" :value="activeName"  :list="tagNavList" @close="closeNav" @click="handTags" />
+                        </div>
+                    </el-header>
+                    <el-scrollbar :wrap-style="'height:'+(pageHeight-40)+'px;'"  view-class="view-box" :native="false" >
+                        <el-main>
+                            <transition name="fade" mode="out-in" appear>
+                                <keep-alive :include="cacheList" >
+                                    <component ref="moduleComp" :is="componentId"  ></component>
+                                </keep-alive>
+                            </transition>
+                        </el-main>
+                    </el-scrollbar>
+                </el-container>
+            </el-main>
+        </el-container>
+    </div>
+
+    <!-- 组件注册装置 -->
+    <div id="componentRegister" style="display: none;" ></div>
+
+    <script type="text/x-template" id="tags-nav">
+        <div class="tags-nav">
+            <div class="scroll-outer" ref="scrollOuter" @DOMMouseScroll="handleMouseScroll" @mousewheel="handleMouseScroll">
+                <div ref="scrollBody" class="scroll-body" :style="{left: tagBodyLeft + 'px',padding:'0px'}">
+                    <div class="nav-tag-body" >
+                        <el-tag style="margin:3px 1px;cursor: pointer;"
+                                v-for="item in list"
+                                :key="item.name"
+                                :closable="item.menuId != '#1'"
+                                :name="item.menuId "
+                                @click.native="$emit('click',item)" @close="$emit('close',item)"
+                                :type="value == item.menuId ? '':'info' " >
+                            <i v-if="item.iconCls" :class="item.iconCls"></i>
+                            {{item.name}}
+                        </el-tag>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </script>
+
+    <!-- 页面脚本 -->
+    <script type="text/javascript" src="pages/index/compents.js"></script>
+    <script type="text/javascript" src="pages/index/index.js"></script>
+</body>
+</html>

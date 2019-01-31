@@ -1,0 +1,112 @@
+<template>
+    <div>
+        <el-card class="box-card">
+            <div slot="header">
+                <el-button-group>
+                    <el-button size="mini" type="primary" icon="el-icon-plus" @click="open('新增配置项')">新增</el-button>
+                    <!--<el-button size="mini" type="danger" icon="el-icon-tickets" @click="del()">删除-->
+                    <!--</el-button>-->
+                    <!-- 添加API的页面 -->
+                    <el-button size="mini" type="success" icon="el-icon-search" @click="onSubmit"
+                               style="margin-left: 20px">查询
+                    </el-button>
+                    <el-button size="mini" type="info" icon="el-icon-refresh" @click="resetForm('form')">重置
+                    </el-button>
+                </el-button-group>
+                <br/><br/>
+                <el-form :model="form" ref="form" size="small" style="width: 100%;" inline>
+                    <el-form-item label="配置项键">
+                        <el-input size="small" v-model="form.itemKey" placeholder="请输入配置键"
+                                  style="width:230px;"></el-input>
+                    </el-form-item>
+                    <el-form-item label="配置描述">
+                        <el-input size="small" v-model="form.itemDesc" placeholder="请输入描述信息"
+                                  style="width:230px;"></el-input>
+                    </el-form-item>
+                    <!--<el-form-item label="使用状态">-->
+                        <!--<el-select v-model="form.status" placeholder="请选择状态">-->
+                            <!--<el-option label="启用" :value="0"></el-option>-->
+                            <!--<el-option label="禁用" :value="1"></el-option>-->
+                        <!--</el-select>-->
+                    <!--</el-form-item>-->
+                    <el-form-item label="应用类型">
+                        <el-select v-model="form.itemType" placeholder="请选择应用类型">
+                            <el-option label="通用" :value="0"></el-option>
+                            <el-option label="开发环境" :value="1"></el-option>
+                            <el-option label="测试环境" :value="2"></el-option>
+                            <el-option label="生产环境" :value="3"></el-option>
+                            <el-option label="其他" :value="4"></el-option>
+                        </el-select>
+                    </el-form-item>
+                </el-form>
+            </div>
+            <el-table size="mini" ref="table" :data="tableData" stripe @selection-change="selectChagne"
+                      highlight-current-row style="width: 100%" :height="tableHeight-65">
+                <el-table-column type="index" min-width="50"></el-table-column>
+                <el-table-column type="selection" min-width="50"></el-table-column>
+                <el-table-column prop="itemKey" label="配置项键" min-width="150">
+                </el-table-column>
+                <el-table-column prop="itemValue" label="配置项值" min-width="150">
+                </el-table-column>
+                <el-table-column prop="itemDesc" label="描述" min-width="150">
+                </el-table-column>
+                <el-table-column prop="createTime" label="创建时间" min-width="150">
+                </el-table-column>
+                <el-table-column prop="updateTime" label="更新时间" min-width="150">
+                </el-table-column>
+                <!--<el-table-column prop="status" label="状态" min-width="5%" :formatter="fomatterStatus">-->
+                </el-table-column>
+                <el-table-column prop="itemType" label="应用类型" min-width="150" :formatter="fomatterItemType">
+                </el-table-column>
+                <el-table-column label="操作" fixed="right" min-width="150">
+                    <template slot-scope="scope">
+                        <el-button-group>
+                            <el-button size="mini" type="primary" @click="open('修改配置项',scope.row)">编辑
+                            </el-button>
+                            <el-button size="mini" type="danger"
+                                       @click="del(scope.row)">删除
+                            </el-button>
+                        </el-button-group>
+                    </template>
+                </el-table-column>
+            </el-table>
+            <el-pagination
+                    @size-change="handleSizeChange"
+                    @current-change="handleCurrentChange"
+                    :page-sizes="[5, 10, 20, 50]"
+                    layout="total, sizes, prev, pager, next, jumper"
+                    :current-page="tableCurrentPage"
+                    :page-size="tablePageSize"
+                    :total="tableTotal">
+            </el-pagination>
+
+            <el-dialog width="700px" :title="title" :visible.sync="dialogFormVisible">
+                <el-form :rules="rules" ref="createForm" :model="createForm" label-width="100px">
+                    <el-form-item label="配置项键" prop="itemKey">
+                        <el-input v-model="createForm.itemKey" style="width:400px;"></el-input>
+                    </el-form-item>
+                    <el-form-item label="配置项值" prop="itemValue">
+                        <el-input v-model="createForm.itemValue" style="width:400px;"></el-input>
+                    </el-form-item>
+                    <el-form-item label="配置描述">
+                        <el-input v-model="createForm.itemDesc" style="width:400px;"></el-input>
+                    </el-form-item>
+                    <el-form-item label="应用类型">
+                        <el-select v-model="createForm.itemType" placeholder="请选择应用类型">
+                            <el-option label="通用" :value="0"></el-option>
+                            <el-option label="开发环境" :value="1"></el-option>
+                            <el-option label="测试环境" :value="2"></el-option>
+                            <el-option label="生产环境" :value="3"></el-option>
+                            <el-option label="其他" :value="4"></el-option>
+                        </el-select>
+                    </el-form-item>
+                </el-form>
+                <div slot="footer" class="dialog-footer">
+                    <el-button @click="dialogFormVisible = false">取 消</el-button>
+                    <el-button type="primary" @click="submit('createForm')">确 定</el-button>
+                </div>
+            </el-dialog>
+        </el-card>
+    </div>
+</template>
+<script type="text/javascript" src="pages/config/configitem.js"></script>

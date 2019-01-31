@@ -1,0 +1,40 @@
+server:
+  port: 9000
+  #context-path: /winner-config-server
+spring:
+  application:
+    name: winner-config-server
+  #mysql
+  datasource:
+    url: jdbc:mysql://192.168.206.210:3306/config_center?useSSL=false&useUnicode=true&characterEncoding=UTF-8
+    username: admin
+    password: Admin@123
+    driver-class-name: com.mysql.jdbc.Driver
+    # 使用druid数据源
+    type: com.alibaba.druid.pool.DruidDataSource
+  ## spring-cloud config请求路径拦截配置，注册中心配置中心合并样式问题处理
+  cloud:
+    config:
+      server:
+        prefix: /config
+
+##配置中心
+eureka:
+  instance:
+    hostname: localhost
+    prefer-ip-address: true
+    instance-id: ${spring.cloud.client.ipAddress}:${server.port}
+  client:
+    register-with-eureka: true
+    fetch-registry: false
+    service-url:
+      defaultZone: http://localhost:9000/eureka/
+  #server:
+    ##以下配置，生产环境不建议使用
+    ###自我保护机制关闭
+    #enable-self-preservation: false
+    ## 清理间隔（单位毫秒，默认是60*1000）
+    #eviction-interval-timer-in-ms: 2000
+##注册中心的日志error级别
+#logging.com.netflix.eureka.registry: ERROR
+logging.level.com.netflix.eureka.registry: ERROR

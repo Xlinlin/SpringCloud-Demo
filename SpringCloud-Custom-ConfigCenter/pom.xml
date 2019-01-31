@@ -10,11 +10,16 @@
     <modelVersion>4.0.0</modelVersion>
     <packaging>pom</packaging>
     <modules>
-        <module>Custom-Config-Center</module>
-        <module>Custom-Config-Center-Pojo</module>
-        <module>Custom-Config-Center-Web</module>
-        <module>Custom-Conifg-Center-Demo</module>
+        <module>custom-config-pojo</module>
+        <module>custom-config-service</module>
+        <module>custom-config-web</module>
+        <module>custom-config-server</module>
+        <module>custom-config-client</module>
+        <module>custom-config-dependencies</module>
+        <module>custom-starter-config</module>
+        <module>custom-config-simple</module>
     </modules>
+
     <artifactId>SpringCloud-Custom-ConfigCenter</artifactId>
 
     <properties>
@@ -29,6 +34,12 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
             <optional>true</optional>
         </dependency>
     </dependencies>
