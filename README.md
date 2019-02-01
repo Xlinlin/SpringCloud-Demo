@@ -112,9 +112,9 @@ saveRegionCity(@RequestBody RegionCityDto regionCityDto)``
 [参考](https://github.com/Xlinlin/SpringCloud-Demo/blob/master/SpringCloud-ZipkinServer/README.md)
 
 20190131
-1. 自定义注册中心重构，[详情](https://github.com/Xlinlin/SpringCloud-Demo/tree/master/SpringCloud-Custom-ConfigCenter)
-
 1. 自定义注册中心重构，[详情](https://github.com/Xlinlin/SpringCloud-Demo/tree/master/SpringCloud-CustomConfig-Center)
 2. 新增多条件搜索测试，[详情](https://github.com/Xlinlin/SpringCloud-Demo/blob/master/SpringCloud-SearchService/src/test/java/com/xiao/springcloud/test/SearchManagerTest.java)<br>
 3. 多添加搜索的[更多参考资料](http://www.scienjus.com/elasticsearch-function-score-query/)
 
+20190201
+1. 新增[Docker + SpringBoot + Maven 构建发布到远程仓库 DEMO]()

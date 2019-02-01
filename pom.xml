@@ -40,6 +40,7 @@
         <module>SpringCloud-Custom-ConfigCenter</module>
 		<module>SpringCloud-Quartz-JobService</module>
         <module>SpringCloud-Redisson</module>
+        <module>SpringCloud-Docker</module>
     </modules>
 
 	<dependencyManagement>
