@@ -9,6 +9,11 @@ import com.xiao.spring.cloud.search.es.common.SearchException;
 import com.xiao.spring.cloud.search.service.SearchManangerService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.elasticsearch.action.admin.indices.create.CreateIndexRequestBuilder;
+import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequestBuilder;
+import org.elasticsearch.action.admin.indices.delete.DeleteIndexResponse;
+import org.elasticsearch.action.admin.indices.exists.indices.IndicesExistsRequest;
+import org.elasticsearch.action.admin.indices.exists.indices.IndicesExistsResponse;
 import org.elasticsearch.action.bulk.BulkRequestBuilder;
 import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.delete.DeleteRequestBuilder;
@@ -19,6 +24,8 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.action.update.UpdateRequestBuilder;
 import org.elasticsearch.client.transport.TransportClient;
+import org.elasticsearch.common.xcontent.XContentBuilder;
+import org.elasticsearch.common.xcontent.XContentFactory;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -29,6 +36,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -50,6 +58,128 @@ public class SearchManagerEsImpl implements SearchManangerService, ESConstants
     private ElasticSearchClient esClient;
 
     /**
+     * [简要描述]:创建索引和默认mapping<br/>
+     * [详细描述]:<br/>
+     *
+     * @param index : 索引名称
+     * @return true成功
+     * llxiao 2018/10/17 - 19:47
+     **/
+    @Override
+    public boolean createIndexMapping(String index)
+    {
+        if (StringUtils.isBlank(index))
+        {
+            log.error("Create index and mapping error! index name:{}", index);
+            return false;
+        }
+        if (this.existsIndex(index))
+        {
+            this.deleteIndex(index);
+        }
+
+        TransportClient client = esClient.getTransportClient();
+        CreateIndexRequestBuilder cib = client.admin().indices().prepareCreate(index);
+        try
+        {
+            XContentBuilder mapping = createMapping();
+            cib.addMapping(index, mapping).execute().actionGet();
+            return true;
+        }
+        catch (Exception e)
+        {
+            log.error("Create index and mapping error! index name:{}", index, e);
+        }
+        return false;
+    }
+
+    /**
+     * 创建mapping
+     *
+     * @return
+     * @exception IOException
+     */
+    private XContentBuilder createMapping() throws IOException
+    {
+        XContentBuilder mapping = XContentFactory.jsonBuilder().startObject().startObject("properties");
+        mapping.startObject("id").field("type", "text").endObject();
+        mapping.startObject("keyWords").field("type", "text").endObject();
+        mapping.startObject("commodityNo").field("type", "keyword").endObject();
+        mapping.startObject("commodityCode").field("type", "keyword").endObject();
+        mapping.startObject("defProdNo").field("type", "keyword").endObject();
+        mapping.startObject("defProdCode").field("type", "keyword").endObject();
+        mapping.startObject("brandNo").field("type", "keyword").endObject();
+        //fielddata 解决字段既可以聚合也可以分词查询问题
+        mapping.startObject("brandName").field("type", "text").field("analyzer", "ik_max_word").field("fielddata", true)
+                .startObject("fields").startObject("raw").field("type", "keyword").endObject().endObject().endObject();
+        mapping.startObject("title").field("type", "text").field("analyzer", "ik_max_word").endObject();
+        mapping.startObject("subTitle").field("type", "text").field("analyzer", "ik_max_word").endObject();
+        mapping.startObject("extProps").field("type", "text").field("analyzer", "ik_max_word").endObject();
+        mapping.startObject("skuProps").field("type", "text").field("analyzer", "ik_max_word").endObject();
+        mapping.startObject("orgPrice").field("type", "double").endObject();
+        mapping.startObject("salePrice").field("type", "double").endObject();
+        mapping.startObject("productArea").field("type", "text").field("analyzer", "ik_max_word").endObject();
+        mapping.startObject("oprtCatNo").field("type", "text").field("analyzer", "ik_max_word").endObject();
+        mapping.startObject("oprtCatName").field("type", "text").field("analyzer", "ik_max_word").endObject();
+        mapping.startObject("labels").field("type", "text").field("analyzer", "ik_max_word").endObject();
+        mapping.startObject("saleTime").field("type", "date").endObject();
+        mapping.startObject("picUrl").field("type", "keyword").endObject();
+        mapping.startObject("stock").field("type", "integer").endObject();
+        mapping.startObject("haitao").field("type", "integer").endObject();
+        mapping.startObject("salesVolume").field("type", "long").endObject();
+        mapping.startObject("commoCatNo").field("type", "keyword").endObject();
+        mapping.startObject("newly").field("type", "integer").endObject();
+        mapping.startObject("comments").field("type", "long").endObject();
+        mapping.startObject("discountRate").field("type", "keyword").endObject();
+        mapping.startObject("categoryName").field("type", "keyword").endObject();
+        mapping.startObject("defSkuProp").field("type", "keyword").endObject();
+        mapping.endObject().endObject();
+        return mapping;
+    }
+
+    /**
+     * [简要描述]:索引是否存在<br/>
+     * [详细描述]:<br/>
+     *
+     * @param index : 索引名称
+     * @return boolean
+     * llxiao 2018/10/18 - 8:35
+     **/
+    @Override
+    public boolean existsIndex(String index)
+    {
+        IndicesExistsRequest inExistsRequest = new IndicesExistsRequest(index);
+        TransportClient client = esClient.getTransportClient();
+        IndicesExistsResponse inExistsResponse = client.admin().indices().exists(inExistsRequest).actionGet();
+        return inExistsResponse.isExists();
+    }
+
+    /**
+     * [简要描述]:删除索引<br/>
+     * [详细描述]:<br/>
+     *
+     * @param index : 索引名称
+     * @return boolean
+     * llxiao 2018/10/18 - 8:35
+     **/
+    @Override
+    public boolean deleteIndex(String index)
+    {
+        boolean flag = false;
+        if (StringUtils.isNotBlank(index))
+        {
+            DeleteIndexRequestBuilder deleteIndexRequestBuilder = esClient.getTransportClient().admin().indices()
+                    .prepareDelete(index);
+            if (null != deleteIndexRequestBuilder)
+            {
+                DeleteIndexResponse dResponse = deleteIndexRequestBuilder.execute().actionGet();
+                flag = dResponse.isAcknowledged();
+            }
+        }
+        return flag;
+    }
+
+    /**
      * [简要描述]:根据id查找doc<br/>
      * [详细描述]:<br/>
      *
@@ -65,7 +195,7 @@ public class SearchManagerEsImpl implements SearchManangerService, ESConstants
             throw new CommonException(SearchException.PARAM_IS_NULL.getCode(), "查询失败，索引名称和文档ID不能为空!");
         }
         TransportClient client = esClient.getTransportClient();
-        GetRequestBuilder prepareGet = client.prepareGet(index, ESConstants.ES_PURCOTTON_TYPE, id);
+        GetRequestBuilder prepareGet = client.prepareGet(index, IDNEX_DEV_TYPE, id);
         Map<String, Object> map = prepareGet.get().getSourceAsMap();
         return JSON.parseObject(JSON.toJSONString(map), ElasticSearchDoc.class);
     }
@@ -82,15 +212,15 @@ public class SearchManagerEsImpl implements SearchManangerService, ESConstants
     {
         List<ElasticSearchDoc> esDocList = new ArrayList<>();
         TransportClient client = esClient.getTransportClient();
-        long totalHits = client.prepareSearch(index).setTypes(ESConstants.ES_PURCOTTON_TYPE)
-                .setQuery(QueryBuilders.matchAllQuery()).get().getHits().getTotalHits();
+        long totalHits = client.prepareSearch(index).setTypes(IDNEX_DEV_TYPE).setQuery(QueryBuilders.matchAllQuery())
+                .get().getHits().getTotalHits();
         int totalSize = (int) (totalHits / GET_ALL_SIZE) + 1;
         SearchResponse searchResponse;
         SearchHits hits;
         SearchHit[] searchHits;
         for (int i = 0; i < totalSize; i++)
         {
-            searchResponse = client.prepareSearch(index).setTypes(ESConstants.ES_PURCOTTON_TYPE)
+            searchResponse = client.prepareSearch(index).setTypes(IDNEX_DEV_TYPE)
                     .setQuery(QueryBuilders.matchAllQuery()).setSearchType(SearchType.QUERY_THEN_FETCH)
                     .setFrom(GET_ALL_SIZE * i).setSize(GET_ALL_SIZE).addSort(COMMON_NO, SortOrder.DESC).get();
             hits = searchResponse.getHits();
@@ -189,7 +319,7 @@ public class SearchManagerEsImpl implements SearchManangerService, ESConstants
         }
         TransportClient client = esClient.getTransportClient();
         BulkRequestBuilder bulkRequest = client.prepareBulk();
-        IndexRequestBuilder irb = client.prepareIndex(doc.getIndex(), ESConstants.ES_PURCOTTON_TYPE, doc.getId());
+        IndexRequestBuilder irb = client.prepareIndex(doc.getIndex(), IDNEX_DEV_TYPE, doc.getId());
         irb.setSource(JSON.parseObject(JSON.toJSONString(doc), Map.class));
         bulkRequest.add(irb);
         BulkResponse bulkResponse = bulkRequest.get();
@@ -227,7 +357,7 @@ public class SearchManagerEsImpl implements SearchManangerService, ESConstants
             {
                 continue;
             }
-            irb = client.prepareIndex(index, ESConstants.ES_PURCOTTON_TYPE, esDoc.getId());
+            irb = client.prepareIndex(index, IDNEX_DEV_TYPE, esDoc.getId());
             irb.setSource(JSON.parseObject(JSON.toJSONString(esDoc), Map.class));
             bulkRequest.add(irb);
         }
@@ -256,7 +386,7 @@ public class SearchManagerEsImpl implements SearchManangerService, ESConstants
         }
         TransportClient client = esClient.getTransportClient();
         BulkRequestBuilder bulkRequest = client.prepareBulk();
-        UpdateRequestBuilder urb = client.prepareUpdate(doc.getIndex(), ESConstants.ES_PURCOTTON_TYPE, doc.getId());
+        UpdateRequestBuilder urb = client.prepareUpdate(doc.getIndex(), IDNEX_DEV_TYPE, doc.getId());
 
         urb.setDoc(JSON.parseObject(JSON.toJSONString(doc), Map.class));
         bulkRequest.add(urb);
@@ -294,7 +424,7 @@ public class SearchManagerEsImpl implements SearchManangerService, ESConstants
             {
                 continue;
             }
-            urb = client.prepareUpdate(index, ESConstants.ES_PURCOTTON_TYPE, esDoc.getId());
+            urb = client.prepareUpdate(index, IDNEX_DEV_TYPE, esDoc.getId());
             urb.setDoc(JSON.parseObject(JSON.toJSONString(esDoc), Map.class));
             bulkRequest.add(urb);
         }
@@ -336,7 +466,7 @@ public class SearchManagerEsImpl implements SearchManangerService, ESConstants
                 oldDoc.putAll(docMap);
             }
             BulkRequestBuilder bulkRequest = client.prepareBulk();
-            UpdateRequestBuilder urb = client.prepareUpdate(doc.getIndex(), ESConstants.ES_PURCOTTON_TYPE, doc.getId());
+            UpdateRequestBuilder urb = client.prepareUpdate(doc.getIndex(), IDNEX_DEV_TYPE, doc.getId());
 
             urb.setDoc(oldDoc);
             bulkRequest.add(urb);
@@ -359,6 +489,7 @@ public class SearchManagerEsImpl implements SearchManangerService, ESConstants
      * @param doc 索引文档
      * @return 更新状态
      */
+    @Override
     public boolean updateDataByDefProdNo(ElasticSearchDoc doc)
     {
         if (null == doc || StringUtils.isBlank(doc.getId()) || StringUtils.isBlank(doc.getIndex()))
@@ -375,7 +506,7 @@ public class SearchManagerEsImpl implements SearchManangerService, ESConstants
         String keyId = doc.getId();
         TransportClient client = esClient.getTransportClient();
         BulkRequestBuilder bulkRequest = client.prepareBulk();
-        UpdateRequestBuilder urb = client.prepareUpdate(doc.getIndex(), ESConstants.ES_PURCOTTON_TYPE, keyId);
+        UpdateRequestBuilder urb = client.prepareUpdate(doc.getIndex(), IDNEX_DEV_TYPE, keyId);
         urb.setDoc(oldMap);
         bulkRequest.add(urb);
 
@@ -407,7 +538,7 @@ public class SearchManagerEsImpl implements SearchManangerService, ESConstants
         UpdateRequestBuilder urb;
         for (ElasticSearchDoc doc : allDocs)
         {
-            urb = client.prepareUpdate(doc.getIndex(), ESConstants.ES_PURCOTTON_TYPE, doc.getId());
+            urb = client.prepareUpdate(doc.getIndex(), IDNEX_DEV_TYPE, doc.getId());
             urb.setDoc(doc);
             bulkRequest.add(urb);
         }
@@ -437,7 +568,7 @@ public class SearchManagerEsImpl implements SearchManangerService, ESConstants
         }
         TransportClient client = esClient.getTransportClient();
         BulkRequestBuilder bulkRequest = client.prepareBulk();
-        DeleteRequestBuilder drb = client.prepareDelete(index, ESConstants.ES_PURCOTTON_TYPE, id);
+        DeleteRequestBuilder drb = client.prepareDelete(index, IDNEX_DEV_TYPE, id);
         bulkRequest.add(drb);
         BulkResponse bulkResponse = bulkRequest.get();
         if (bulkResponse.hasFailures())
@@ -467,7 +598,7 @@ public class SearchManagerEsImpl implements SearchManangerService, ESConstants
         DeleteRequestBuilder drb;
         for (ElasticSearchDoc doc : docs)
         {
-            drb = client.prepareDelete(doc.getIndex(), ESConstants.ES_PURCOTTON_TYPE, doc.getId());
+            drb = client.prepareDelete(doc.getIndex(), IDNEX_DEV_TYPE, doc.getId());
             bulkRequest.add(drb);
         }
         BulkResponse bulkResponse = bulkRequest.get();

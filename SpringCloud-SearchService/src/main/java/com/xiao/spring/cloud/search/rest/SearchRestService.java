@@ -1,11 +1,11 @@
 package com.xiao.spring.cloud.search.rest;
 
-import com.xiao.skywalking.demo.common.logaspect.LogAnnotation;
-import com.xiao.spring.cloud.search.dto.PaginationDo;
+import com.xiao.spring.cloud.search.dto.SearchCommodityResultDo;
+import com.xiao.spring.cloud.search.dto.SearchMenusDo;
 import com.xiao.spring.cloud.search.dto.SearchRequestDo;
 import com.xiao.spring.cloud.search.service.SearchService;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,15 +28,48 @@ public class SearchRestService
     private SearchService searchService;
 
     @RequestMapping("/keywords")
-    @LogAnnotation
-    public PaginationDo search(@RequestBody SearchRequestDo searchRequestDo)
+    public SearchCommodityResultDo search(@RequestBody SearchRequestDo searchRequestDo)
     {
         //索引为必填
-        if (StringUtils.isBlank(searchRequestDo.getIndex()))
+        if (StringUtils.isBlank(searchRequestDo.getIndex()) || (StringUtils.isBlank(searchRequestDo.getKeyWords())
+                && StringUtils.isBlank(searchRequestDo.getOprtCatNo())))
         {
-            log.error("搜索的index不能为空!");
-            return new PaginationDo();
+            log.error("搜索的index或者keyWords不能为空!");
+            return new SearchCommodityResultDo();
         }
         return searchService.search(searchRequestDo);
+    }
+
+    @RequestMapping("/searchMenu")
+    public SearchMenusDo searchMenu(@RequestBody SearchRequestDo searchRequestDo)
+    {
+        //索引为必填
+        if (StringUtils.isBlank(searchRequestDo.getIndex()) || (StringUtils.isBlank(searchRequestDo.getKeyWords())
+                && StringUtils.isBlank(searchRequestDo.getOprtCatNo())))
+        {
+            log.error("搜索的index或者keyWords不能为空!");
+            return new SearchMenusDo();
+        }
+        return searchService.searchMenu(searchRequestDo);
+    }
+
+    /**
+     * [简要描述]: 根据查询条件获取商品总数
+     * [详细描述]:
+     * @param searchRequestDo : 查询条件
+     * @return int
+     * mjye  2019-03-05 - 14:35
+     **/
+    @RequestMapping("/commodityTotal")
+    public Long commodityTotal(@RequestBody SearchRequestDo searchRequestDo)
+    {
+        //索引为必填
+        if (StringUtils.isBlank(searchRequestDo.getIndex()) || (StringUtils.isBlank(searchRequestDo.getKeyWords())
+                && StringUtils.isBlank(searchRequestDo.getOprtCatNo())))
+        {
+            log.error("搜索的index或者keyWords不能为空!");
+            return 0L;
+        }
+        return searchService.commodityTotal(searchRequestDo);
     }
 }

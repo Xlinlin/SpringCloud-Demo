@@ -9,6 +9,8 @@ package com.xiao.spring.cloud.search.dto;
 
 import lombok.Data;
 
+import java.util.List;
+
 /**
  * [简要描述]:请求查询接口参数<br/>
  * [详细描述]:<br/>
@@ -51,27 +53,46 @@ public class SearchRequestDo
     private Integer hasStock = -1;
 
     /**
-     * 运营分类
+     * 运营分类编号
+     */
+    private List<String> categoryNo;
+
+    /**
+     * 分类编号
+     * 仅用于从前端分类进入时使用
      */
     private String oprtCatNo;
 
     /**
-     * 排序类型，默认将序 DESC
+     * 排序类型，默认升序ASC
+     * 0: 升序
+     * 1：降序
      */
     private int sort = 0;
 
     /**
-     * 价格区间 最小值
+     * 价格区间
+     * 小-大，小-大
      */
-    private float minPrice;
-
-    /**
-     * 价格区间 最大值
-     */
-    private float maxPrice;
+    private List<String> rangesPrices;
 
     /**
      * 索引名称
      */
     private String index;
+
+    /**
+     * 品牌编码
+     **/
+    private List<String> brandNo;
+
+    /**
+     * SKU规格属性
+     */
+    private List<String> skuPropsNo;
+
+    /**
+     * 商品扩展属性
+     */
+    private List<String> extPropsNo;
 }

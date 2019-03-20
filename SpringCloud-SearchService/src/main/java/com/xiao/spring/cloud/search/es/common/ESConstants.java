@@ -1,9 +1,9 @@
 /*
- * Winner 
+ * Winner
  * 文件名  :ESConstants.java
  * 创建人  :llxiao
  * 创建时间:2018年1月11日
-*/
+ */
 
 package com.xiao.spring.cloud.search.es.common;
 
@@ -17,10 +17,6 @@ package com.xiao.spring.cloud.search.es.common;
  */
 public interface ESConstants
 {
-    /**
-     * ES type默认值
-     */
-    String ES_PURCOTTON_TYPE = "purcotton";
 
     /**
      * 集群配置名称
@@ -31,6 +27,8 @@ public interface ESConstants
      * 自动嗅探配置
      */
     String ES_SNIFF_CONF = "client.transport.sniff";
+
+    String IDNEX_DEV_TYPE = "devType";
 
     /**
      * 分页最大数量 100
@@ -52,9 +50,19 @@ public interface ESConstants
     int NORMAL_PRODUCT = 0;
 
     /**
-     * 有货
+     * 常量 0
      */
-    int HAVE_STOCK = 0;
+    int CONSTANT_ZERO = 0;
+
+    /**
+     * 常量 1
+     */
+    int CONSTANT_ONE = 1;
+
+    /**
+     * 常量 2
+     */
+    int CONSTANT_TWO = 2;
 
     /**
      * 无货
@@ -95,7 +103,53 @@ public interface ESConstants
     /**
      * 运营类型
      */
-    String ES_OPRTCATNO_FEILD = "oprtCatNo";
+    String ES_OPRTCATNO_FEILD = "oprtCatName";
+
+    /**
+     * 商品品牌
+     */
+    String ES_BRAND_NO = "brandNo";
+    String ES_BRAND_NAME="brandName";
+
+    /**
+     * 商品（SPU）编码
+     */
+    String ES_COMMODITY_NO = "commodityNo";
+
+    /**
+     * 商品标题
+     */
+    String ES_TITLE = "title";
+
+    /**
+     * 商品卖点
+     */
+    String ES_SUB_TITLE = "subTitle";
+
+    /**
+     * 运营分类各层级名称
+     */
+    String ES_OPRT_CAT_NAME="oprtCatName";
+
+    /**
+     * 商品标签
+     */
+    String ES_LABELS = "labels";
+
+    /**
+     * SKU规格属性
+     */
+    String ES_SKU_PROPS = "skuProps";
+
+    /**
+     * 商品扩展属性
+     */
+    String ES_EXT_PROPS = "extProps";
+
+    /**
+     * 货品产地
+     */
+    String ES_PRODUCT_AREA = "productArea";
 
     /**
      * 索引关键字
@@ -103,9 +157,19 @@ public interface ESConstants
     String ES_KEY_WORDS = "keyWords";
 
     /**
+     * 商品分类名称
+     */
+    String ES_CATEGORY_NAME = "categoryName";
+
+    /**
+     * 商品分类编号
+     */
+    String ES_CATEGORY_NO = "oprtCatNo";
+
+    /**
      * 商品编号
      */
-    String COMMON_NO = "commoNo";
+    String COMMON_NO = "commodityNo";
 
     /**
      * 默认货品编码
@@ -123,9 +187,14 @@ public interface ESConstants
     String NEWLY = "newly";
 
     /**
-     * 价格字段
+     * 售价
      */
-    String PRICE = "price";
+    String SALE_PRICE = "salePrice";
+
+    /**
+     * 原价
+     */
+    String OLD_PRICE = "oldPrice";
 
     /**
      * 销量字段
@@ -135,7 +204,7 @@ public interface ESConstants
     /**
      * 上架时间字段
      */
-    String LIST_TIME = "listTime";
+    String SALE_TIME = "saleTime";
 
     /**
      * 评论数字段
@@ -160,7 +229,7 @@ public interface ESConstants
      * 分词阈值 搜索到指定值不进行拆词
      */
     String WORD_SEGMENTATION_THRESHOLD = "thresholdTotal";
-    
+
     /**
      * ES热词 缓存key
      */

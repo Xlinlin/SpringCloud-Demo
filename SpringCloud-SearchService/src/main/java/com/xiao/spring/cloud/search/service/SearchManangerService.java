@@ -15,6 +15,39 @@ import java.util.List;
 public interface SearchManangerService
 {
     /**
+     * [简要描述]:创建索引和默认mapping<br/>
+     * [详细描述]:<br/>
+     *
+     * @param index
+     *            : 索引名称
+     * @return true成功
+     *         llxiao 2018/10/17 - 19:47
+     **/
+    boolean createIndexMapping(String index);
+
+    /**
+     * [简要描述]:索引是否存在<br/>
+     * [详细描述]:<br/>
+     *
+     * @param index
+     *            : 索引名称
+     * @return boolean
+     *         llxiao 2018/10/18 - 8:35
+     **/
+    boolean existsIndex(String index);
+
+    /**
+     * [简要描述]:删除索引<br/>
+     * [详细描述]:<br/>
+     *
+     * @param index
+     *            : 索引名称
+     * @return boolean
+     *         llxiao 2018/10/18 - 8:35
+     **/
+    boolean deleteIndex(String index);
+
+    /**
      * [简要描述]:根据id查找doc<br/>
      * [详细描述]:<br/>
      *

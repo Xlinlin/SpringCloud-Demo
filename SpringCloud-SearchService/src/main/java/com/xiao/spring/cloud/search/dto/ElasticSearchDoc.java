@@ -28,34 +28,39 @@ public class ElasticSearchDoc
     private String id;
 
     /**
-     * 关键字
+     * 关键字（商品表的卖点+货品表的商品标题+货品表的规格）
      */
     private String keyWords;
 
     /**
-     * 商品编号
+     * 商品全局唯一SPU
      */
-    private String commoNo;
+    private String commodityNo;
 
     /**
-     * 默认货品编码
+     * 商品业务SPU编码
+     */
+    private String commodityCode;
+
+    /**
+     * 默认SKU编号(全局唯一)
      */
     private String defProdNo;
 
     /**
-     * 图片信息
+     * 默认SKU业务编码
      */
-    private String prodPicUrl;
+    private String defProdCode;
 
     /**
-     * 商品分类编号
+     * 品牌编号
      */
-    private String commoCatNo;
+    private String brandNo;
 
     /**
-     * 商品运营分类编号（多个用逗号隔开）
+     * 品牌名称
      */
-    private String oprtCatNo;
+    private String brandName;
 
     /**
      * 标题,商品标题，SKU名称
@@ -63,30 +68,52 @@ public class ElasticSearchDoc
     private String title;
 
     /**
-     * 子标题，活动商品名称
+     * 子标题（卖点）
      */
     private String subTitle;
 
-    /**
-     * 原价
-     */
-    private double oldPrice;
+    private String skuTitle;
 
     /**
-     * 售价
+     * 扩展属性(JSON列表存储(组-名称-值))
      */
-    private double salePrice;
+    private String extProps;
+
+    /**
+     * JSON列表存储(SKU规格属性)
+     */
+    private String skuProps;
+
+    /**
+     * 产地
+     */
+    private String productArea;
+
+    /**
+     * 牌价
+     */
+    private Double orgPrice;
+
+    /**
+     * 售价(售价由调价刷新)
+     */
+    private Double salePrice;
+
+    /**
+     * 商品运营分类编号（多个用逗号隔开）
+     */
+    private String oprtCatNo;
+
+    /**
+     * 运营分类名称(以"-"隔开，多个以","隔开)
+     */
+    private String oprtCatName;
 
     /**
      * 标签集合
-     * K 标签名称，V 标签颜色
+     * JSON列表存储(名称-颜色)
      */
-    private String salesLabels;
-
-    /**
-     * 索引名称/或店铺名称
-     */
-    private String index;
+    private String labels;
 
     /**
      * 上架时间
@@ -94,37 +121,56 @@ public class ElasticSearchDoc
     private Date saleTime;
 
     /**
-     * 新品 1新品，0默认
+     * 商品首图
      */
-    private int newly = 0;
+    private String picUrl;
 
     /**
-     * 有无库存,1无，0有，默认0
+     * 库存(库存定时刷新)
      */
-    private int hasStock = 0;
+    private Long stock;
+
+    /**
+     * 是否海淘(0否，1是)
+     */
+    private Integer haitao;
 
     /**
      * 销量
      */
-    private int salesVolume;
+    private Long salesVolume;
+
+    /**
+     * 索引名称/或店铺名称
+     */
+    private String index;
+
+    //*****************************以下是预留字段****************************
+
+    /**
+     * 商品分类编号
+     */
+    private String commoCatNo;
+
+    /**
+     * 新品 1新品，0默认
+     */
+    private Integer newly = 0;
 
     /**
      * 评论数量
      */
-    private int comments;
+    private Integer comments;
 
     /**
      * 活动属性 折扣信息
      */
     private String discountRate;
 
-    /**
-     * 海淘、跨境购
-     */
-    private int haitao;
-
+    //****************************用来聚合的字段***********************************
+    //保存三级分类
     private String categoryName;
-    private String categoryNo;
-    private String brandName;
-    private String brandNo;
+
+    //JSON列表存储
+    private String defSkuProp;
 }

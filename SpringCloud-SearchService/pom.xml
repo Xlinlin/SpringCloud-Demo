@@ -102,6 +102,24 @@
             <version>3.6</version>
         </dependency>
 
+        <!--guava缓存cache-->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>25.1-jre</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-cache</artifactId>
+        </dependency>
+
+        <!--工具类 -->
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-core</artifactId>
+            <version>4.1.1</version>
+        </dependency>
+
         <dependency>
             <groupId>com.xiao.skywalking.demo</groupId>
             <artifactId>SpringCloud-Common</artifactId>
