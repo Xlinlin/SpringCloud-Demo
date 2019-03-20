@@ -41,6 +41,7 @@
 		<module>SpringCloud-Quartz-JobService</module>
         <module>SpringCloud-Redisson</module>
         <module>SpringCloud-Docker</module>
+        <module>SpringCloud-Canal</module>
     </modules>
 
 	<dependencyManagement>

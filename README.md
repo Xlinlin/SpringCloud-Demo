@@ -121,3 +121,4 @@ saveRegionCity(@RequestBody RegionCityDto regionCityDto)``
 
 20190320
 1. 新增 ES 权重查询 以及 聚合逻辑，[详情参考](https://github.com/Xlinlin/SpringCloud-Demo/blob/master/SpringCloud-SearchService/src/main/java/com/xiao/spring/cloud/search/es/service/SearchServiceEsImpl.java)
+2. 新增阿里开源数据同步工具[Canal](https://github.com/alibaba/canal)的简单[Demo使用]()
