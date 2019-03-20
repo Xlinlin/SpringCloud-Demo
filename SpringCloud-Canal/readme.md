@@ -2,7 +2,7 @@
 2. Canal：可解析Mysql的 binlog日志，来实现增量数据缓存同步、ES同步。亦或者做自定义业务处理 <br>
 3. 官方有案例结合消息队里实用，以及如何实现高可用<br>
 4. [Canal服务端搭建](https://www.jianshu.com/p/6299048fad66)
-4. Java client 操作 [参考JAVA]()<br>
+4. Java client 操作 [参考JAVA](https://github.com/Xlinlin/SpringCloud-Demo/blob/master/SpringCloud-Canal/src/main/java/com/alibaba/canal/simple/ClientSample.java)<br>
 DEMO输出结果：
 ```$xslt
 Db name:数据库名
