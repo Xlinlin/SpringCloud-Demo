@@ -1,4 +1,4 @@
-**Spring-cloud config注册中心扩展**
+**配置中心(SpringCloud配置中心扩展)**
 
 _1._ **使用自定义读取配置源，基于mysql的配置读取实现**。<br>
 
