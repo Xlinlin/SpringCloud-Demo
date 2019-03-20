@@ -118,3 +118,6 @@ saveRegionCity(@RequestBody RegionCityDto regionCityDto)``
 
 20190201
 1. 新增[Docker + SpringBoot + Maven 构建发布到远程仓库 DEMO](https://github.com/Xlinlin/SpringCloud-Demo/tree/master/SpringCloud-Docker)
+
+20190320
+1. 新增 ES 权重查询 以及 聚合逻辑，[详情参考](https://github.com/Xlinlin/SpringCloud-Demo/blob/master/SpringCloud-SearchService/src/main/java/com/xiao/spring/cloud/search/es/service/SearchServiceEsImpl.java)
