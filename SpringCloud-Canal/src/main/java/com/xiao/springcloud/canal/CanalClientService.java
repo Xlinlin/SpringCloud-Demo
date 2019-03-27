@@ -115,42 +115,47 @@ public class CanalClientService implements DisposableBean, ApplicationListener<C
 
         if (start)
         {
-            //每一次拉取100条数据
-            int batchSize = 100;
-            Message msg;
-            while (true)
+            processBinlog();
+        }
+    }
+
+    private void processBinlog()
+    {
+        //每一次拉取100条数据
+        int batchSize = 100;
+        Message msg;
+        while (true)
+        {
+            try
             {
-                try
+                msg = connector.getWithoutAck(batchSize);
+                long batchId = msg.getId();
+                int size = msg.getEntries().size();
+                //没有数据，休眠5秒
+                if (batchId < 0 || size == 0)
                 {
-                    msg = connector.getWithoutAck(batchSize);
-                    long batchId = msg.getId();
-                    int size = msg.getEntries().size();
-                    //没有数据，休眠5秒
-                    if (batchId < 0 || size == 0)
+                    try
                     {
-                        try
-                        {
-                            Thread.sleep(5000);
-                        }
-                        catch (InterruptedException e)
-                        {
-                            log.error(">>> 休眠线程中断.......");
-                        }
+                        Thread.sleep(5000);
                     }
-                    else
+                    catch (InterruptedException e)
                     {
-                        // 数据处理
-                        processData(msg.getEntries());
+                        log.error(">>> 休眠线程中断.......");
                     }
-                    connector.ack(batchId);
                 }
-                catch (Exception e)
+                else
                 {
-                    // 客户端异常，中断当前循环，等待定时任务重连操作
-                    log.error(">>> Canal 客户端异常，中断操作，并断开现有连接，等待定时任务定期重连操作...", e);
-                    this.close();
-                    break;
+                    // 数据处理
+                    processData(msg.getEntries());
                 }
+                connector.ack(batchId);
+            }
+            catch (Exception e)
+            {
+                // 客户端异常，中断当前循环，等待定时任务重连操作
+                log.error(">>> Canal 客户端异常，中断操作，并断开现有连接，等待定时任务定期重连操作...", e);
+                this.close();
+                break;
             }
         }
     }
