@@ -196,6 +196,7 @@ public class CanalClientService implements DisposableBean, ApplicationListener<C
                 {
                     rowChange = CanalEntry.RowChange.parseFrom(entry.getStoreValue());
                     // RowData --具体insert/update/delete的变更数据，可为多条，1个binlog event事件可对应多条变更，比如批处理
+                    // insert 只有after数据，delete只有 before数据，update会有after和before数据
                     for (CanalEntry.RowData rowData : rowChange.getRowDatasList())
                     {
                         switch (rowChange.getEventType())
