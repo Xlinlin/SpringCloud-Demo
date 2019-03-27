@@ -124,4 +124,4 @@ saveRegionCity(@RequestBody RegionCityDto regionCityDto)``
 2. 新增阿里开源数据同步工具[Canal](https://github.com/alibaba/canal)的简单[Demo使用](https://github.com/Xlinlin/SpringCloud-Demo/tree/master/SpringCloud-Canal)
 
 20190327
-1. 将Canal+Disruptor整合到springboot中，提供一套完整的Canal异步框架，在DisruptorServiceImpl服务中实现自己的业务逻辑即可，[更多详见](https://github.com/Xlinlin/SpringCloud-Demo/tree/master/SpringCloud-Canal/src/main/java/com/xiao/springcloud)
+1. 将Canal+Disruptor整合到springboot中，提供一套完整的Canal异步框架，在DisruptorServiceImpl服务中实现自己的业务逻辑即可，[更多详见](https://github.com/Xlinlin/SpringCloud-Demo/tree/master/SpringCloud-Canal)
