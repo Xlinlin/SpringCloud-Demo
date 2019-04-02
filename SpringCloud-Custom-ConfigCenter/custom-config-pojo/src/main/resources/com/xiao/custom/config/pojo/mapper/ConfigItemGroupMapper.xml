@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xiao.custom.config.pojo.mapper.ConfigItemGroupMapper">
+    <resultMap id="BaseResultMap" type="com.xiao.custom.config.pojo.entity.ConfigItemGroup">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="group_name" property="groupName" jdbcType="VARCHAR"/>
+        <result column="group_desc" property="groupDesc" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <resultMap id="DtoResultMap" type="com.xiao.custom.config.pojo.dto.ConfigItemGroupDto">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="group_name" property="groupName" jdbcType="VARCHAR"/>
+        <result column="group_desc" property="groupDesc" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, group_name, group_desc, create_time, update_time
+  </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        from t_config_item_group
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_config_item_group
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+    <insert id="insert" parameterType="com.xiao.custom.config.pojo.entity.ConfigItemGroup" useGeneratedKeys="true"
+            keyColumn="id" keyProperty="id">
+    insert into t_config_item_group (id, group_name, group_desc, 
+      create_time, update_time)
+    values (#{id,jdbcType=BIGINT}, #{groupName,jdbcType=VARCHAR}, #{groupDesc,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+    <insert id="insertSelective" parameterType="com.xiao.custom.config.pojo.entity.ConfigItemGroup">
+        insert into t_config_item_group
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="groupName != null">
+                group_name,
+            </if>
+            <if test="groupDesc != null">
+                group_desc,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="groupName != null">
+                #{groupName,jdbcType=VARCHAR},
+            </if>
+            <if test="groupDesc != null">
+                #{groupDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.xiao.custom.config.pojo.entity.ConfigItemGroup">
+        update t_config_item_group
+        <set>
+            <if test="groupName != null">
+                group_name = #{groupName,jdbcType=VARCHAR},
+            </if>
+            <if test="groupDesc != null">
+                group_desc = #{groupDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.xiao.custom.config.pojo.entity.ConfigItemGroup">
+    update t_config_item_group
+    set group_name = #{groupName,jdbcType=VARCHAR},
+      group_desc = #{groupDesc,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+    <select id="pageConfigItemGroup" resultMap="DtoResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_config_item_group
+        <where>
+            <if test="groupName != null and groupName!=''">
+                and group_name like '%${groupName}%'
+            </if>
+            <if test="groupDesc != null and groupDesc!=''">
+                and group_desc like '%${groupDesc}%'
+            </if>
+            <if test="createTime != null and createTime != ''">
+                and create_time like '%${createTime}%'
+            </if>
+            <if test="updateTime != null and updateTime != ''">
+                and update_time like '%${updateTime}%'
+            </if>
+        </where>
+    </select>
+
+    <select id="pageRefGroupWithApp" resultMap="DtoResultMap">
+        select t1.id, t1.group_name, t1.group_desc,
+        t1.create_time, t1.update_time from t_config_item_group t1 left join
+        t_application_item_group_relation t2 on t2.item_group_id = t1.id left join
+        t_application t3 on t3.id = t2.application_id
+        <where>
+            <if test="groupName != null and groupName != ''">
+                and t1.group_name like '%${groupName}'
+            </if>
+            <if test="createTime != null and createTime != ''">
+                and t1.create_time = '%${createTime}%'
+            </if>
+            <if test="appId != null">
+                and t3.id = #{appId}
+            </if>
+        </where>
+    </select>
+
+    <select id="pageNotRefGroupWithApp" resultMap="DtoResultMap">
+        select * from t_config_item_group
+        where id not in (
+        select item_group_id from t_application_item_group_relation
+        <where>
+            <if test="appId != null">
+                and application_id = #{appId}
+            </if>
+        </where>
+        )
+        <if test="groupName != null and groupName != ''">
+            and group_name like '%${groupName}'
+        </if>
+        <if test="createTime != null and createTime != ''">
+            and create_time = '%${createTime}%'
+        </if>
+    </select>
+
+    <delete id="batchDelete">
+        delete from t_config_item_group where id in
+        <foreach collection="idArr" separator="," item="id" open="(" close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

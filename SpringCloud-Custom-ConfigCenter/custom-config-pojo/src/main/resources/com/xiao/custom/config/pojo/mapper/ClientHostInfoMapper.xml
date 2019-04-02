@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xiao.custom.config.pojo.mapper.ClientHostInfoMapper">
+    <resultMap id="BaseResultMap" type="com.xiao.custom.config.pojo.entity.ClientHostInfo">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="client_application_id" property="clientApplicationId" jdbcType="BIGINT"/>
+        <result column="host_ip" property="hostIp" jdbcType="VARCHAR"/>
+        <result column="host_port" property="hostPort" jdbcType="INTEGER"/>
+        <result column="status" property="status" jdbcType="INTEGER"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+    id, client_application_id, host_ip, host_port, status, create_time, update_time
+  </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        from t_client_host_info
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <!-- 查询所有应用相关的数据 -->
+    <select id="queryByApplication" resultMap="BaseResultMap">
+        select h.* from t_client_host_info h left join t_client_application a on h.client_application_id = a.id
+        where a.application = #{application} and a.profile = #{profile} and h.status = 0 and a.status = 0;
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_client_host_info
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+    <insert id="insert" parameterType="com.xiao.custom.config.pojo.entity.ClientHostInfo">
+    insert into t_client_host_info (id, client_application_id, host_ip, 
+      host_port, status, create_time, 
+      update_time)
+    values (#{id,jdbcType=BIGINT}, #{clientApplicationId,jdbcType=BIGINT}, #{hostIp,jdbcType=VARCHAR}, 
+      #{hostPort,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+    <insert id="insertSelective" parameterType="com.xiao.custom.config.pojo.entity.ClientHostInfo">
+        insert into t_client_host_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="clientApplicationId != null">
+                client_application_id,
+            </if>
+            <if test="hostIp != null">
+                host_ip,
+            </if>
+            <if test="hostPort != null">
+                host_port,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="clientApplicationId != null">
+                #{clientApplicationId,jdbcType=BIGINT},
+            </if>
+            <if test="hostIp != null">
+                #{hostIp,jdbcType=VARCHAR},
+            </if>
+            <if test="hostPort != null">
+                #{hostPort,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.xiao.custom.config.pojo.entity.ClientHostInfo">
+        update t_client_host_info
+        <set>
+            <if test="clientApplicationId != null">
+                client_application_id = #{clientApplicationId,jdbcType=BIGINT},
+            </if>
+            <if test="hostIp != null">
+                host_ip = #{hostIp,jdbcType=VARCHAR},
+            </if>
+            <if test="hostPort != null">
+                host_port = #{hostPort,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.xiao.custom.config.pojo.entity.ClientHostInfo">
+    update t_client_host_info
+    set client_application_id = #{clientApplicationId,jdbcType=BIGINT},
+      host_ip = #{hostIp,jdbcType=VARCHAR},
+      host_port = #{hostPort,jdbcType=INTEGER},
+      status = #{status,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = now()
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+    <!-- 主键更新状态，标记为下线 -->
+    <update id="updateStatus">
+        update t_client_host_info set update_time = now(),status = #{status} where id = #{id}
+    </update>
+
+    <!-- 查询客户端列表 -->
+    <select id="pageQuery" parameterType="com.xiao.custom.config.pojo.query.ClientHostInfoQuery"
+            resultType="com.xiao.custom.config.pojo.dto.ClientHostInfoDto">
+        SELECT c.id,c.client_application_id as applicationClientId,c.host_ip as hostIp,c.host_port as
+        hostPort,c.status,c.create_time as createTime,c.update_time as updateTime,app.application
+        FROM t_client_host_info c,t_client_application app
+        where c.client_application_id = app.id
+        <if test="hostIp != null and hostIp != ''">
+            and c.host_ip = #{hostIp}
+        </if>
+        <if test="application != null and application != ''">
+            and app.application = #{application}
+        </if>
+        <if test="status != null">
+            and c.status = #{status}
+        </if>
+    </select>
+</mapper>

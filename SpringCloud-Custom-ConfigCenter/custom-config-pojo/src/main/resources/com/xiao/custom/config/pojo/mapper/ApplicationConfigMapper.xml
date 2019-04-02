@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xiao.custom.config.pojo.mapper.ApplicationConfigMapper">
+    <resultMap id="BaseResultMap" type="com.xiao.custom.config.pojo.entity.ApplicationConfig">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="application_id" property="applicationId" jdbcType="BIGINT"/>
+        <result column="item_key" property="itemKey" jdbcType="VARCHAR"/>
+        <result column="item_value" property="itemValue" jdbcType="VARCHAR"/>
+        <result column="item_desc" property="itemDesc" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, application_id, item_key, item_value, item_desc, create_time, update_time
+  </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        from t_application_config
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_application_config
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+    <insert id="insert" parameterType="com.xiao.custom.config.pojo.entity.ApplicationConfig">
+    insert into t_application_config (id, application_id, item_key, 
+      item_value, item_desc, create_time, 
+      update_time)
+    values (#{id,jdbcType=BIGINT}, #{applicationId,jdbcType=BIGINT}, #{itemKey,jdbcType=VARCHAR}, 
+      #{itemValue,jdbcType=VARCHAR}, #{itemDesc,jdbcType=VARCHAR}, now(),
+      #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+    <insert id="insertSelective" parameterType="com.xiao.custom.config.pojo.entity.ApplicationConfig">
+        insert into t_application_config
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="applicationId != null">
+                application_id,
+            </if>
+            <if test="itemKey != null">
+                item_key,
+            </if>
+            <if test="itemValue != null">
+                item_value,
+            </if>
+            <if test="itemDesc != null">
+                item_desc,
+            </if>
+            create_time,
+            <if test="updateTime != null">
+                update_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="applicationId != null">
+                #{applicationId,jdbcType=BIGINT},
+            </if>
+            <if test="itemKey != null">
+                #{itemKey,jdbcType=VARCHAR},
+            </if>
+            <if test="itemValue != null">
+                #{itemValue,jdbcType=VARCHAR},
+            </if>
+            <if test="itemDesc != null">
+                #{itemDesc,jdbcType=VARCHAR},
+            </if>
+            now(),
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.winner.config.center.pojo.db.entity.ApplicationConfig">
+        update t_application_config
+        <set>
+            <if test="applicationId != null">
+                application_id = #{applicationId,jdbcType=BIGINT},
+            </if>
+            <if test="itemKey != null">
+                item_key = #{itemKey,jdbcType=VARCHAR},
+            </if>
+            <if test="itemValue != null">
+                item_value = #{itemValue,jdbcType=VARCHAR},
+            </if>
+            <if test="itemDesc != null">
+                item_desc = #{itemDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+                update_time = now(),
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.xiao.custom.config.pojo.entity.ApplicationConfig">
+    update t_application_config
+    set application_id = #{applicationId,jdbcType=BIGINT},
+      item_key = #{itemKey,jdbcType=VARCHAR},
+      item_value = #{itemValue,jdbcType=VARCHAR},
+      item_desc = #{itemDesc,jdbcType=VARCHAR},
+      update_time = now()
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+    <!-- 分页查询应用的私有配置 -->
+    <select id="pageQuery" resultType="com.xiao.custom.config.pojo.dto.ApplicationConfigDto"
+            parameterType="com.xiao.custom.config.pojo.query.ApplicationConfigQuery">
+        SELECT t.id,t.application_id as applicationId,t.item_key as itemKey,
+        t.item_value as itemValue,t.item_desc as itemDesc,t.create_time as createTime,t.update_time as updateTime
+        FROM t_application_config t
+        where t.application_id = #{applicationId,jdbcType=BIGINT}
+        <if test="itemKey != null and itemKey !=''">
+            and t.item_key like concat(concat('%',#{itemKey,jdbcType=VARCHAR}),'%')
+        </if>
+        <if test="itemDesc !=  null and itemDesc != ''">
+            and t.item_desc like concat(concat('%',#{itemDesc,jdbcType=VARCHAR}),'%')
+        </if>
+    </select>
+</mapper>

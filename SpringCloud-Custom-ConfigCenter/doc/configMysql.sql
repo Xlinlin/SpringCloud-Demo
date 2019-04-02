@@ -58,15 +58,17 @@ CREATE TABLE `t_client_host_info` (
   `client_application_id` bigint(16) NOT NULL COMMENT '所属应用ID',
   `host_ip` varchar(45) COLLATE utf8mb4_bin NOT NULL COMMENT '连接主机IP',
   `host_port` int(11) NOT NULL COMMENT '连接主机开放服务的端口',
+  `netty_port` int(11) DEFAULT NULL COMMENT 'netty客户端端口',
   `status` int(11) DEFAULT '0' COMMENT '状态，0在线，1离线',
   `create_time` datetime DEFAULT NULL,
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
+  UNIQUE KEY `HOST_PORT_UNIQUE` (`host_ip`,`host_port`,`netty_port`),
   KEY `IP_INDEX` (`host_ip`),
   KEY `PORT_INDEX` (`host_port`),
   KEY `STATUS_INDEX` (`status`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='配置中心客户端连接信息';
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='配置中心客户端连接信息';
 
 DROP TABLE IF EXISTS `t_config_item`;
 CREATE TABLE `t_config_item` (

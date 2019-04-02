@@ -13,7 +13,14 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class ClientHostInfo {
+public class ClientHostInfo
+{
+
+    /**
+     * 在线
+     */
+    public static final int ONLINE = 0;
+
     private Long id;
 
     private Long clientApplicationId;
@@ -23,6 +30,8 @@ public class ClientHostInfo {
     private Integer hostPort;
 
     private Integer status;
+
+    private Integer nettyPort;
 
     private Date createTime;
 

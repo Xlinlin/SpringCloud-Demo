@@ -40,4 +40,14 @@ public interface SqlConstants
      * 主键ID更新用服务端的客户端HOST信息的状态
      */
     String UPDATE_APPLICATION_HOST_INFO = "update t_client_host_info set status = 0 ,update_time = now() where id = :id";
+
+    /**
+     * IP+PORT更新客户端状态
+     */
+    String UPDATE_CLIENT_STATUS = "update t_client_host_info set status = :status,update_time = now() where host_ip = :ip and netty_port = :nettyPort";
+
+    /**
+     * 绑定host和netty端口信息，标记上线
+     */
+    String UPDATE_NETTY_INFO = "update t_client_host_info set netty_port = :nettyPort,status = 0,update_time = now()  where host_ip = :ip and host_port = :port";
 }

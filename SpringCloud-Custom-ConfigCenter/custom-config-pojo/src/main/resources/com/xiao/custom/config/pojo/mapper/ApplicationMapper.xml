@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xiao.custom.config.pojo.mapper.ApplicationMapper">
+    <resultMap id="BaseResultMap" type="com.xiao.custom.config.pojo.entity.Application">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="application" property="application" jdbcType="VARCHAR"/>
+        <result column="application_name" property="applicationName" jdbcType="VARCHAR"/>
+        <result column="label" property="label" jdbcType="VARCHAR"/>
+        <result column="profile" property="profile" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="region_id" property="regionId" jdbcType="BIGINT"/>
+    </resultMap>
+
+    <resultMap id="DtoResultMap" type="com.xiao.custom.config.pojo.dto.ApplicationDto">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="application" property="application" jdbcType="VARCHAR"/>
+        <result column="application_name" property="applicationName" jdbcType="VARCHAR"/>
+        <result column="label" property="label" jdbcType="VARCHAR"/>
+        <result column="profile" property="profile" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="region_id" property="regionId" jdbcType="BIGINT"/>
+        <result column="region_name" property="regionName" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, application, application_name, label, profile, create_time, update_time, region_id
+  </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        from t_application
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_application
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+    <insert id="insert" parameterType="com.xiao.custom.config.pojo.entity.Application"
+            useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+    insert into t_application (id, application, application_name,
+      label, profile, create_time, 
+      update_time, region_id)
+    values (#{id,jdbcType=BIGINT}, #{application,jdbcType=VARCHAR}, #{applicationName,jdbcType=VARCHAR}, 
+      #{label,jdbcType=VARCHAR}, #{profile,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{regionId,jdbcType=BIGINT})
+  </insert>
+    <insert id="insertSelective" parameterType="com.xiao.custom.config.pojo.entity.Application">
+        insert into t_application
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="application != null">
+                application,
+            </if>
+            <if test="applicationName != null">
+                application_name,
+            </if>
+            <if test="label != null">
+                label,
+            </if>
+            <if test="profile != null">
+                profile,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="regionId != null">
+                region_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="application != null">
+                #{application,jdbcType=VARCHAR},
+            </if>
+            <if test="applicationName != null">
+                #{applicationName,jdbcType=VARCHAR},
+            </if>
+            <if test="label != null">
+                #{label,jdbcType=VARCHAR},
+            </if>
+            <if test="profile != null">
+                #{profile,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="regionId != null">
+                #{regionId,jdbcType=BIGINT},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.xiao.custom.config.pojo.entity.Application">
+        update t_application
+        <set>
+            <if test="application != null">
+                application = #{application,jdbcType=VARCHAR},
+            </if>
+            <if test="applicationName != null">
+                application_name = #{applicationName,jdbcType=VARCHAR},
+            </if>
+            <if test="label != null">
+                label = #{label,jdbcType=VARCHAR},
+            </if>
+            <if test="profile != null">
+                profile = #{profile,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="regionId != null">
+                region_id = #{regionId,jdbcType=BIGINT},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.xiao.custom.config.pojo.entity.Application">
+    update t_application
+    set application = #{application,jdbcType=VARCHAR},
+      application_name = #{applicationName,jdbcType=VARCHAR},
+      label = #{label,jdbcType=VARCHAR},
+      profile = #{profile,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      region_id = #{regionId,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+    <select id="pageApplicationConfig" resultMap="DtoResultMap"
+            parameterType="com.xiao.custom.config.pojo.query.AppQuery">
+        SELECT app.*,r.region_name FROM t_application app left join t_region r on app.region_id = r.id
+        where 1 = 1
+        <if test="application != null and application != ''">
+            and app.application like concat(concat('%',#{application,jdbcType=VARCHAR}),'%')
+        </if>
+        <if test="profile != null and profile !=''">
+            and profile = #{profile,jdbcType=VARCHAR}
+        </if>
+        <if test="applicationName != null and applicationName != ''">
+            and application_name like concat(concat('%',#{applicationName,jdbcType=VARCHAR}),'%')
+        </if>
+        <if test="startTime != null and startTime != ''">
+            and create_time &gt;= #{startTime}
+        </if>
+        <if test="endTime != null and endTime != ''">
+            and create_time &lt;= #{endTime}
+        </if>
+        order by id desc
+    </select>
+
+    <!-- 区域ID统计应用 -->
+    <select id="countByRegionId" resultType="java.lang.Integer">
+        select count(*) from t_application where region_id = #{regionId}
+    </select>
+</mapper>

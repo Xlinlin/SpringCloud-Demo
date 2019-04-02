@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xiao.custom.config.pojo.mapper.ConfigItemGroupRelationMapper">
+    <resultMap id="BaseResultMap" type="com.xiao.custom.config.pojo.entity.ConfigItemGroupRelation">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="item_id" property="itemId" jdbcType="BIGINT"/>
+        <result column="group_id" property="groupId" jdbcType="BIGINT"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, item_id, group_id
+  </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        from t_config_item_group_relation
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_config_item_group_relation
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+    <insert id="insert" parameterType="com.xiao.custom.config.pojo.entity.ConfigItemGroupRelation"
+            useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+    insert into t_config_item_group_relation (id, item_id, group_id
+      )
+    values (#{id,jdbcType=BIGINT}, #{itemId,jdbcType=BIGINT}, #{groupId,jdbcType=BIGINT}
+      )
+  </insert>
+    <insert id="insertSelective" parameterType="com.xiao.custom.config.pojo.entity.ConfigItemGroupRelation">
+        insert into t_config_item_group_relation
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="itemId != null">
+                item_id,
+            </if>
+            <if test="groupId != null">
+                group_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="itemId != null">
+                #{itemId,jdbcType=BIGINT},
+            </if>
+            <if test="groupId != null">
+                #{groupId,jdbcType=BIGINT},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective"
+            parameterType="com.xiao.custom.config.pojo.entity.ConfigItemGroupRelation">
+        update t_config_item_group_relation
+        <set>
+            <if test="itemId != null">
+                item_id = #{itemId,jdbcType=BIGINT},
+            </if>
+            <if test="groupId != null">
+                group_id = #{groupId,jdbcType=BIGINT},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.xiao.custom.config.pojo.entity.ConfigItemGroupRelation">
+    update t_config_item_group_relation
+    set item_id = #{itemId,jdbcType=BIGINT},
+      group_id = #{groupId,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+    <insert id="batchSave">
+        insert into t_config_item_group_relation(item_id, group_id)
+        values
+        <foreach collection="itemIdArr" item="itemId" separator=",">
+            (#{itemId},#{groupId})
+        </foreach>
+    </insert>
+
+    <delete id="batchDelete">
+        delete from t_config_item_group_relation where group_id = #{groupId} and item_id in
+        <foreach collection="itemIdArr" item="itemId" separator="," open="(" close=")">
+            #{itemId}
+        </foreach>
+    </delete>
+
+    <delete id="batchDeleteByItemId">
+        delete from t_config_item_group_relation where item_id in
+        <foreach collection="idArr" item="itemId" separator="," open="(" close=")">
+            #{itemId}
+        </foreach>
+    </delete>
+
+    <delete id="batchDeleteByGroupId">
+        delete from t_config_item_group_relation where group_id in
+        <foreach collection="idArr" item="groupId" separator="," open="(" close=")">
+            #{groupId}
+        </foreach>
+    </delete>
+
+    <!-- 统计配置项关联的配置项组的数量 -->
+    <select id="countByItemId" resultType="java.lang.Integer">
+        select count(id) from t_config_item_group_relation where item_id = #{itemId};
+    </select>
+</mapper>

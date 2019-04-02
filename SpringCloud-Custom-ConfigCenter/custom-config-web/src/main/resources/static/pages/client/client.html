@@ -1,0 +1,75 @@
+<template>
+    <div>
+        <el-card class="box-card">
+            <!-- 查询按钮 -->
+            <div slot="header">
+                <el-button-group>
+                    <el-button size="mini" type="success" icon="el-icon-search" @click="onSubmit"
+                               style="margin-left: 20px">查询
+                    </el-button>
+                    <el-button size="mini" type="info" icon="el-icon-refresh" @click="resetForm('form')">重置
+                    </el-button>
+                </el-button-group>
+            </div>
+            <!--查找的输入框-->
+            <div>
+                <br>
+                <el-form :model="form" ref="form" size="small" style="width: 100%;" inline>
+                    <el-form-item label="客户端IP">
+                        <el-input size="small" v-model="form.hostIp" placeholder="请输IP地址"
+                                  style="width:230px;"></el-input>
+                    </el-form-item>
+                    <el-form-item label="应用">
+                        <el-input size="small" v-model="form.application" placeholder="请输应用信息"
+                                  style="width:230px;"></el-input>
+                    </el-form-item>
+                    <el-form-item label="状态">
+                        <el-select v-model="form.status" placeholder="请选择状态">
+                            <el-option label="在线" :value="0"></el-option>
+                            <el-option label="离线" :value="1"></el-option>
+                        </el-select>
+                    </el-form-item>
+                </el-form>
+                <br>
+            </div>
+            <!-- 数据列表 -->
+            <div>
+                <el-table size="mini" ref="table" :data="tableData" stripe @selection-change="selectChagne"
+                          highlight-current-row style="width: 100%" :height="tableHeight-65">
+                    <el-table-column type="index" label="序号" min-width="5%"></el-table-column>
+                    <el-table-column property="hostIp" label="客户端IP" min-width="15%">
+                    </el-table-column>
+                    <el-table-column property="hostPort" label="占用端口" min-width="10%">
+                    </el-table-column>
+                    <el-table-column property="application" label="所属应用" min-width="20%">
+                    </el-table-column>
+                    <el-table-column property="itemType" label="状态" min-width="15%" :formatter="statusFormatter">
+                    </el-table-column>
+                    <el-table-column property="createTime" label="创建时间" min-width="15%">
+                    </el-table-column>
+                    <el-table-column property="updateTime" label="更新时间" min-width="15%">
+                    </el-table-column>
+                    <el-table-column label="操作" min-width="20%">
+                        <template slot-scope="scope">
+                            <el-button-group>
+                                <el-button size="mini" type="danger" @click="del(scope.row)">删除
+                                </el-button>
+                            </el-button-group>
+                        </template>
+                    </el-table-column>
+                </el-table>
+                <!-- 分页 -->
+                <el-pagination
+                        @size-change="handleSizeChange"
+                        @current-change="handleCurrentChange"
+                        :page-sizes="[5, 10, 20, 50]"
+                        layout="total, sizes, prev, pager, next, jumper"
+                        :current-page="tableCurrentPage"
+                        :page-size="tablePageSize"
+                        :total="tableTotal">
+                </el-pagination>
+            </div>
+        </el-card>
+    </div>
+</template>
+<script type="text/javascript" src="pages/client/client.js"></script>

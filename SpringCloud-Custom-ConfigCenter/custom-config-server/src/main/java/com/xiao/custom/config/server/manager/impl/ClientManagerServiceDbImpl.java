@@ -64,6 +64,47 @@ public class ClientManagerServiceDbImpl implements ClientManagerService, SqlCons
     }
 
     /**
+     * [简要描述]:更新状态<br/>
+     * [详细描述]:<br/>
+     *
+     * @param hostIp : 客户端IP
+     * @param hostPort : 客户端PORT
+     * @param status : status
+     **/
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void updateStatus(String hostIp, int hostPort, int status)
+    {
+        Map<String, Object> params = new HashMap<>();
+        params.put("status", status);
+        params.put("ip", hostIp);
+        params.put("nettyPort", hostPort);
+        namedParameterJdbcTemplate.update(SqlConstants.UPDATE_CLIENT_STATUS, params);
+
+    }
+
+    /**
+     * [简要描述]:<br/>
+     * [详细描述]:<br/>
+     *
+     * @param hostIp :
+     * @param hostPort :
+     * @param nettyPort :
+     * @return void
+     * llxiao  2019/4/1 - 11:49
+     **/
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void updateNettyInfo(String hostIp, int hostPort, int nettyPort)
+    {
+        Map<String, Object> params = new HashMap<>();
+        params.put("nettyPort", nettyPort);
+        params.put("ip", hostIp);
+        params.put("port", hostPort);
+        namedParameterJdbcTemplate.update(SqlConstants.UPDATE_NETTY_INFO, params);
+    }
+
+    /**
      * 客户端应用维护
      *
      * @param serviceName

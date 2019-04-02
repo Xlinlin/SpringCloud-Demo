@@ -40,8 +40,14 @@ public class ConfigClientProperties
     /**
      * server port
      */
-    @Value("${server.port:8080}")
+    @Value("${server.port:}")
     private int serverPort;
+
+    /**
+     * 服务端netty端口号
+     */
+    @Value("${netty.server.port:8999}")
+    private int nettyPort;
 
     /**
      * Flag to say that remote configuration is enabled. Default true;
@@ -113,6 +119,16 @@ public class ConfigClientProperties
             profiles = environment.getDefaultProfiles();
         }
         this.setProfile(StringUtils.arrayToCommaDelimitedString(profiles));
+    }
+
+    public int getNettyPort()
+    {
+        return nettyPort;
+    }
+
+    public void setNettyPort(int nettyPort)
+    {
+        this.nettyPort = nettyPort;
     }
 
     public boolean isEnabled()

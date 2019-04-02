@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xiao.custom.config.pojo.mapper.ConfigItemMapper">
+    <resultMap id="BaseResultMap" type="com.xiao.custom.config.pojo.entity.ConfigItem">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="item_key" property="itemKey" jdbcType="VARCHAR"/>
+        <result column="item_value" property="itemValue" jdbcType="VARCHAR"/>
+        <result column="item_desc" property="itemDesc" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="status" property="status" jdbcType="INTEGER"/>
+        <result column="item_type" property="itemType" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <resultMap id="DtoResultMap" type="com.xiao.custom.config.pojo.dto.ConfigItemDto">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="item_key" property="itemKey" jdbcType="VARCHAR"/>
+        <result column="item_value" property="itemValue" jdbcType="VARCHAR"/>
+        <result column="item_desc" property="itemDesc" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="status" property="status" jdbcType="INTEGER"/>
+        <result column="item_type" property="itemType" jdbcType="INTEGER"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, item_key, item_value, item_desc, create_time, update_time, status, item_type
+  </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        from t_config_item
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_config_item
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+    <insert id="insert" parameterType="com.xiao.custom.config.pojo.entity.ConfigItem" useGeneratedKeys="true"
+            keyColumn="id" keyProperty="id">
+    insert into t_config_item (id, item_key, item_value, 
+      item_desc, create_time, update_time, 
+      status,item_type)
+    values (#{id,jdbcType=BIGINT}, #{itemKey,jdbcType=VARCHAR}, #{itemValue,jdbcType=VARCHAR}, 
+      #{itemDesc,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{status,jdbcType=INTEGER}, #{itemType,jdbcType=INTEGER})
+  </insert>
+    <insert id="insertSelective" parameterType="com.xiao.custom.config.pojo.entity.ConfigItem">
+        insert into t_config_item
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="itemKey != null">
+                item_key,
+            </if>
+            <if test="itemValue != null">
+                item_value,
+            </if>
+            <if test="itemDesc != null">
+                item_desc,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="itemType != null">
+                item_type,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="itemKey != null">
+                #{itemKey,jdbcType=VARCHAR},
+            </if>
+            <if test="itemValue != null">
+                #{itemValue,jdbcType=VARCHAR},
+            </if>
+            <if test="itemDesc != null">
+                #{itemDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="itemType != null">
+                #{itemType,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.xiao.custom.config.pojo.entity.ConfigItem">
+        update t_config_item
+        <set>
+            <if test="itemKey != null">
+                item_key = #{itemKey,jdbcType=VARCHAR},
+            </if>
+            <if test="itemValue != null">
+                item_value = #{itemValue,jdbcType=VARCHAR},
+            </if>
+            <if test="itemDesc != null">
+                item_desc = #{itemDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="itemType != null">
+                item_type = #{itemType,jdbcType=INTEGER},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.xiao.custom.config.pojo.entity.ConfigItem">
+    update t_config_item
+    set item_key = #{itemKey,jdbcType=VARCHAR},
+      item_value = #{itemValue,jdbcType=VARCHAR},
+      item_desc = #{itemDesc,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=INTEGER},
+      item_type = #{itemType,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+    <select id="pageConfigItem" resultMap="DtoResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_config_item
+        <where>
+            <if test="itemKey != null and itemKey!=''">
+                and item_key like '%${itemKey}%'
+            </if>
+            <if test="itemValue != null and itemValue!=''">
+                and item_value like '%${itemValue}%'
+            </if>
+            <if test="itemDesc != null and itemDesc!=''">
+                and item_desc like '%${itemDesc}%'
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+            <if test="itemType != null">
+                and item_type = #{itemType}
+            </if>
+            <if test="createTime != null and createTime != ''">
+                and create_time like '%${createTime}%'
+            </if>
+            <if test="updateTime != null and updateTime != ''">
+                and update_time like '%${updateTime}%'
+            </if>
+        </where>
+    </select>
+
+    <select id="pageRefConfigItemWithGroup" resultMap="DtoResultMap">
+        select t1.id, t1.item_key, t1.item_value, t1.item_desc, t1.create_time,
+        t1.update_time, t1.status, t1.item_type
+        from t_config_item t1 left join t_config_item_group_relation t2 on t2.item_id = t1.id
+        left join t_config_item_group t3 on t3.id = t2.group_id
+        <where>
+            <if test="itemKey != null and itemKey != ''">
+                and t1.item_key like '%${itemKey}%'
+            </if>
+            <if test="createTime != null and createTime != ''">
+                and t1.create_time like '%${createTime}%'
+            </if>
+            <if test="updateTime != null and updateTime != ''">
+                and t1.update_time like '%${updateTime}%'
+            </if>
+            <if test="groupId != null">
+                and t3.id = #{groupId}
+            </if>
+        </where>
+    </select>
+
+    <select id="pageNotRefConfigItemWithGroup" resultMap="DtoResultMap">
+        select t1.id, t1.item_key, t1.item_value, t1.item_desc, t1.create_time,
+        t1.update_time, t1.status, t1.item_type
+        from t_config_item t1 where t1.id not in (select t2.item_id from t_config_item_group_relation t2
+        <where>
+            <if test="groupId != null">
+                and t2.group_id = #{groupId}
+            </if>
+        </where>
+        )
+        <if test="itemKey != null and itemKey != ''">
+            and t1.item_key like '%${itemKey}%'
+        </if>
+        <if test="createTime != null and createTime != ''">
+            and t1.create_time like '%${createTime}%'
+        </if>
+        <if test="updateTime != null and updateTime != ''">
+            and t1.update_time like '%${updateTime}%'
+        </if>
+    </select>
+
+    <update id="batchDelete">
+        delete from t_config_item where id in
+        <foreach collection="idArr" item="id" separator="," index="index" open="(" close=")">
+            #{id}
+        </foreach>
+    </update>
+</mapper>

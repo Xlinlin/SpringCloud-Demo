@@ -112,7 +112,7 @@ saveRegionCity(@RequestBody RegionCityDto regionCityDto)``
 [参考](https://github.com/Xlinlin/SpringCloud-Demo/blob/master/SpringCloud-ZipkinServer/README.md)
 
 20190131
-1. 自定义注册中心重构，[详情](https://github.com/Xlinlin/SpringCloud-Demo/tree/master/SpringCloud-CustomConfig-Center)
+1. 自定义配置中心重构，[详情](https://github.com/Xlinlin/SpringCloud-Demo/tree/master/SpringCloud-CustomConfig-Center)
 2. 新增多条件搜索测试，[详情](https://github.com/Xlinlin/SpringCloud-Demo/blob/master/SpringCloud-SearchService/src/test/java/com/xiao/springcloud/test/SearchManagerTest.java)<br>
 3. 更多多条件搜索的[参考资料](http://www.scienjus.com/elasticsearch-function-score-query/)
 
@@ -125,3 +125,6 @@ saveRegionCity(@RequestBody RegionCityDto regionCityDto)``
 
 20190327
 1. 将Canal+Disruptor整合到springboot中，提供一套完整的Canal异步框架，在DisruptorServiceImpl服务中实现自己的业务逻辑即可，[更多详见](https://github.com/Xlinlin/SpringCloud-Demo/tree/master/SpringCloud-Canal)
+
+20190402
+1. 自定义配置中心，引入Netty监测心跳[详情](https://github.com/Xlinlin/SpringCloud-Demo/tree/master/SpringCloud-CustomConfig-Center)

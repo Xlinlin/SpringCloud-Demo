@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xiao.custom.config.pojo.mapper.ApplicationItemGroupRelationMapper">
+    <resultMap id="BaseResultMap" type="com.xiao.custom.config.pojo.entity.ApplicationItemGroupRelation">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="application_id" property="applicationId" jdbcType="BIGINT"/>
+        <result column="item_group_id" property="itemGroupId" jdbcType="BIGINT"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, application_id, item_group_id
+  </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        from t_application_item_group_relation
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_application_item_group_relation
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+    <insert id="insert" parameterType="com.xiao.custom.config.pojo.entity.ApplicationItemGroupRelation"
+            useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+    insert into t_application_item_group_relation (id, application_id, item_group_id
+      )
+    values (#{id,jdbcType=BIGINT}, #{applicationId,jdbcType=BIGINT}, #{itemGroupId,jdbcType=BIGINT}
+      )
+  </insert>
+    <insert id="insertSelective" parameterType="com.xiao.custom.config.pojo.entity.ApplicationItemGroupRelation">
+        insert into t_application_item_group_relation
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="applicationId != null">
+                application_id,
+            </if>
+            <if test="itemGroupId != null">
+                item_group_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="applicationId != null">
+                #{applicationId,jdbcType=BIGINT},
+            </if>
+            <if test="itemGroupId != null">
+                #{itemGroupId,jdbcType=BIGINT},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective"
+            parameterType="com.xiao.custom.config.pojo.entity.ApplicationItemGroupRelation">
+        update t_application_item_group_relation
+        <set>
+            <if test="applicationId != null">
+                application_id = #{applicationId,jdbcType=BIGINT},
+            </if>
+            <if test="itemGroupId != null">
+                item_group_id = #{itemGroupId,jdbcType=BIGINT},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey"
+            parameterType="com.xiao.custom.config.pojo.entity.ApplicationItemGroupRelation">
+    update t_application_item_group_relation
+    set application_id = #{applicationId,jdbcType=BIGINT},
+      item_group_id = #{itemGroupId,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+    <insert id="batchSave">
+        insert into t_application_item_group_relation (application_id, item_group_id)
+        values
+        <foreach collection="groupIdArr" item="groupId" separator=",">
+            (#{appId,jdbcType=BIGINT}, #{groupId,jdbcType=BIGINT})
+        </foreach>
+    </insert>
+
+    <delete id="batchDelete">
+        delete from t_application_item_group_relation where application_id = #{appId} and item_group_id in
+        <foreach collection="groupIdArr" item="groupId" separator="," open="(" close=")">
+            #{groupId}
+        </foreach>
+    </delete>
+
+    <!-- 应用ID删除关联的配置组信息 -->
+    <delete id="deleteByAppId">
+        delete from t_application_item_group_relation where application_id = #{appId}
+    </delete>
+
+    <!-- 应用组ID统计使用的应用数量 -->
+    <select id="countByGroupId" resultType="java.lang.Integer">
+        select count(id) from t_application_item_group_relation where item_group_id = #{groupId}
+    </select>
+</mapper>

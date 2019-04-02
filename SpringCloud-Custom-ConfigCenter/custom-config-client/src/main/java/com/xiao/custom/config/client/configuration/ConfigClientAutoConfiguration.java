@@ -23,6 +23,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.cloud.context.refresh.ContextRefresher;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 
@@ -36,9 +37,9 @@ import org.springframework.core.env.Environment;
  * @author Marcos Barbero
  */
 @Configuration
+@ComponentScan("com.xiao.custom.config.client.*")
 public class ConfigClientAutoConfiguration
 {
-
     @Bean
     public ConfigClientProperties configClientProperties(Environment environment, ApplicationContext context)
     {

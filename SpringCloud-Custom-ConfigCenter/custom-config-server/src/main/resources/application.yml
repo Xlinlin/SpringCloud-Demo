@@ -17,6 +17,10 @@ spring:
     config:
       server:
         prefix: /config
+#netty服务端口，默认8999
+netty:
+  server:
+    port: 8999
 
 ##配置中心
 eureka:
