@@ -18,7 +18,7 @@ _2._ **设计简述**：<br>
 ```
 spring:
   application:
-    name: winner-config-server
+    name: config-server
   #mysql
   datasource:
     url: jdbc:mysql://192.168.206.210:3306/config_center?useSSL=false

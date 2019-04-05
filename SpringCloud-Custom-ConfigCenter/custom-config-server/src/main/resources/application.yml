@@ -1,9 +1,9 @@
 server:
   port: 9000
-  #context-path: /winner-config-server
+  #context-path: /config-server
 spring:
   application:
-    name: winner-config-server
+    name: config-server
   #mysql
   datasource:
     url: jdbc:mysql://192.168.206.210:3306/config_center?useSSL=false&useUnicode=true&characterEncoding=UTF-8
