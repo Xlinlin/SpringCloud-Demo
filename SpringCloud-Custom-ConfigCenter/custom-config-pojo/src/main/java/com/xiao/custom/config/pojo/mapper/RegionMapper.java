@@ -8,9 +8,10 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 /**
-* Created by Mybatis Generator on 2018/11/23
-*/
-public interface RegionMapper {
+ * Created by Mybatis Generator on 2018/11/23
+ */
+public interface RegionMapper
+{
     int deleteByPrimaryKey(Long id);
 
     int insert(Region record);
@@ -36,6 +37,7 @@ public interface RegionMapper {
     /**
      * [简要描述]:查询所有的区域
      * [详细描述]:<br/>
+     *
      * @return java.util.List<com.winner.config.center.pojo.db.dto.RegionDto>
      * mjye  2018/12/21 - 16:51
      **/
@@ -44,7 +46,8 @@ public interface RegionMapper {
     /**
      * [简要描述]:批量删除
      * [详细描述]:<br/>
-      * @param idArr :
+     *
+     * @param idArr :
      * @return int
      * mjye  2018/12/25 - 10:37
      **/

@@ -43,6 +43,14 @@ spring:
         [数据源刷新参考](https://www.jianshu.com/p/5acd4db7cd5e)<br>
         [Spring Cloud Config 是如何实现热更新的](http://www.scienjus.com/spring-cloud-refresh/)<br>
         [配置刷新基本流程](https://blog.csdn.net/cml_blog/article/details/78411312)<br>
-        
+ 3.8) 引入netty，实现心跳机制监听服务端客户端连接状态。<br>
+      A. 支持自定义netty端口，服务端和客户端自定义填写，配置参数：netty.server.port，默认使用8999<br>
+      B. springboot的 server.port 一定要配置到 bootstrap.yml配置文件中，客户端需要使用到该端口号上报到服务端<br>
+      C. springboot + netty 简单设计实现：<br>
+         心跳维持在线状态<br>
+         初始化连接时，模拟一个登陆操作，以此绑定netty连接端口和服务端所提供的端口，用于断开下线使用<br>
+         客户端失去心跳或异常连接，服务端监听到，标记应用离线<br>
+      D. 新增配置  ``spring.cloud.config.custom`` 参数来标记使用自定义配置中心，主要用于加载netty，使用心跳机制
+      E. netty实现配置刷新方案，netty连接后发起登录请求，上报客户端服务的IP和端口，后台数据库绑定netty和提供服务端口。服务端用一个ConcurrentHashMap存储连接，后台管理发起刷新请求通过netty发给客户端，刷新配置<br>      
 _3._**配置中心高可用方案理论**<br>
 既然使用spring-cloud套件，可结合eureka注册中心来实现高可用。其他详细设计可参考携程开源的apollo的高可用设计

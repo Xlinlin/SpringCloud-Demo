@@ -12,3 +12,7 @@ spring:
 management:
   security:
     enabled: false
+#自定义的netty服务端口，默认8999
+netty:
+  server:
+    port: 8999

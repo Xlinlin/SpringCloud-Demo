@@ -18,16 +18,15 @@ public interface ServerHostConfigService
     int save(ServerHostConfigDto serverHostConfigDto);
 
     int update(ServerHostConfigDto serverHostConfigDto);
-
     /**
      * [简要描述]:通过id获取<br/>
      * [详细描述]:<br/>
      *
      * @param id :
-     * @return jyqiao
+     * @return 
+     * jyqiao
      **/
     ServerHostConfig selectServerHostConfigById(Long id);
-
     int delete(Long id);
 
     PageInfo<ServerHostConfigDto> pageServerHostConfig(ServerHostConfigQuery serverHostConfigQuery, Integer pageNum,

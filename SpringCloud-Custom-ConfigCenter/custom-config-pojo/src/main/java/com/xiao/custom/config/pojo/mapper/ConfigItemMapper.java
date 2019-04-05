@@ -8,10 +8,9 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 /**
- * Created by Mybatis Generator on 2018/11/23
- */
-public interface ConfigItemMapper
-{
+* Created by Mybatis Generator on 2018/11/23
+*/
+public interface ConfigItemMapper {
     int deleteByPrimaryKey(Long id);
 
     int insert(ConfigItem record);

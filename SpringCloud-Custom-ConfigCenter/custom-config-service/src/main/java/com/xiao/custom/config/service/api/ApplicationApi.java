@@ -162,6 +162,20 @@ public class ApplicationApi
     }
 
     /**
+     * [简要描述]:批量发布<br/>
+     * [详细描述]:<br/>
+     *
+     * @param id : 客户端ID集合
+     * @return boolean
+     * llxiao  2019/3/27 - 20:05
+     **/
+    @RequestMapping("/batchRefresh")
+    public boolean batchRefresh(@RequestBody Long[] id)
+    {
+        return this.applicationConfigService.batchRefresh(id);
+    }
+
+    /**
      * [简要描述]:获取已绑定该应用的配置组<br/>
      * [详细描述]:<br/>
      *

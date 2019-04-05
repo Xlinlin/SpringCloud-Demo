@@ -128,3 +128,6 @@ saveRegionCity(@RequestBody RegionCityDto regionCityDto)``
 
 20190402
 1. 自定义配置中心，引入Netty监测心跳[详情](https://github.com/Xlinlin/SpringCloud-Demo/tree/master/SpringCloud-CustomConfig-Center)
+
+20190405
+1. netty实现配置刷新[详情](https://github.com/Xlinlin/SpringCloud-Demo/tree/master/SpringCloud-CustomConfig-Center)

@@ -77,7 +77,7 @@ public class ClientManagerServiceDbImpl implements ClientManagerService, SqlCons
     {
         Map<String, Object> params = new HashMap<>();
         params.put("status", status);
-        params.put("ip", hostIp);
+        params.put("nettyIp", hostIp);
         params.put("nettyPort", hostPort);
         namedParameterJdbcTemplate.update(SqlConstants.UPDATE_CLIENT_STATUS, params);
 
@@ -90,17 +90,17 @@ public class ClientManagerServiceDbImpl implements ClientManagerService, SqlCons
      * @param hostIp :
      * @param hostPort :
      * @param nettyPort :
-     * @return void
-     * llxiao  2019/4/1 - 11:49
+     * @param nettyHostIp llxiao  2019/4/1 - 11:49
      **/
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void updateNettyInfo(String hostIp, int hostPort, int nettyPort)
+    public void updateNettyInfo(String hostIp, int hostPort, int nettyPort, String nettyHostIp)
     {
         Map<String, Object> params = new HashMap<>();
         params.put("nettyPort", nettyPort);
         params.put("ip", hostIp);
         params.put("port", hostPort);
+        params.put("nettyIp", nettyHostIp);
         namedParameterJdbcTemplate.update(SqlConstants.UPDATE_NETTY_INFO, params);
     }
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.xiao.custom.config.pojo.mapper.RegionMapper">
-    <resultMap id="BaseResultMap" type="com.xiao.custom.config.pojo.entity.Region">
+<mapper namespace="com.winner.config.center.pojo.db.mapper.RegionMapper">
+    <resultMap id="BaseResultMap" type="com.winner.config.center.pojo.db.entity.Region">
         <id column="id" property="id" jdbcType="BIGINT"/>
         <result column="region_name" property="regionName" jdbcType="VARCHAR"/>
         <result column="region_desc" property="regionDesc" jdbcType="VARCHAR"/>
@@ -9,7 +9,7 @@
         <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
     </resultMap>
 
-    <resultMap id="DtoResultMap" type="com.xiao.custom.config.pojo.dto.RegionDto">
+    <resultMap id="DtoResultMap" type="com.winner.config.center.pojo.db.dto.RegionDto">
         <id column="id" property="id" jdbcType="BIGINT"/>
         <result column="region_name" property="regionName" jdbcType="VARCHAR"/>
         <result column="region_desc" property="regionDesc" jdbcType="VARCHAR"/>
@@ -30,14 +30,14 @@
     delete from t_region
     where id = #{id,jdbcType=BIGINT}
   </delete>
-    <insert id="insert" parameterType="com.xiao.custom.config.pojo.entity.Region" useGeneratedKeys="true"
+    <insert id="insert" parameterType="com.winner.config.center.pojo.db.entity.Region" useGeneratedKeys="true"
             keyColumn="id" keyProperty="id">
     insert into t_region (id, region_name, region_desc, 
       create_time, update_time)
     values (#{id,jdbcType=BIGINT}, #{regionName,jdbcType=VARCHAR}, #{regionDesc,jdbcType=VARCHAR}, 
       #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
   </insert>
-    <insert id="insertSelective" parameterType="com.xiao.custom.config.pojo.entity.Region">
+    <insert id="insertSelective" parameterType="com.winner.config.center.pojo.db.entity.Region">
         insert into t_region
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -74,7 +74,7 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.xiao.custom.config.pojo.entity.Region">
+    <update id="updateByPrimaryKeySelective" parameterType="com.winner.config.center.pojo.db.entity.Region">
         update t_region
         <set>
             <if test="regionName != null">
@@ -92,7 +92,7 @@
         </set>
         where id = #{id,jdbcType=BIGINT}
     </update>
-    <update id="updateByPrimaryKey" parameterType="com.xiao.custom.config.pojo.entity.Region">
+    <update id="updateByPrimaryKey" parameterType="com.winner.config.center.pojo.db.entity.Region">
     update t_region
     set region_name = #{regionName,jdbcType=VARCHAR},
       region_desc = #{regionDesc,jdbcType=VARCHAR},
@@ -118,7 +118,7 @@
         </where>
     </select>
 
-    <select id="selectRegion" resultType="com.xiao.custom.config.pojo.dto.RegionDto">
+    <select id="selectRegion" resultType="com.winner.config.center.pojo.db.dto.RegionDto">
         select t.id as id,t.region_name as regionName from  t_region t
         </select>
 

@@ -14,8 +14,9 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.timeout.IdleStateHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.DisposableBean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.context.refresh.ContextRefresher;
 import org.springframework.context.ApplicationListener;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.ContextRefreshedEvent;
 
 import javax.annotation.Resource;
@@ -34,7 +35,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @version 1.0, 2019/3/30 16:42
  * @since JDK 1.8
  */
-@Configuration
 @Slf4j
 public class NettyClient implements ApplicationListener<ContextRefreshedEvent>, DisposableBean
 {
@@ -51,9 +51,17 @@ public class NettyClient implements ApplicationListener<ContextRefreshedEvent>, 
     @Resource
     private ConfigClientProperties configClientProperties;
 
+    @Autowired
+    private ContextRefresher refresher;
+
     private Bootstrap boot;
 
     private Channel channel;
+
+    public NettyClient()
+    {
+        log.info(">>> 初始化netty 客户端......");
+    }
 
     @Override
     public void destroy() throws Exception
@@ -63,14 +71,17 @@ public class NettyClient implements ApplicationListener<ContextRefreshedEvent>, 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent)
     {
-        log.info(">>> 配置中心服务地址:{}", configClientProperties.getUri());
-        nettyServerHost = parseHost(configClientProperties.getUri());
-        nettyServerPort = configClientProperties.getNettyPort();
-        init();
-        connect();
-        //2分钟检测一次连接情况
-        reConnectExecutor.scheduleAtFixedRate((Runnable) () -> check(), 1, 2, TimeUnit.MINUTES);
-
+        //是否使用自定义配置中心
+        if (!started.get() && configClientProperties.isCustom())
+        {
+            log.info(">>> 配置中心服务地址:{}", configClientProperties.getUri());
+            nettyServerHost = parseHost(configClientProperties.getUri());
+            nettyServerPort = configClientProperties.getNettyPort();
+            init();
+            connect();
+            //2分钟检测一次连接情况
+            reConnectExecutor.scheduleAtFixedRate((Runnable) () -> check(), 1, 2, TimeUnit.MINUTES);
+        }
     }
 
     /**
@@ -93,7 +104,8 @@ public class NettyClient implements ApplicationListener<ContextRefreshedEvent>, 
         Message message = new Message();
         message.setCommand(CommandEnum.LOGIN.getStatus());
         message.setServerPort(configClientProperties.getServerPort());
-        message.setHostIp(RemotingUtil.getHost(configClientProperties.getUri()));
+        message.setHostIp(RemotingUtil.parseLocalIP(channel));
+        message.setApplicationName(configClientProperties.getName());
         pushMessage(message);
     }
 
@@ -139,7 +151,7 @@ public class NettyClient implements ApplicationListener<ContextRefreshedEvent>, 
                 pipeline.addLast(CoderFactory.newEncoder());
 
                 //业务处理
-                pipeline.addLast(new ServiceHandler(started));
+                pipeline.addLast(new ServiceHandler(started, refresher));
             }
         });
     }
@@ -172,16 +184,14 @@ public class NettyClient implements ApplicationListener<ContextRefreshedEvent>, 
         {
             log.info(">>> 执行客户端重连操作...");
             connect();
-        }
-    }
 
-    /**
-     * 设置状态
-     *
-     * @param started
-     */
-    public void setStarted(boolean started)
-    {
-        this.started.set(started);
+            if (started.get())
+            {
+                //重连成功后再次刷新下配置文件
+                refresher.refresh();
+            }
+
+        }
+
     }
 }

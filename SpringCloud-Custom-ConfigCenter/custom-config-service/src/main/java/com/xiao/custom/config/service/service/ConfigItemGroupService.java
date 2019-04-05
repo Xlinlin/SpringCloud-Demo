@@ -39,8 +39,8 @@ public interface ConfigItemGroupService
      * [详细描述]:<br/>
      *
      * @param configItemGroupQuery :
-     * @param pageNum :
-     * @param pageSize :
+     * @param pageNum              :
+     * @param pageSize             :
      * @return com.github.pagehelper.PageInfo<com.winner.config.center.pojo.db.dto.ConfigItemGroupDto>
      * jun.liu  2018/11/28 - 15:02
      **/
@@ -52,8 +52,8 @@ public interface ConfigItemGroupService
      * [详细描述]:<br/>
      *
      * @param configItemGroupQuery :
-     * @param pageNum :
-     * @param pageSize :
+     * @param pageNum              :
+     * @param pageSize             :
      * @return com.github.pagehelper.PageInfo<com.winner.config.center.pojo.db.dto.ConfigItemGroupDto>
      * jun.liu  2018/11/28 - 15:02
      **/

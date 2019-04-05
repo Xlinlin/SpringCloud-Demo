@@ -3,6 +3,8 @@ package com.xiao.custom.config.server.netty.handler;
 import com.xiao.custom.config.server.manager.ClientManagerService;
 import com.xiao.custom.config.server.netty.dto.CommandEnum;
 import com.xiao.custom.config.server.netty.dto.Message;
+import com.xiao.custom.config.server.netty.manager.Connection;
+import com.xiao.custom.config.server.netty.manager.ConnectionManager;
 import com.xiao.custom.config.server.netty.util.RemotingUtil;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -26,10 +28,13 @@ public class ServiceHandler extends SimpleChannelInboundHandler<Message>
 {
     private ClientManagerService clientManagerService;
 
-    public ServiceHandler(ClientManagerService clientManagerService)
+    private ConnectionManager connectionManager;
+
+    public ServiceHandler(ClientManagerService clientManagerService, ConnectionManager connectionManager)
     {
         super();
         this.clientManagerService = clientManagerService;
+        this.connectionManager = connectionManager;
     }
 
     @Override
@@ -44,22 +49,25 @@ public class ServiceHandler extends SimpleChannelInboundHandler<Message>
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, Message message) throws Exception
     {
 
-        String hostIp = RemotingUtil.parseRemoteIP(channelHandlerContext.channel());
+        String nettyIp = RemotingUtil.parseRemoteIP(channelHandlerContext.channel());
         int nettyPort = RemotingUtil.parseRemotePort(channelHandlerContext.channel());
         if (CommandEnum.IDLE.getStatus() == message.getCommand())
         {
             if (log.isDebugEnabled())
             {
-                log.debug(">>> 客户端-IP:{},PORT:{}发起了心跳请求.", hostIp, nettyPort);
+                log.debug(">>> 客户端-IP:{},PORT:{}发起了心跳请求.", nettyIp, nettyPort);
             }
             //收到心跳维护客户端http服务和netty服务关系
-            channelHandlerContext.channel().write(message);
+            channelHandlerContext.channel().writeAndFlush(message);
         }
         else if (CommandEnum.LOGIN.getStatus() == message.getCommand())
         {
-            log.info(">>> 客户端-IP:{},PORT:{}发起了登录请求", message.getHostIp(), nettyPort);
+            log.info(">>> 客户端-IP:{},PORT:{}发起了登录请求", message.getHostIp(), message.getServerPort());
+            log.info(">>> 客户端-Netty IP:{},Netty PORT:{}发起了登录请求", nettyIp, nettyPort);
             //绑定应用信息和netty端口信息
-            clientManagerService.updateNettyInfo(hostIp, message.getServerPort(), nettyPort);
+            clientManagerService.updateNettyInfo(message.getHostIp(), message.getServerPort(), nettyPort, nettyIp);
+            connectionManager.addConnection(new Connection(channelHandlerContext.channel(), message.getHostIp(), message
+                    .getServerPort()));
         }
         else
         {
@@ -75,9 +83,12 @@ public class ServiceHandler extends SimpleChannelInboundHandler<Message>
         int port = RemotingUtil.parseRemotePort(ctx.channel());
         log.error(">>> 客户端-IP:{},PORT:{}关闭了连接,并进行下线操作!", ip, port);
         // 下线处理
-        ctx.close();
-
-        clientManagerService.updateStatus(ip, port, ClientManagerService.OFF_LINE);
+        if (ctx.channel().isOpen())
+        {
+            ctx.close();
+            clientManagerService.updateStatus(ip, port, ClientManagerService.OFF_LINE);
+            connectionManager.remove(ip, port);
+        }
     }
 
     @Override
@@ -97,8 +108,12 @@ public class ServiceHandler extends SimpleChannelInboundHandler<Message>
                 int port = RemotingUtil.parseRemotePort(ctx.channel());
                 log.warn(">>> 关闭这个不活跃的连接-IP:{},PORT:{}并进行离线操作", ip, port);
                 //  心跳，关闭连接
-                ctx.close();
-                clientManagerService.updateStatus(ip, port, ClientManagerService.OFF_LINE);
+                if (ctx.channel().isOpen())
+                {
+                    ctx.close();
+                    clientManagerService.updateStatus(ip, port, ClientManagerService.OFF_LINE);
+                    connectionManager.remove(ip, port);
+                }
             }
             catch (Exception e)
             {

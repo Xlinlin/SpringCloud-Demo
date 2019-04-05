@@ -23,7 +23,7 @@ public interface ConfigItemGroupRelationService
      * [详细描述]:<br/>
      *
      * @param itemIdArr :
-     * @param groupId :
+     * @param groupId   :
      * @return int
      * jun.liu  2018/11/28 - 9:31
      **/
@@ -34,7 +34,7 @@ public interface ConfigItemGroupRelationService
      * [详细描述]:<br/>
      *
      * @param itemIdArr :
-     * @param groupId :
+     * @param groupId   :
      * @return int
      * jun.liu  2018/11/28 - 15:13
      **/

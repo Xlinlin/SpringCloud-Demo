@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.xiao.custom.config.pojo.mapper.ApplicationMapper">
-    <resultMap id="BaseResultMap" type="com.xiao.custom.config.pojo.entity.Application">
+<mapper namespace="com.winner.config.center.pojo.db.mapper.ApplicationMapper">
+    <resultMap id="BaseResultMap" type="com.winner.config.center.pojo.db.entity.Application">
         <id column="id" property="id" jdbcType="BIGINT"/>
         <result column="application" property="application" jdbcType="VARCHAR"/>
         <result column="application_name" property="applicationName" jdbcType="VARCHAR"/>
@@ -12,7 +12,7 @@
         <result column="region_id" property="regionId" jdbcType="BIGINT"/>
     </resultMap>
 
-    <resultMap id="DtoResultMap" type="com.xiao.custom.config.pojo.dto.ApplicationDto">
+    <resultMap id="DtoResultMap" type="com.winner.config.center.pojo.db.dto.ApplicationDto">
         <id column="id" property="id" jdbcType="BIGINT"/>
         <result column="application" property="application" jdbcType="VARCHAR"/>
         <result column="application_name" property="applicationName" jdbcType="VARCHAR"/>
@@ -36,7 +36,7 @@
     delete from t_application
     where id = #{id,jdbcType=BIGINT}
   </delete>
-    <insert id="insert" parameterType="com.xiao.custom.config.pojo.entity.Application"
+    <insert id="insert" parameterType="com.winner.config.center.pojo.db.entity.Application"
             useGeneratedKeys="true" keyColumn="id" keyProperty="id">
     insert into t_application (id, application, application_name,
       label, profile, create_time, 
@@ -45,7 +45,7 @@
       #{label,jdbcType=VARCHAR}, #{profile,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
       #{updateTime,jdbcType=TIMESTAMP}, #{regionId,jdbcType=BIGINT})
   </insert>
-    <insert id="insertSelective" parameterType="com.xiao.custom.config.pojo.entity.Application">
+    <insert id="insertSelective" parameterType="com.winner.config.center.pojo.db.entity.Application">
         insert into t_application
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -100,7 +100,7 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.xiao.custom.config.pojo.entity.Application">
+    <update id="updateByPrimaryKeySelective" parameterType="com.winner.config.center.pojo.db.entity.Application">
         update t_application
         <set>
             <if test="application != null">
@@ -127,7 +127,7 @@
         </set>
         where id = #{id,jdbcType=BIGINT}
     </update>
-    <update id="updateByPrimaryKey" parameterType="com.xiao.custom.config.pojo.entity.Application">
+    <update id="updateByPrimaryKey" parameterType="com.winner.config.center.pojo.db.entity.Application">
     update t_application
     set application = #{application,jdbcType=VARCHAR},
       application_name = #{applicationName,jdbcType=VARCHAR},
@@ -140,7 +140,7 @@
   </update>
 
     <select id="pageApplicationConfig" resultMap="DtoResultMap"
-            parameterType="com.xiao.custom.config.pojo.query.AppQuery">
+            parameterType="com.winner.config.center.pojo.db.query.AppQuery">
         SELECT app.*,r.region_name FROM t_application app left join t_region r on app.region_id = r.id
         where 1 = 1
         <if test="application != null and application != ''">

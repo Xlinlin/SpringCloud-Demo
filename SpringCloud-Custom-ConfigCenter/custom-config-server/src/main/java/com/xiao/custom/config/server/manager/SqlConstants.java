@@ -44,10 +44,10 @@ public interface SqlConstants
     /**
      * IP+PORT更新客户端状态
      */
-    String UPDATE_CLIENT_STATUS = "update t_client_host_info set status = :status,update_time = now() where host_ip = :ip and netty_port = :nettyPort";
+    String UPDATE_CLIENT_STATUS = "update t_client_host_info set status = :status,update_time = now() where netty_ip = :nettyIp and netty_port = :nettyPort";
 
     /**
      * 绑定host和netty端口信息，标记上线
      */
-    String UPDATE_NETTY_INFO = "update t_client_host_info set netty_port = :nettyPort,status = 0,update_time = now()  where host_ip = :ip and host_port = :port";
+    String UPDATE_NETTY_INFO = "update t_client_host_info set netty_port = :nettyPort,netty_ip = :nettyIp,status = 0,update_time = now()  where host_ip = :ip and host_port = :port";
 }

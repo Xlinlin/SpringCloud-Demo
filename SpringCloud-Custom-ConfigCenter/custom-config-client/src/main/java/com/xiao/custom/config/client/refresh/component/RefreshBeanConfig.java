@@ -12,8 +12,8 @@ import org.springframework.context.annotation.Configuration;
  * @version 1.0, 2019/1/29 14:07
  * @since JDK 1.8
  */
-@Configuration
-@ComponentScan
+//@Configuration
+//@ComponentScan
 public class RefreshBeanConfig
 {
 }

@@ -85,7 +85,7 @@ public interface ApplicationService
     boolean delPrivateConfig(Long id);
 
     /**
-     * [简要描述]:发布配置<br/>
+     * [简要描述]:全部发布配置<br/>
      * [详细描述]:<br/>
      *
      * @param id :
@@ -93,4 +93,14 @@ public interface ApplicationService
      * llxiao  2019/1/30 - 10:53
      **/
     boolean refresh(Long id);
+
+    /**
+     * [简要描述]:指定客户端按户型配置<br/>
+     * [详细描述]:<br/>
+     *
+     * @param hostInfoIds : 客户端信息
+     * @return boolean
+     * llxiao  2019/3/27 - 14:06
+     **/
+    boolean batchRefresh(Long... hostInfoIds);
 }

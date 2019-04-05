@@ -9,6 +9,7 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cloud.context.refresh.ContextRefresher;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -29,11 +30,14 @@ public class ServiceHandler extends SimpleChannelInboundHandler<Message>
 
     private AtomicBoolean stated;
 
-    public ServiceHandler(AtomicBoolean stated)
+    private ContextRefresher refresher;
+
+    public ServiceHandler(AtomicBoolean stated, ContextRefresher refresher)
     {
         super();
         this.stated = stated;
         HEARTBEAT_SEQUENCE.setCommand(CommandEnum.IDLE.getStatus());
+        this.refresher = refresher;
     }
 
     @Override
@@ -42,11 +46,19 @@ public class ServiceHandler extends SimpleChannelInboundHandler<Message>
         //心跳消息
         if (CommandEnum.IDLE.getStatus() == message.getCommand())
         {
-            log.info(">>> 接收到服务端返回心跳消息：{}", message);
+            if (log.isDebugEnabled())
+            {
+                log.debug(">>> 接收到服务端返回心跳消息：{}", message);
+            }
+        }
+        else if (CommandEnum.REFRESH.getStatus() == message.getCommand())
+        {
+            log.info(">>> 服务端推送了刷新信息", message.getCommand());
+            refresher.refresh();
         }
         else
         {
-            log.info("业务逻辑处理..:{}", message.getCommand());
+            log.info(">>> 业务处理");
         }
     }
 

@@ -16,8 +16,9 @@
 
 package com.xiao.custom.config.client.configuration;
 
-import com.xiao.custom.config.client.configuration.environment.Environment;
-import com.xiao.custom.config.client.configuration.environment.PropertySource;
+import com.xiao.custom.config.client.environment.Environment;
+import com.xiao.custom.config.client.environment.PropertySource;
+import com.xiao.custom.config.client.netty.util.RemotingUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.cloud.bootstrap.config.PropertySourceLocator;
@@ -50,6 +51,9 @@ import static com.xiao.custom.config.client.configuration.ConfigClientProperties
 @Order(0)
 public class ConfigServicePropertySourceLocator implements PropertySourceLocator
 {
+
+    private static final String LOCAL_HOST = "ClientServerPort";
+    private static final String LOCAL_PORT = "ClientServerHost";
 
     private static Log logger = LogFactory.getLog(ConfigServicePropertySourceLocator.class);
 
@@ -219,13 +223,14 @@ public class ConfigServicePropertySourceLocator implements PropertySourceLocator
         {
             template.setInterceptors(Arrays.<ClientHttpRequestInterceptor>asList(new GenericAuthorization(authorization)));
         }
-
-        // 设置当前服务开发的端口，以便管理端使用rest方式刷新客户端的配置
+        // 自定义 http header
         template.setInterceptors(Arrays
                 .asList((ClientHttpRequestInterceptor) (httpRequest, bytes, clientHttpRequestExecution) ->
                 {
                     HttpHeaders headers = httpRequest.getHeaders();
-                    headers.add("ClientServerPort", client.getServerPort() + "");
+                    // TODO  通过netty交互，上报客户端 服务IP和端口号
+                    headers.add(LOCAL_PORT, client.getServerPort() + "");
+                    headers.add(LOCAL_HOST, RemotingUtil.getLocalHost());
                     return clientHttpRequestExecution.execute(httpRequest, bytes);
                 }));
 

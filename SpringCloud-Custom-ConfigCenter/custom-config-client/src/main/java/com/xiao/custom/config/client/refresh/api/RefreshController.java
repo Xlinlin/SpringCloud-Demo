@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
  * @version 1.0, 2019/1/29 14:18
  * @since JDK 1.8
  */
-@RestController
-@RequestMapping("/config")
+//@RestController
+//@RequestMapping("/config")
 public class RefreshController
 {
     /**
@@ -23,7 +23,7 @@ public class RefreshController
      */
     private static final int SUCCESS = 0;
 
-    @Autowired
+//    @Autowired
     private ConfigRefreshService configRefreshService;
 
     /**

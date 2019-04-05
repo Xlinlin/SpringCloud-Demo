@@ -22,7 +22,6 @@ public interface RegionService
     int update(RegionDto regionDto);
 
     int delete(Long id);
-
     Region selectRegionById(Long id);
 
     PageInfo<RegionDto> pageRegion(RegionQuery regionQuery, Integer pageNum, Integer pageSize);

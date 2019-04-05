@@ -42,4 +42,9 @@ public class Message
      * 客户端服务IP
      */
     private String hostIp;
+
+    /**
+     * 应用名称
+     */
+    private String applicationName;
 }

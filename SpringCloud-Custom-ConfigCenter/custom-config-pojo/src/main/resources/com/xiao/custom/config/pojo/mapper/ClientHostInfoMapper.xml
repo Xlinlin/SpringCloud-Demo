@@ -6,13 +6,15 @@
         <result column="client_application_id" property="clientApplicationId" jdbcType="BIGINT"/>
         <result column="host_ip" property="hostIp" jdbcType="VARCHAR"/>
         <result column="host_port" property="hostPort" jdbcType="INTEGER"/>
+        <result column="netty_ip" property="nettyIp" jdbcType="VARCHAR"/>
+        <result column="netty_port" property="nettyPort" jdbcType="INTEGER"/>
         <result column="status" property="status" jdbcType="INTEGER"/>
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-    id, client_application_id, host_ip, host_port, status, create_time, update_time
+    id, client_application_id, host_ip, host_port,netty_ip,netty_port, status, create_time, update_time
   </sql>
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
         select
@@ -131,7 +133,7 @@
     <select id="pageQuery" parameterType="com.xiao.custom.config.pojo.query.ClientHostInfoQuery"
             resultType="com.xiao.custom.config.pojo.dto.ClientHostInfoDto">
         SELECT c.id,c.client_application_id as applicationClientId,c.host_ip as hostIp,c.host_port as
-        hostPort,c.status,c.create_time as createTime,c.update_time as updateTime,app.application
+        hostPort,c.netty_ip as nettyPort,c.netty_port as nettyPort, c.status,c.create_time as createTime,c.update_time as updateTime,app.application
         FROM t_client_host_info c,t_client_application app
         where c.client_application_id = app.id
         <if test="hostIp != null and hostIp != ''">

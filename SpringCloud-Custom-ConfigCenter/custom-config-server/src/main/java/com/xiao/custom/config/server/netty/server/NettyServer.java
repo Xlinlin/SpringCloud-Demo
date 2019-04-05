@@ -4,6 +4,7 @@ import com.xiao.custom.config.server.manager.ClientManagerService;
 import com.xiao.custom.config.server.netty.factory.CoderFactory;
 import com.xiao.custom.config.server.netty.factory.NamedThreadFactory;
 import com.xiao.custom.config.server.netty.handler.ServiceHandler;
+import com.xiao.custom.config.server.netty.manager.ConnectionManager;
 import com.xiao.custom.config.server.netty.util.NettyConfig;
 import com.xiao.custom.config.server.netty.util.NettyEventLoopUtil;
 import io.netty.bootstrap.ServerBootstrap;
@@ -48,6 +49,9 @@ public class NettyServer implements ApplicationListener<ContextRefreshedEvent>, 
 
     @Autowired
     private ClientManagerService clientManagerService;
+
+    @Autowired
+    private ConnectionManager connectionManager;
 
     private ScheduledExecutorService scheduledExecutorService;
 
@@ -128,7 +132,7 @@ public class NettyServer implements ApplicationListener<ContextRefreshedEvent>, 
                 pipeline.addLast(CoderFactory.newEncoder());
 
                 // 业务handler
-                pipeline.addLast(new ServiceHandler(clientManagerService));
+                pipeline.addLast(new ServiceHandler(clientManagerService, connectionManager));
             }
         });
     }

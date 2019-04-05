@@ -2,9 +2,8 @@ package com.xiao.custom.config.server.environment;
 
 import com.xiao.custom.config.server.manager.ClientManagerService;
 import com.xiao.custom.config.server.service.RepositoryService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.MapUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.cloud.config.environment.Environment;
 import org.springframework.cloud.config.environment.PropertySource;
 import org.springframework.cloud.config.server.environment.EnvironmentRepository;
@@ -26,16 +25,18 @@ import static org.springframework.util.StringUtils.isEmpty;
  * @version 1.0, 2018/11/22 15:16
  * @since JDK 1.8
  */
+@Slf4j
 public class CustomEnvironmentRepository implements EnvironmentRepository, Ordered
 {
-    private Logger log = LoggerFactory.getLogger(CustomEnvironmentRepository.class);
-
     /**
      * config server 一些默认配置
      */
     private static final String APPLICATION = "application";
     private static final String DEFAULT_PROFILE = "default";
     private static final String DEFAULT_LABEL = "master";
+
+    private static final String CLIENT_HOST = "ClientServerPort";
+    private static final String CLIENT_PORT = "ClientServerHost";
 
     /**
      * Squid 服务代理
@@ -74,27 +75,7 @@ public class CustomEnvironmentRepository implements EnvironmentRepository, Order
     @Override
     public Environment findOne(String application, String profile, String label)
     {
-        ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder
-                .getRequestAttributes();
-        String ip = "";
-        String port = "";
-        if (null != servletRequestAttributes)
-        {
-            HttpServletRequest request = servletRequestAttributes.getRequest();
-
-            //获取IP
-            ip = getClientIp(request);
-            port = request.getHeader("ClientServerPort");
-            if (log.isDebugEnabled())
-            {
-                log.debug("客户端提供服务器Host信息：IP{},Port{}", ip, port);
-            }
-            if (!isEmpty(ip) && !isEmpty(port))
-            {
-                clientManagerService.setClientHost(application, profile, ip, Integer.parseInt(port));
-            }
-
-        }
+        String ip = saveClientInfo(application, profile);
 
         String config = application;
         if (isEmpty(label))
@@ -133,6 +114,33 @@ public class CustomEnvironmentRepository implements EnvironmentRepository, Order
             }
         }
         return environment;
+    }
+
+    private String saveClientInfo(String application, String profile)
+    {
+        ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder
+                .getRequestAttributes();
+        String ip = "";
+        String port = "";
+        if (null != servletRequestAttributes)
+        {
+            HttpServletRequest request = servletRequestAttributes.getRequest();
+
+            //获取IP
+            ip = request.getHeader(CLIENT_HOST);
+            if (org.apache.commons.lang3.StringUtils.isBlank(ip))
+            {
+                ip = getClientIp(request);
+            }
+            port = request.getHeader(CLIENT_PORT);
+            log.info(">>> 应用：{}开始从配置中心拉取配置", application);
+            log.info(">>> 应用端服务器信息-IP:{},Port:{}", ip, port);
+            if (!isEmpty(ip) && !isEmpty(port))
+            {
+                clientManagerService.setClientHost(application, profile, ip, Integer.parseInt(port));
+            }
+        }
+        return ip;
     }
 
     private String getClientIp(HttpServletRequest request)

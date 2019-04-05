@@ -30,6 +30,9 @@ public class ServerHostConfigServiceImpl implements ServerHostConfigService
     @Resource
     private ServerHostConfigMapper serverHostConfigMapper;
 
+    @Autowired
+    private ApplicationMapper applicationConfigMapper;
+
     @Override
     @Transactional
     public int save(ServerHostConfigDto serverHostConfigDto)

@@ -15,6 +15,7 @@
  */
 package com.xiao.custom.config.client.configuration;
 
+import com.xiao.custom.config.client.netty.client.NettyClient;
 import org.springframework.beans.factory.BeanFactoryUtils;
 import org.springframework.boot.actuate.health.HealthIndicator;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -23,7 +24,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.cloud.context.refresh.ContextRefresher;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 
@@ -37,7 +37,6 @@ import org.springframework.core.env.Environment;
  * @author Marcos Barbero
  */
 @Configuration
-@ComponentScan("com.xiao.custom.config.client.*")
 public class ConfigClientAutoConfiguration
 {
     @Bean
@@ -79,7 +78,6 @@ public class ConfigClientAutoConfiguration
     @ConditionalOnProperty(value = "spring.cloud.config.watch.enabled")
     protected static class ConfigClientWatchConfiguration
     {
-
         @Bean
         public ConfigClientWatch configClientWatch(ContextRefresher contextRefresher)
         {
@@ -87,4 +85,10 @@ public class ConfigClientAutoConfiguration
         }
     }
 
+    @Bean
+    @ConditionalOnProperty(name = "spring.cloud.config.custom", havingValue = "true")
+    public NettyClient nettyClient()
+    {
+        return new NettyClient();
+    }
 }

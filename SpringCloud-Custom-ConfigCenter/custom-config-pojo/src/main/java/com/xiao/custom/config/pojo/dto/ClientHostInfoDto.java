@@ -27,6 +27,9 @@ public class ClientHostInfoDto
      */
     private String application;
 
+    private String nettyIp;
+    private Integer nettyPort;
+
     private String hostIp;
 
     private Integer hostPort;

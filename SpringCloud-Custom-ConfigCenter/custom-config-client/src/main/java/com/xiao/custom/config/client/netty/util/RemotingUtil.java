@@ -17,9 +17,11 @@
 package com.xiao.custom.config.client.netty.util;
 
 import io.netty.channel.Channel;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
 import java.net.*;
+import java.util.Enumeration;
 
 /**
  * Some utilities for remoting.
@@ -27,6 +29,7 @@ import java.net.*;
  * @author jiangping
  * @version $Id: RemotingUtil.java, v 0.1 Mar 30, 2016 11:51:02 AM jiangping Exp $
  */
+@Slf4j
 public class RemotingUtil
 {
 
@@ -213,16 +216,95 @@ public class RemotingUtil
     public static String getHost(String url)
     {
         String host = "";
+        if (StringUtils.isNotBlank(url))
+        {
+            try
+            {
+                URL u = new URL(url);
+                host = u.getHost();
+            }
+            catch (Exception e)
+            {
+                log.error("Url错误，获取不到主机信息!");
+            }
+        }
+
+        return host;
+    }
+
+    /**
+     * [简要描述]:获取本地IP地址<br/>
+     * [详细描述]:<br/>
+     *
+     * @return java.lang.String
+     * llxiao  2019/4/3 - 16:52
+     **/
+    public static String getLocalHost()
+    {
+        InetAddress inetAddress = getLocalHostLANAddress();
+        if (null != inetAddress)
+        {
+            return inetAddress.getHostName();
+        }
+        else
+        {
+            return "";
+        }
+    }
+
+    /**
+     * [简要描述]:获取本地的IP地址<br/>
+     * [详细描述]:<br/>
+     *
+     * @return java.net.InetAddress
+     * llxiao  2019/4/3 - 16:44
+     **/
+    public static InetAddress getLocalHostLANAddress()
+    {
+        InetAddress jdkSuppliedAddress = null;
         try
         {
-            URL u = new URL(url);
-            host = u.getHost();
+            InetAddress candidateAddress = null;
+            InetAddress inetAddr;
+            NetworkInterface iface;
+            // 遍历所有的网络接口
+            for (Enumeration ifaces = NetworkInterface.getNetworkInterfaces(); ifaces.hasMoreElements(); )
+            {
+                iface = (NetworkInterface) ifaces.nextElement();
+                // 在所有的接口下再遍历IP
+                for (Enumeration inetAddrs = iface.getInetAddresses(); inetAddrs.hasMoreElements(); )
+                {
+                    inetAddr = (InetAddress) inetAddrs.nextElement();
+                    if (!inetAddr.isLoopbackAddress())
+                    {// 排除loopback类型地址
+                        if (inetAddr.isSiteLocalAddress())
+                        {
+                            // 如果是site-local地址，就是它了
+                            return inetAddr;
+                        }
+                        else if (candidateAddress == null)
+                        {
+                            // site-local类型的地址未被发现，先记录候选地址
+                            candidateAddress = inetAddr;
+                        }
+                    }
+                }
+            }
+            if (candidateAddress != null)
+            {
+                jdkSuppliedAddress = candidateAddress;
+            }
+            else
+            {
+                // 如果没有发现 non-loopback地址.只能用最次选的方案
+                jdkSuppliedAddress = InetAddress.getLocalHost();
+            }
         }
-        catch (MalformedURLException e)
+        catch (Exception e)
         {
-
+            log.error("获取本地IP地址错误，错误信息:", e);
         }
-        return host;
+        return jdkSuppliedAddress;
     }
 
     /**

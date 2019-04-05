@@ -38,6 +38,12 @@ public class ConfigClientProperties
     public static final String STATE_HEADER = "X-Config-State";
 
     /**
+     * 自定义配置中心,默认不使用
+     * true使用，false不适用
+     */
+    private boolean custom = false;
+
+    /**
      * server port
      */
     @Value("${server.port:}")
@@ -119,6 +125,16 @@ public class ConfigClientProperties
             profiles = environment.getDefaultProfiles();
         }
         this.setProfile(StringUtils.arrayToCommaDelimitedString(profiles));
+    }
+
+    public boolean isCustom()
+    {
+        return custom;
+    }
+
+    public void setCustom(boolean custom)
+    {
+        this.custom = custom;
     }
 
     public int getNettyPort()

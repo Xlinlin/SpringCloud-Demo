@@ -14,11 +14,11 @@ import org.springframework.stereotype.Service;
  * @version 1.0, 2019/1/29 14:20
  * @since JDK 1.8
  */
-@Service
+//@Service
 @Slf4j
 public class ConfigRefreshServiceImpl implements ConfigRefreshService
 {
-    @Autowired
+//    @Autowired
     private ContextRefresher refresher;
 
     /**

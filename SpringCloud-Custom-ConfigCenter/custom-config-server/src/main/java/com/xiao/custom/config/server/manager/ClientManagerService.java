@@ -49,8 +49,9 @@ public interface ClientManagerService
      * @param hostIp :
      * @param hostPort :
      * @param nettyPort :
+     * @param nettyHostIp :
      * @return void
      * llxiao  2019/4/1 - 11:49
      **/
-    void updateNettyInfo(String hostIp, int hostPort, int nettyPort);
+    void updateNettyInfo(String hostIp, int hostPort, int nettyPort, String nettyHostIp);
 }

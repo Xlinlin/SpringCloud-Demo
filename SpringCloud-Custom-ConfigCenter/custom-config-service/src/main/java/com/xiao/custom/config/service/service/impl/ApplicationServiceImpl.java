@@ -11,17 +11,12 @@ import com.xiao.custom.config.pojo.entity.ClientHostInfo;
 import com.xiao.custom.config.pojo.mapper.*;
 import com.xiao.custom.config.pojo.query.AppQuery;
 import com.xiao.custom.config.pojo.query.ApplicationConfigQuery;
+import com.xiao.custom.config.service.feign.RefreshFeign;
 import com.xiao.custom.config.service.service.ApplicationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
@@ -64,29 +59,31 @@ public class ApplicationServiceImpl implements ApplicationService
     @Autowired
     private RestTemplate restTemplate;
 
+    @Autowired
+    private RefreshFeign refreshFeign;
+
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public Integer save(Application applicationConfig, String[] groupIdArr)
     {
         int a = applicationMapper.insert(applicationConfig);
         if (groupIdArr != null && groupIdArr.length > 0 && a > 0)
         {
             Long appId = applicationConfig.getId();
-            int b = applicationItemGroupRelationMapper.batchSave(groupIdArr, appId);
-            return b;
+            return applicationItemGroupRelationMapper.batchSave(groupIdArr, appId);
         }
         return a;
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public Integer update(Application applicationConfig)
     {
         return applicationMapper.updateByPrimaryKey(applicationConfig);
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public Integer delete(Long id)
     {
         int delFlag = applicationMapper.deleteByPrimaryKey(id);
@@ -102,8 +99,7 @@ public class ApplicationServiceImpl implements ApplicationService
     public PageInfo<ApplicationDto> pageApplicationConfig(AppQuery appQuery, Integer pageNum, Integer pageSize)
     {
         PageHelper.startPage(pageNum, pageSize);
-        List<ApplicationDto> list = applicationMapper.pageApplicationConfig(appQuery);
-        return new PageInfo<>(list);
+        return new PageInfo<>(applicationMapper.pageApplicationConfig(appQuery));
     }
 
     @Override
@@ -141,7 +137,7 @@ public class ApplicationServiceImpl implements ApplicationService
      * llxiao  2019/1/7 - 16:56
      **/
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public boolean saveApplicationConfig(ApplicationConfig applicationConfig)
     {
         int flag = 0;
@@ -161,7 +157,7 @@ public class ApplicationServiceImpl implements ApplicationService
      * llxiao  2019/1/7 - 16:58
      **/
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public boolean updateApplicationConfig(ApplicationConfig applicationConfig)
     {
         int flag = 0;
@@ -212,10 +208,14 @@ public class ApplicationServiceImpl implements ApplicationService
             {
                 for (ClientHostInfo hostInfo : hostInfos)
                 {
-                    if (restRefresh(hostInfo))
+                    if (refreshFeign.refresh(hostInfo.getNettyIp(), hostInfo.getNettyPort()))
                     {
                         size++;
                     }
+                    //                    if (restRefresh(hostInfo))
+                    //                    {
+                    //                        size++;
+                    //                    }
                 }
 
                 //所有更新服务失败，需要标记应用下线
@@ -232,43 +232,82 @@ public class ApplicationServiceImpl implements ApplicationService
     }
 
     /**
-     * [简要描述]:远程发起刷新请求<br/>
+     * [简要描述]:指定客户端按户型配置<br/>
      * [详细描述]:<br/>
      *
-     * @param hostInfo :
-     * llxiao  2019/1/30 - 11:30
+     * @param hostInfoIds : 客户端信息
+     * @return boolean
+     * llxiao  2019/3/27 - 14:06
      **/
-    private boolean restRefresh(ClientHostInfo hostInfo)
+    @Override
+    public boolean batchRefresh(Long... hostInfoIds)
     {
-        String url = "http://" + hostInfo.getHostIp() + ':' + hostInfo.getHostPort() + REFRESH_URL;
-        // 封装参数，千万不要替换为Map与HashMap，否则参数无法传递
-        MultiValueMap<String, Object> paramMap = new LinkedMultiValueMap<>();
-        // 消息头
-        HttpHeaders headers = new HttpHeaders();
-        HttpEntity<MultiValueMap<String, Object>> httpEntity = new HttpEntity<>(paramMap, headers);
-        boolean flag = true;
-        int status = 0;
-        try
+        int size = 0;
+        if (null != hostInfoIds)
         {
-            ResponseEntity<Integer> result = restTemplate.exchange(url, HttpMethod.POST, httpEntity, Integer.class);
-            status = result.getStatusCodeValue();
-            if (HTTP_SUCCESS_CODE == status && SUCCESS == result.getBody())
+            ClientHostInfo hostInfo;
+            for (Long hostInfoId : hostInfoIds)
             {
-                log.info("应用更新成功：应用服务IP:{},应用服务PORT:{}", hostInfo.getHostIp(), hostInfo.getHostPort());
+                hostInfo = this.clientHostInfoMapper.selectByPrimaryKey(hostInfoId);
+                //在线状态
+                if (null != hostInfo && hostInfo.getStatus() == ClientHostInfo.ONLINE)
+                {
+                    if (refreshFeign.refresh(hostInfo.getNettyIp(), hostInfo.getNettyPort()))
+                    {
+                        size++;
+                    }
+                    //                    if (restRefresh(hostInfo))
+                    //                    {
+                    //                        size++;
+                    //                    }
+                }
             }
-            flag = false;
         }
-        catch (Exception e)
-        {
-            log.error("服务错误!", e.getMessage());
-        }
-        if (flag)
-        {
-            log.error("应用发布失败：应用服务IP:{},应用服务PORT:{}", hostInfo.getHostIp(), hostInfo.getHostPort());
-            log.error("服务返回HTTP状态：{}", status);
-            //标记服务已经下线
-            clientHostInfoMapper.updateStatus(hostInfo.getId(), SERVICE_DOWN);
-        }
-        return flag;
+        return size > 0;
     }
+
+    //    /**
+    //     * [简要描述]:远程发起刷新请求<br/>
+    //     * [详细描述]:<br/>
+    //     *
+    //     * @param hostInfo :
+    //     * llxiao  2019/1/30 - 11:30
+    //     **/
+    //    private boolean restRefresh(ClientHostInfo hostInfo)
+    //    {
+    //        String url = "http://" + hostInfo.getHostIp() + ':' + hostInfo.getHostPort() + REFRESH_URL;
+    //        // 封装参数，千万不要替换为Map与HashMap，否则参数无法传递
+    //        MultiValueMap<String, Object> paramMap = new LinkedMultiValueMap<>();
+    //        // 消息头
+    //        HttpHeaders headers = new HttpHeaders();
+    //        HttpEntity<MultiValueMap<String, Object>> httpEntity = new HttpEntity<>(paramMap, headers);
+    //        boolean flag = true;
+    //        int status = 0;
+    //        try
+    //        {
+    //            ResponseEntity<Integer> result = restTemplate.exchange(url, HttpMethod.POST, httpEntity, Integer.class);
+    //            status = result.getStatusCodeValue();
+    //            if (HTTP_SUCCESS_CODE == status && SUCCESS == result.getBody())
+    //            {
+    //                log.info("应用更新成功：应用服务IP:{},应用服务PORT:{}", hostInfo.getHostIp(), hostInfo.getHostPort());
+    //            }
+    //            else
+    //            {
+    //                log.error("应用更新失败，服务端返回状态:{}，返回更新结果：{}", status, result.getBody());
+    //                flag = false;
+    //            }
+    //        }
+    //        catch (Exception e)
+    //        {
+    //            log.error("服务错误!", e.getMessage());
+    //        }
+    //        if (flag)
+    //        {
+    //            log.error("应用发布失败：应用服务IP:{},应用服务PORT:{}", hostInfo.getHostIp(), hostInfo.getHostPort());
+    //            log.error("服务返回HTTP状态：{}", status);
+    //            //标记服务已经下线
+    //            clientHostInfoMapper.updateStatus(hostInfo.getId(), SERVICE_DOWN);
+    //        }
+    //        return flag;
+    //    }
 }

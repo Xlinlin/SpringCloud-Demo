@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.xiao.custom.config.client.configuration.environment;
+package com.xiao.custom.config.client.environment;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;

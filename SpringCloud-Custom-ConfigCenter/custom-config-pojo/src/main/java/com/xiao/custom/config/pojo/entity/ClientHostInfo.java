@@ -29,9 +29,10 @@ public class ClientHostInfo
 
     private Integer hostPort;
 
-    private Integer status;
-
+    private String nettyIp;
     private Integer nettyPort;
+
+    private Integer status;
 
     private Date createTime;
 

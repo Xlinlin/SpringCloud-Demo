@@ -73,7 +73,7 @@
             now(),
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.winner.config.center.pojo.db.entity.ApplicationConfig">
+    <update id="updateByPrimaryKeySelective" parameterType="com.xiao.custom.config.pojo.entity.ApplicationConfig">
         update t_application_config
         <set>
             <if test="applicationId != null">
