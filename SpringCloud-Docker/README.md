@@ -106,7 +106,7 @@ _环境：Aliyun Centos 7 Windows10 IDEA Maven3.5.4_
    ```$xslt
     [{"Containers":-1,"Created":1548890077,"Id":"sha256:d0eed8dad114db55d81c870efb8c148026da4a0f61dc7710c053da55f9604849","Labels":null,"ParentId":"","RepoDigests":["registry@sha256:870474507964d8e7d8c3b53bcfa738e3356d2747a42adad26d0d81ef4479eb1b"],"RepoTags":["registry:2"],"SharedSize":-1,"Size":25779681,"VirtualSize":25779681}]
    ```
-   更多参考资料[Docker开启Remote API](https://blog.csdn.net/yuanlaijike/article/details/80913096)
+   更多参考资料[Docker开启Remote API](https://blog.csdn.net/yuanlaijike/article/details/80913096)<br>
 3. IDEA + Maven + Springboot + Dockerfile发布到远程仓库<br>
   _idea安装Docker Integration 插件，在setting->build->docker->tcp socket中配置Docker信息，选择一下私服仓库是所生成的.crt证书文件_<br>
   [IDEA docker插件其他参考资料](https://www.jianshu.com/p/6ce91051d24c)<br>

@@ -131,3 +131,6 @@ saveRegionCity(@RequestBody RegionCityDto regionCityDto)``
 
 20190405
 1. netty实现配置刷新[详情](https://github.com/Xlinlin/SpringCloud-Demo/tree/master/SpringCloud-CustomConfig-Center)
+
+20190411
+1. 添加maven+jenkins+docker+springboot 构建打包发布部署的jenkins shell脚本
