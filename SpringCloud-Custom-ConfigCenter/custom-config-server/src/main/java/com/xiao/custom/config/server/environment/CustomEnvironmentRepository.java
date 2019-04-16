@@ -35,8 +35,8 @@ public class CustomEnvironmentRepository implements EnvironmentRepository, Order
     private static final String DEFAULT_PROFILE = "default";
     private static final String DEFAULT_LABEL = "master";
 
-    private static final String CLIENT_HOST = "ClientServerPort";
-    private static final String CLIENT_PORT = "ClientServerHost";
+    private static final String CLIENT_HOST = "ClientServerHost";
+    private static final String CLIENT_PORT = "ClientServerPort";
 
     /**
      * Squid 服务代理

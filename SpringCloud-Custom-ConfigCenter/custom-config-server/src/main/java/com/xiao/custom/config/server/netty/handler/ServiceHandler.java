@@ -86,9 +86,9 @@ public class ServiceHandler extends SimpleChannelInboundHandler<Message>
         if (ctx.channel().isOpen())
         {
             ctx.close();
-            clientManagerService.updateStatus(ip, port, ClientManagerService.OFF_LINE);
-            connectionManager.remove(ip, port);
         }
+        clientManagerService.updateStatus(ip, port, ClientManagerService.OFF_LINE);
+        connectionManager.remove(ip, port);
     }
 
     @Override
@@ -124,5 +124,22 @@ public class ServiceHandler extends SimpleChannelInboundHandler<Message>
         {
             super.userEventTriggered(ctx, evt);
         }
+    }
+
+    @Override
+    public void channelInactive(ChannelHandlerContext ctx) throws Exception
+    {
+        String ip = RemotingUtil.parseRemoteIP(ctx.channel());
+        int port = RemotingUtil.parseRemotePort(ctx.channel());
+        //        log.warn(">>> 客户端已断开连接......:{}", ctx);
+        log.warn(">>> 关闭这个不活跃的连接-IP:{},PORT:{}并进行离线操作", ip, port);
+        // 下线处理
+        if (ctx.channel().isOpen())
+        {
+            ctx.close();
+        }
+        clientManagerService.updateStatus(ip, port, ClientManagerService.OFF_LINE);
+        connectionManager.remove(ip, port);
+        super.channelInactive(ctx);
     }
 }

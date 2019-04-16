@@ -22,9 +22,7 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
 import java.net.InetSocketAddress;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -54,6 +52,8 @@ public class NettyServer implements ApplicationListener<ContextRefreshedEvent>, 
     private ConnectionManager connectionManager;
 
     private ScheduledExecutorService scheduledExecutorService;
+
+    private ExecutorService simpleExecutor;
 
     /**
      * server bootstrap
@@ -157,6 +157,7 @@ public class NettyServer implements ApplicationListener<ContextRefreshedEvent>, 
     {
         scheduledExecutorService = new ScheduledThreadPoolExecutor(1, NamedThreadFactory
                 .create("Scheduled check netty server-", true));
+        simpleExecutor = Executors.newSingleThreadExecutor(new NamedThreadFactory("Netty server-", true));
 
         log.info(">>>> Netty Server init......");
         this.serverBootstrap = new ServerBootstrap();

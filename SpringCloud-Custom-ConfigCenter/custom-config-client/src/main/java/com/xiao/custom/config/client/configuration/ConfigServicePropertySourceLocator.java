@@ -52,8 +52,8 @@ import static com.xiao.custom.config.client.configuration.ConfigClientProperties
 public class ConfigServicePropertySourceLocator implements PropertySourceLocator
 {
 
-    private static final String LOCAL_HOST = "ClientServerPort";
-    private static final String LOCAL_PORT = "ClientServerHost";
+    private static final String LOCAL_HOST = "ClientServerHost";
+    private static final String LOCAL_PORT = "ClientServerPort";
 
     private static Log logger = LogFactory.getLog(ConfigServicePropertySourceLocator.class);
 

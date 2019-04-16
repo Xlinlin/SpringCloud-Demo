@@ -143,8 +143,8 @@ public class NettyClient implements ApplicationListener<ContextRefreshedEvent>, 
             protected void initChannel(Channel channel) throws Exception
             {
                 ChannelPipeline pipeline = channel.pipeline();
-                //监听写动作，4S后无写动作，触发userEventTriggered发起心跳
-                pipeline.addLast(new IdleStateHandler(0, 4, 0));
+                //监听读写动作，10S后无服务器响应信息，4S后无客户端写动作，触发userEventTriggered发起心跳
+                pipeline.addLast(new IdleStateHandler(10, 4, 0));
 
                 //先解码 后编码
                 pipeline.addLast(CoderFactory.newDecoder());

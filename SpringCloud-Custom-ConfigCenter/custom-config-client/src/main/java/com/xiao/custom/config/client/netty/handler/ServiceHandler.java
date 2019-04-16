@@ -79,18 +79,50 @@ public class ServiceHandler extends SimpleChannelInboundHandler<Message>
             IdleState state = ((IdleStateEvent) evt).state();
             if (state == IdleState.WRITER_IDLE)
             {
+                //如果没有触发写事件则向服务器发送一次心跳包
                 if (log.isDebugEnabled())
                 {
-                    log.info(">>> 客户端-IP:{},PORT:{}不活跃了，发起心跳请求.....", RemotingUtil
+                    log.debug(">>> 客户端-IP:{},PORT:{}不活跃了，发起心跳请求.....", RemotingUtil
                             .parseLocalIP(ctx.channel()), RemotingUtil.parseLocalPort(ctx.channel()));
                 }
                 // 发起心跳请求
                 ctx.writeAndFlush(HEARTBEAT_SEQUENCE);
+            }
+            else if (state == IdleState.READER_IDLE)
+            {
+                //如果没有收到服务端的写 则表示服务器超时 判断是否断开连接
+                log.warn("未收到服务器消息，服务器可能出现异常。需要进行重连操作..");
+                stated.set(false);
+                if (ctx.channel().isOpen())
+                {
+                    ctx.close();
+                }
+            }
+            else
+            {
+                super.userEventTriggered(ctx, evt);
             }
         }
         else
         {
             super.userEventTriggered(ctx, evt);
         }
+    }
+
+    //建立连接时回调
+    @Override
+    public void channelActive(ChannelHandlerContext ctx) throws Exception
+    {
+        log.info(">>> 建立连接成功，服务端IP:{},PORT:{}", RemotingUtil.parseRemoteIP(ctx.channel()), RemotingUtil
+                .parseRemotePort(ctx.channel()));
+        super.channelActive(ctx);
+    }
+
+    @Override
+    public void channelInactive(ChannelHandlerContext ctx) throws Exception
+    {
+        log.warn(">>> 服务端不活跃了。IP:{},PORT:{}", RemotingUtil.parseRemoteIP(ctx.channel()), RemotingUtil
+                .parseRemotePort(ctx.channel()));
+        super.channelInactive(ctx);
     }
 }
