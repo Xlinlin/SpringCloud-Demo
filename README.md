@@ -140,4 +140,4 @@ saveRegionCity(@RequestBody RegionCityDto regionCityDto)``
 更换为channelInactive方法来感知和下线客户端(netty)
 
 20190504
-1. 新增mqtt通过nginx代理配置[]()
+1. 新增mqtt通过nginx代理配置[https://github.com/Xlinlin/SpringCloud-Demo/tree/master/SpringCloud-MQTT]()
