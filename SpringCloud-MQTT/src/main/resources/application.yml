@@ -1,7 +1,7 @@
 spring: 
     mvc: 
         view: 
-            prefix: /jsp/
+            prefix: /WEB-INF/jsp/
             suffix: .jsp
 server: 
     port: 8082

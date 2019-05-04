@@ -137,4 +137,7 @@ saveRegionCity(@RequestBody RegionCityDto regionCityDto)``
 
 20190402
 1. 修复linux系统，客户端异常断开，服务端无感知问题，即在linux上使用kill或ctrl+c 中断服务，无法进入exceptionCaught方法导致无法感知应用下线问题。<br>
-更换为channelInactive方法来感知和下线客户端
+更换为channelInactive方法来感知和下线客户端(netty)
+
+20190504
+1. 新增mqtt通过nginx代理配置[]()

@@ -10,6 +10,7 @@ package com.skywalking.mqtt;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 
 /**
@@ -21,6 +22,7 @@ import org.springframework.boot.web.support.SpringBootServletInitializer;
  * @since 项目名称 项目版本
  */
 @SpringBootApplication
+@ServletComponentScan
 public class MqttServiceApp extends SpringBootServletInitializer
 {
     /**
