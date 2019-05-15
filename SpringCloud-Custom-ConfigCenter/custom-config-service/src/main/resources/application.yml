@@ -12,18 +12,33 @@ spring:
       retry:
         enable: true
 eureka:
+  ## 客户端实例信息配置
   instance:
     hostname: localhost
     instance-id: ${spring.cloud.client.ipAddress}:${server.port}
     prefer-ip-address: true
+    ##服务续约重要属性
     ##设置心跳的周期间隔(默认90s)[如果10s没响应默认服务宕机]
-    #lease-expiration-duration-in-seconds: 90
+    lease-expiration-duration-in-seconds: 90
     #设置心跳时间间隔(默认30s)[心跳时间2s]
-    #lease-renewal-interval-in-seconds: 30
+    lease-renewal-interval-in-seconds: 30
+    ##端点配置。若配置了context-path:${server.context-path}/info，actuator的监控端点会增加前缀，此时eureka也需要相应增加
+    status-page-url-path: /info
+    health-check-url-path: /health
+  # 客户端配置
   client:
+    ## 启用客户端 ，默认true
+    enabled: true
+    # 是否在本地缓存注册表信息，默认为true
+    fetch-registry: true
+    # 缓存清单更新时间，默认30秒
+    registry-fetch-interval-seconds: 20
+    # 发布到注册中心，默认true
+    register-with-eureka: true
     serviceUrl:
-      defaultZone: http://localhost:9000/eureka/
-    #开启健康检查（需要spring-boot-starter-actuator依赖）
-    #healthcheck:
-      #enable: true
+      defaultZone: @register-center-url@
+      #开启健康检查（需要spring-boot-starter-actuator依赖）
+    healthcheck:
+      enable: true
+
 logging.level.com.netflix.eureka.registry: ERROR

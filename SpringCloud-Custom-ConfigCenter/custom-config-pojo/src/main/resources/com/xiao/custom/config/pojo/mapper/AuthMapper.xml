@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xiao.custom.config.pojo.mapper.AuthMapper">
+    <select id="findByUsername" resultType="com.xiao.custom.config.pojo.entity.AuthUser">
+        SELECT id,nickname, username, password from t_sys_user where username = #{username};
+    </select>
+
+    <insert id="insert" parameterType="com.xiao.custom.config.pojo.entity.AuthUser" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into t_sys_user (username, password,nickname) VALUES (#{username}, #{password},#{nikename});
+    </insert>
+
+    <insert id="insertRole">
+        insert into t_sys_user_role (user_id, role_id) VALUES (#{userId}, #{roleId});
+    </insert>
+
+    <select id="findRoleById" resultType="com.xiao.custom.config.pojo.entity.Role">
+      select id, name, nameZh from t_sys_role where id = #{roleId}
+    </select>
+
+    <select id="findRoleByUserId" resultType="com.xiao.custom.config.pojo.entity.Role">
+        select * from t_sys_role where id in (SELECT role_id from t_sys_user_role where user_id = #{userId});
+    </select>
+</mapper>

@@ -33,12 +33,12 @@ eureka:
     fetch-registry: false
     service-url:
       defaultZone: http://localhost:9000/eureka/
-  #server:
+  server:
     ##以下配置，生产环境不建议使用
     ###自我保护机制关闭
-    #enable-self-preservation: false
+    enable-self-preservation: false
     ## 清理间隔（单位毫秒，默认是60*1000）
-    #eviction-interval-timer-in-ms: 2000
+    eviction-interval-timer-in-ms: 20000
 ##注册中心的日志error级别
 #logging.com.netflix.eureka.registry: ERROR
 logging.level.com.netflix.eureka.registry: ERROR

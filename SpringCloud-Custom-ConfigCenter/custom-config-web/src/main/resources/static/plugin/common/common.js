@@ -298,6 +298,9 @@ var App = (function ($) {
                     this.showLoad && App.showLoadding(null, null, xhr);
                 }
                 this.beforeCallback && this.beforeCallback.call(this,xhr);
+                // 设置token 本地获取token
+                var token = window.localStorage.getItem('M-Auth-Token');
+                xhr.setRequestHeader('M-Auth-Token', token);
             },
             complete: function () {
 
@@ -327,7 +330,6 @@ var App = (function ($) {
                 }
             },
             error: function (xhr) {
-
                 if (xhr.status == 401) {
                     var dataJson = xhr.responseJSON || JSON.parse(xhr.responseText);
                     if (dataJson && dataJson.code == 10060) {
@@ -357,6 +359,7 @@ var App = (function ($) {
                 else if (xhr.status == 405) {
                     app.error('请求方法错误');
                 }else{
+                    console.log(xhr)
                     app.error('无法访问服务器，请检查网络');
                 }
                 this.errorCallback && this.errorCallback(xhr.responseJSON, xhr);

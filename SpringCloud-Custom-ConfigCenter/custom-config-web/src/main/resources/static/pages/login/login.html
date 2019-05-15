@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>配置中心</title>
+    <link rel="shortcut icon" href="favicon.ico"/>
+    <link rel="bookmark" href="favicon.ico"/>
+    <!--<link rel="stylesheet" type="text/css" href="plugin/iview/styles/iview.css" />-->
+    <!--<link rel="stylesheet" type="text/css" href="plugin/element/styles/index.css" />-->
+    <!--<script type="text/javascript" src="plugin/iview/js/iview.min.js" ></script>-->
+
+    <script type="text/javascript" src="plugin/babel/polyfill.min.js"></script>
+    <script type="text/javascript" src="plugin/common/env.js"></script>
+    <script type="text/javascript" src="plugin/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript" src="plugin/common/common.js"></script>
+    <link rel="stylesheet" type="text/css" href="plugin/element/styles/index.css"/>
+    <script type="text/javascript" src="plugin/iview/js/vue.min.js"></script>
+    <script type="text/javascript" src="plugin/element/js/index.js"></script>
+    <script type="text/javascript" src="plugin/jquery/jquery.history.js"></script>
+    <script type="text/javascript" src="plugin/mock/mock-min.js"></script>
+    <script type="text/javascript" src="mock/mock.js"></script>
+    <script type="text/javascript" src="mock/index.js"></script>
+    <link rel="stylesheet" type="text/css" href="pages/index/index.css"/>
+    <link rel="stylesheet" type="text/css" href="plugin/element/styles/fonts/iconfont.css"/>
+
+    <style>
+        html, body {
+            width: 100%;
+            height: 100%;
+            font-size: 12px;
+            line-height: 1.42857143;
+            color: #333;
+            margin: 0px;
+            padding: 0px;
+        }
+
+        #app {
+            width: 100%;
+            height: 100%;
+            background: rgba(19, 194, 194, 0.66);
+            margin: 0px;
+            padding: 0px;
+        }
+
+        .login-wrap {
+            position: fixed;
+            width: 1078px;
+            height: 600px;
+            margin-top: -300px;
+            margin-left: -539px;
+            top: 50%;
+            left: 50%;
+            background-image: url("images/login-back.png");
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+            display: flex;
+        }
+
+        .login-left {
+            width: 70%;
+            height: 100%;
+            position: relative;
+        }
+
+        .login-title-en {
+            font-size: 30px;
+            color: #FFFFFF;
+            position: absolute;
+            top: 50px;
+            left: 40px;
+        }
+
+        .login-title {
+            font-size: 20px;
+            color: #FFFFFF;
+            position: absolute;
+            top: 100px;
+            left: 40px;
+        }
+
+        .login-log {
+            position: absolute;
+            bottom: 40px;
+            right: 30px;
+        }
+
+        .login-log > div {
+            position: relative;
+            display: inline-block;
+            padding: 15px;
+        }
+
+        .login-log > div > div {
+            position: absolute;
+            border-right: 1px solid #fff;
+            right: 0px;
+            top: 20%;
+            height: 60%;
+        }
+
+        .login-main {
+            width: 30%;
+            height: 96.8%;
+            background: #FFFFFF;
+            margin-top: 0.68%;
+            text-align: center;
+        }
+
+        .login-welcom {
+            font-size: 16px;
+            font-weight: 600;
+            margin-top: 50%;
+            margin-bottom: 30px;
+        }
+
+        .login-input {
+            padding: 0px 40px;
+            line-height: 40px;
+            height: 40px;
+        }
+
+        .login-input > div {
+            position: relative;
+            margin-top: 10px;
+        }
+
+        .login-input input {
+            padding-left: 40px;
+            font-size: 14px;
+            width: 220px;
+            border: none;
+            outline: none;
+            color: rgba(0, 0, 0, 0.5);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.20);
+        }
+
+        .login-input input:focus {
+            border-bottom: 1px solid #13C2C2;
+        }
+
+        .login-input input:focus + i {
+            color: #13C2C2;
+        }
+
+        .login-input i {
+            left: 20px;
+            font-size: 24px;
+            color: #888888;
+            position: absolute;
+        }
+
+        .login-btn {
+            width: 280px;
+            height: 67px;
+            line-height: 57px;
+            background: url('images/login-btn.png');
+            cursor: pointer;
+        }
+
+        .login-btn > span {
+            font-size: 14px;
+            color: #FFFFFF;
+            letter-spacing: 8px;
+            text-align: center;
+        }
+
+        @media screen and (min-width: 960px) and (max-width: 1400px) {
+            .login-wrap {
+                width: 900px;
+                height: 500px;
+                margin-top: -250px;
+                margin-left: -450px;
+            }
+
+            .login-input-user > input, .login-input-pwd > input {
+                width: 170px;
+            }
+
+            .login-btn {
+                width: 220px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<div id="app" v-loading="loading">
+    <div class="login-wrap">
+        <div class="login-left">
+            <div class="login-title-en">Config Manager Center</div>
+            <div class="login-title"> 配置管理中心</div>
+            <!--<div class="login-log" >-->
+            <!--<div>-->
+            <!--<img src="images/winner@1x.png" />-->
+            <!--<div></div>-->
+            <!--</div>-->
+            <!--<div>-->
+            <!--<img src="images/purcotton@1x.png" />-->
+            <!--<div></div>-->
+            <!--</div>-->
+            <!--<div>-->
+            <!--<img src="images/logo-h2b@1x.png" />-->
+            <!--</div>-->
+            <!--</div>-->
+        </div>
+        <div class="login-main">
+            <div class="login-welcom">欢迎登录</div>
+            <div class="login-input">
+                <div class="login-input-user">
+                    <input v-model="formInline.user" type="text" placeholder="用户名" @keydown.enter="handleSubmit"
+                           autofocus/>
+                    <i class="iconfont icon-yonghuming"></i>
+                </div>
+            </div>
+            <div class="login-input">
+                <div class="login-input-pwd">
+                    <input v-model="formInline.password" type="password" placeholder="密码"
+                           @keydown.enter="handleSubmit"/>
+                    <i class="iconfont icon-mima"></i>
+                </div>
+            </div>
+            <div style="text-align:-webkit-center;margin-top:40px;">
+                <div class="login-btn" @click="handleSubmit">
+                    <span>登录</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    'use strict';
+
+    App.start({
+        el: '#app',
+        data: {
+            loading: false,
+            formInline: {
+                user: '',
+                password: ''
+            },
+            ruleInline: {
+                user: [{required: true, message: '用户名不能为空', trigger: 'blur'}],
+                password: [{required: true, message: '请输入密码', trigger: 'blur'}, {
+                    type: 'string',
+                    min: 6,
+                    message: '密码不能少于6位',
+                    trigger: 'blur'
+                }]
+            }
+        },
+        methods: {
+            handleSubmit: function handleSubmit() {
+                var _this = this;
+
+                var loginName = _this.formInline.user;
+                var password = _this.formInline.password;
+                var success;
+                if (App.isEmpty(loginName)) {
+                    App.error('请输入用户名');
+                    return;
+                }
+                if (App.isEmpty(password)) {
+                    App.error('请输入密码');
+                    return;
+                }
+
+                var that = _this;
+                $.ajax({
+                    url: "/user/auth/login",
+                    type: "post",
+                    data: {loginName: loginName, password: password},
+                    beforeSend: function beforeSend() {
+                        that.loading = true;
+                    },
+                    success: function success(data, flag, xhr) {
+                        if (data.success) {
+                            var url = window.location.href;
+                            var find = url.indexOf('refUrl=');
+                            //先清理缓存
+                            window.localStorage && window.localStorage.clear();
+                            var loginToken = xhr.getResponseHeader('M-Auth-Token')
+                            // 保存token
+                            window.localStorage.setItem('M-Auth-Token', loginToken);
+
+                            //成功跳转页面
+                            if (find != -1) {
+                                var newUrl = url.substring(find + 7);
+                                window.location.href = newUrl;
+                            } else {
+                                window.location.href = '/';
+                            }
+
+                        } else {
+                            that.loading = false;
+                            data.message && that.$Message.error(data.message);
+                        }
+                    },
+                    error: function error(xhr) {
+                        that.loading = false;
+                        if (xhr.status == 401) {
+                            that.$Message.error('您没有浏览这个页面的权限');
+                        }
+                        if (xhr.status == 404) {
+                            that.$Message.error('您访问的页面不存在');
+                        } else if (xhr.status == 500) {
+                            var dataJson = xhr.responseJSON || JSON.parse(xhr.responseText);
+                            if (dataJson.message) {
+                                that.$Message.error(dataJson.message);
+                            } else {
+                                that.$Message.error('页面内部错误，请联系管理员');
+                            }
+                        } else if (xhr.status == 405) {
+                            that.$Message.error('请求方法错误');
+                        }
+                    }
+                });
+
+            }
+        }
+    });
+</script>
+</body>
+</html>

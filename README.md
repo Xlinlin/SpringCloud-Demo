@@ -141,3 +141,6 @@ saveRegionCity(@RequestBody RegionCityDto regionCityDto)``
 
 20190504
 1. 新增mqtt通过nginx代理配置[https://github.com/Xlinlin/SpringCloud-Demo/tree/master/SpringCloud-MQTT]()
+
+20190515
+1. 新增spring session+ spring security +  jwt简单鉴权，[参考入口](https://github.com/Xlinlin/SpringCloud-Demo/tree/master/SpringCloud-Custom-ConfigCenter/custom-config-web)
