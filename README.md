@@ -144,3 +144,6 @@ saveRegionCity(@RequestBody RegionCityDto regionCityDto)``
 
 20190515
 1. 新增spring session+ spring security +  jwt简单鉴权，[参考入口](https://github.com/Xlinlin/SpringCloud-Demo/tree/master/SpringCloud-Custom-ConfigCenter/custom-config-web)
+
+20190611
+1. 记录 fork join demo[详情](https://github.com/Xlinlin/SpringCloud-Demo/tree/master/SpringCloud-Common/src/main/java/com/xiao/skywalking/demo/common/forkjoin)
