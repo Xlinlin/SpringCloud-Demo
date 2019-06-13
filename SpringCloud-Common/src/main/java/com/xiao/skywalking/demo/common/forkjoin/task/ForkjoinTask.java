@@ -51,8 +51,8 @@ public class ForkjoinTask extends RecursiveTask<Integer>
             int middle = (end + start) / 2;
             List<Integer> arrayList1 = arrayList.subList(start, middle);
             List<Integer> arrayList2 = arrayList.subList(middle, end);
-            ForkjoinTask forkjoinTask1 = new ForkjoinTask(arrayList1, start, middle);
-            ForkjoinTask forkjoinTask2 = new ForkjoinTask(arrayList2, middle, end);
+            ForkjoinTask forkjoinTask1 = new ForkjoinTask(arrayList1, 0, arrayList1.size());
+            ForkjoinTask forkjoinTask2 = new ForkjoinTask(arrayList2, 0, arrayList2.size());
             invokeAll(forkjoinTask1, forkjoinTask2);
             return forkjoinTask1.join() + forkjoinTask2.join();
         }
