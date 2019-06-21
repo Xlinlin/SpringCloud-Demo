@@ -1,7 +1,8 @@
 1. Disruptor: 开源的并发框架,能够在无锁的情况下实现网络的Queue并发操作,其他更多[详情介绍](http://ifeve.com/disruptor/)
 2. 本common包封装的``Disruptor``与``Spring的Event``事件组合，实现业务在JVM内解耦。<br>
 3. 引入disruptor pom依赖:<br>
-    ```html
+    ```
+       <disruptor.version>3.4.2</disruptor.version>
        <!-- disruptor -->
         <dependency>
             <groupId>com.lmax</groupId>
