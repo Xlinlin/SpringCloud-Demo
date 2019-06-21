@@ -62,14 +62,14 @@ saveRegionCity(@RequestBody RegionCityDto regionCityDto)``
 3. 提供缓存基本服务和分布式服务: <br>
 ``> CacheService 提供缓存基础服务`` <br>
 ``> DistributedService 提供分布式**可重入公平/非公平锁**、**读写锁**、**闭锁**``<br>
-[代码实现参考](https://github.com/Xlinlin/spring-cloud-demo/tree/master/SpringCloud-Common/src/main/java/com/xiao/skywalking/demo/common/cache)<br>
+[代码实现参考](https://github.com/Xlinlin/spring-cloud-demo/tree/master/SpringCloud-Common/src/main/java/com/xiao/springcloud/demo/common/cache)<br>
 [junit测试参考](https://github.com/Xlinlin/spring-cloud-demo/tree/master/SpringCloud-SearchService/src/test/java/com/xiao/springcloud/test/cache)<br>
 
 20181016
 1. redis缓存 redisson客户端添加批处理
 
 20181018
-1. [spring-cache+guava 添加本地缓存](https://github.com/Xlinlin/spring-cloud-demo/tree/master/SpringCloud-Common/src/main/java/com/xiao/skywalking/demo/common/cache)
+1. [spring-cache+guava 添加本地缓存](https://github.com/Xlinlin/spring-cloud-demo/tree/master/SpringCloud-Common/src/main/java/com/xiao/springcloud/demo/common/cache)
 
 20181022
 1. 升级Springboot2.0  详情参考springboot2.0分之
@@ -146,7 +146,7 @@ saveRegionCity(@RequestBody RegionCityDto regionCityDto)``
 1. 新增spring session+ spring security +  jwt简单鉴权，[参考入口](https://github.com/Xlinlin/SpringCloud-Demo/tree/master/SpringCloud-Custom-ConfigCenter/custom-config-web)
 
 20190611
-1. 记录 fork join demo[详情](https://github.com/Xlinlin/SpringCloud-Demo/tree/master/SpringCloud-Common/src/main/java/com/xiao/skywalking/demo/common/forkjoin)
+1. 记录 fork join demo[详情](https://github.com/Xlinlin/SpringCloud-Demo/tree/master/SpringCloud-Common/src/main/java/com/xiao/springcloud/demo/common/forkjoin)
 
 20190621
-1. Disruptor+spring event封装[详情以及使用说明](https://github.com/Xlinlin/SpringCloud-Demo/tree/master/SpringCloud-Common/src/main/java/com/xiao/skywalking/demo/common/disruptor)
+1. Disruptor+spring event封装[详情以及使用说明](https://github.com/Xlinlin/SpringCloud-Demo/tree/master/SpringCloud-Common/src/main/java/com/xiao/springcloud/demo/common/disruptor)
