@@ -149,4 +149,4 @@ saveRegionCity(@RequestBody RegionCityDto regionCityDto)``
 1. 记录 fork join demo[详情](https://github.com/Xlinlin/SpringCloud-Demo/tree/master/SpringCloud-Common/src/main/java/com/xiao/skywalking/demo/common/forkjoin)
 
 20190621
-1. Disruptor+spring event封装[详情以及使用说明]()
+1. Disruptor+spring event封装[详情以及使用说明](https://github.com/Xlinlin/SpringCloud-Demo/tree/master/SpringCloud-Common/src/main/java/com/xiao/skywalking/demo/common/disruptor)
