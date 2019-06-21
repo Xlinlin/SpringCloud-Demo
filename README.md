@@ -93,7 +93,7 @@ saveRegionCity(@RequestBody RegionCityDto regionCityDto)``
 2. 本地和远程自动部署时，不进行原服务包的删除，按时间戳进行备份原来的可执行包
 
 20181127
-1. springcloud-config 自定义mysql实现，[详情](https://github.com/Xlinlin/SpringCloud-Demo/tree/master/SpringCloud-CustomConfig-Center)
+1. springcloud-config 自定义mysql实现，[详情](https://github.com/Xlinlin/SpringCloud-Demo/tree/master/SpringCloud-Custom-ConfigCenter)
 
 
 20181210
@@ -112,7 +112,7 @@ saveRegionCity(@RequestBody RegionCityDto regionCityDto)``
 [参考](https://github.com/Xlinlin/SpringCloud-Demo/blob/master/SpringCloud-ZipkinServer/README.md)
 
 20190131
-1. 自定义配置中心重构，[详情](https://github.com/Xlinlin/SpringCloud-Demo/tree/master/SpringCloud-CustomConfig-Center)
+1. 自定义配置中心重构，[详情](https://github.com/Xlinlin/SpringCloud-Demo/tree/master/SpringCloud-Custom-ConfigCenter)
 2. 新增多条件搜索测试，[详情](https://github.com/Xlinlin/SpringCloud-Demo/blob/master/SpringCloud-SearchService/src/test/java/com/xiao/springcloud/test/SearchManagerTest.java)<br>
 3. 更多多条件搜索的[参考资料](http://www.scienjus.com/elasticsearch-function-score-query/)
 
@@ -127,10 +127,10 @@ saveRegionCity(@RequestBody RegionCityDto regionCityDto)``
 1. 将Canal+Disruptor整合到springboot中，提供一套完整的Canal异步框架，在DisruptorServiceImpl服务中实现自己的业务逻辑即可，[更多详见](https://github.com/Xlinlin/SpringCloud-Demo/tree/master/SpringCloud-Canal)
 
 20190402
-1. 自定义配置中心，引入Netty监测心跳[详情](https://github.com/Xlinlin/SpringCloud-Demo/tree/master/SpringCloud-CustomConfig-Center)
+1. 自定义配置中心，引入Netty监测心跳[详情](https://github.com/Xlinlin/SpringCloud-Demo/tree/master/SpringCloud-Custom-ConfigCenter)
 
 20190405
-1. netty实现配置刷新[详情](https://github.com/Xlinlin/SpringCloud-Demo/tree/master/SpringCloud-CustomConfig-Center)
+1. netty实现配置刷新[详情](https://github.com/Xlinlin/SpringCloud-Demo/tree/master/SpringCloud-Custom-ConfigCenter)
 
 20190411
 1. 添加maven+jenkins+docker+springboot 构建打包发布部署的jenkins shell脚本
@@ -140,7 +140,7 @@ saveRegionCity(@RequestBody RegionCityDto regionCityDto)``
 更换为channelInactive方法来感知和下线客户端(netty)
 
 20190504
-1. 新增mqtt通过nginx代理配置[https://github.com/Xlinlin/SpringCloud-Demo/tree/master/SpringCloud-MQTT]()
+1. [新增mqtt通过nginx代理配置](https://github.com/Xlinlin/SpringCloud-Demo/tree/master/SpringCloud-MQTT)
 
 20190515
 1. 新增spring session+ spring security +  jwt简单鉴权，[参考入口](https://github.com/Xlinlin/SpringCloud-Demo/tree/master/SpringCloud-Custom-ConfigCenter/custom-config-web)
