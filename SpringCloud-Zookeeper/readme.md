@@ -21,4 +21,4 @@ Zookeeper一些学习记录：<br>
    
    >2.3 轮询分发：定义一个全局变量index ，每次发起请求时，直接去serverUrlCacheMap中获取这个编号的URL，<br>
    然后发送给server，就可达到轮询分发的功能。<br>
-3. ****，[原博文地址](https://yq.aliyun.com/articles/227260)<br>zookeeper 的EPHEMERAL节点机制实现服务集群的陷阱
+3. **zookeeper 的EPHEMERAL节点机制实现服务集群的陷阱**，[原博文地址](https://yq.aliyun.com/articles/227260)<br>
