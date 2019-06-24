@@ -1,8 +1,8 @@
 package com.xiao.custom.config.web.auth.config;
 
 import com.alibaba.fastjson.JSONObject;
-import com.xiao.skywalking.demo.common.exception.CommonExceptionEnum;
-import com.xiao.skywalking.demo.common.gloab.response.ErrorResponseData;
+import com.xiao.springcloud.demo.common.exception.CommonExceptionEnum;
+import com.xiao.springcloud.demo.common.gloab.response.ErrorResponseData;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

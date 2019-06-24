@@ -1,7 +1,7 @@
 package com.xiao.springcloud.test.cache;
 
-import com.xiao.skywalking.demo.common.cache.service.CacheService;
-import com.xiao.skywalking.demo.common.cache.service.DistributedService;
+import com.xiao.springcloud.demo.common.cache.service.CacheService;
+import com.xiao.springcloud.demo.common.cache.service.DistributedService;
 import com.xiao.springcloud.test.SearchApplicationTest;
 import org.junit.Test;
 import org.redisson.api.RLock;

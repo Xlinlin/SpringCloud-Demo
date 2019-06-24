@@ -1,6 +1,6 @@
 package com.xiao.custom.config.web.exception;
 
-import com.xiao.skywalking.demo.common.exception.AbstractServiceException;
+import com.xiao.springcloud.demo.common.exception.AbstractServiceException;
 
 /**
  * @author zhdong

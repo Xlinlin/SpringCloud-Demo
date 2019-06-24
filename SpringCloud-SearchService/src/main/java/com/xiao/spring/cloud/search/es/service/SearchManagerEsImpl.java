@@ -1,7 +1,7 @@
 package com.xiao.spring.cloud.search.es.service;
 
 import com.alibaba.fastjson.JSON;
-import com.xiao.skywalking.demo.common.exception.CommonException;
+import com.xiao.springcloud.demo.common.exception.CommonException;
 import com.xiao.spring.cloud.search.dto.ElasticSearchDoc;
 import com.xiao.spring.cloud.search.es.client.ElasticSearchClient;
 import com.xiao.spring.cloud.search.es.common.ESConstants;

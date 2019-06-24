@@ -1,6 +1,6 @@
 package com.xiao.spring.cloud.search.rest;
 
-import com.xiao.skywalking.demo.common.logaspect.LogAnnotation;
+import com.xiao.springcloud.demo.common.logaspect.LogAnnotation;
 import com.xiao.spring.cloud.search.dto.ElasticSearchDoc;
 import com.xiao.spring.cloud.search.service.SearchManangerService;
 import lombok.extern.slf4j.Slf4j;

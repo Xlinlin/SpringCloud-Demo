@@ -10,7 +10,7 @@ package com.xiao.springcloud.demo.kafka.elk.kafka;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import com.xiao.skywalking.demo.common.logaspect.LogAnnotation;
+import com.xiao.springcloud.demo.common.logaspect.LogAnnotation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
