@@ -2,6 +2,7 @@ package com.xiao.springcloud.job.quartz;
 
 import com.xiao.springcloud.job.entity.TaskConfigDocument;
 import com.xiao.springcloud.job.job.ServiceTaskExecuteJob;
+import com.xiao.springcloud.job.util.CronExpUtil;
 import org.quartz.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,44 +34,56 @@ public class JobManager implements InitializingBean
      */
     public void addJob(TaskConfigDocument task)
     {
-        try
+        boolean cronExp = CronExpUtil.validator(task.getCronExp());
+        if (cronExp)
         {
-            Scheduler scheduler = schedulerFactoryBean.getScheduler();
-            logger.info("add job " + task.getName());
-            TriggerKey triggerKey = TriggerKey.triggerKey(task.getName(), task.getModule());
-            CronTrigger trigger = (CronTrigger) scheduler.getTrigger(triggerKey);
-
-            if (trigger == null)
+            try
             {
-                JobDetail jobDetail = JobBuilder.newJob(ServiceTaskExecuteJob.class)
-                        .withIdentity(task.getName(), task.getModule()).build();
-                jobDetail.getJobDataMap().put(JOB_KEY, task);
-                //表达式调度构建器
-                CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(task.getCronExp());
-                //按新的cronExpression表达式构建一个新的trigger
-                trigger = TriggerBuilder.newTrigger().withIdentity(task.getName(), task.getModule())
-                        .withSchedule(scheduleBuilder).build();
-                scheduler.scheduleJob(jobDetail, trigger);
+                Scheduler scheduler = schedulerFactoryBean.getScheduler();
+                logger.info("add job " + task.getName());
+                TriggerKey triggerKey = TriggerKey.triggerKey(task.getName(), task.getModule());
+                CronTrigger trigger = (CronTrigger) scheduler.getTrigger(triggerKey);
+
+                if (trigger == null)
+                {
+                    JobDetail jobDetail = JobBuilder.newJob(ServiceTaskExecuteJob.class)
+                            .withIdentity(task.getName(), task.getModule()).build();
+                    jobDetail.getJobDataMap().put(JOB_KEY, task);
+                    //表达式调度构建器
+                    CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(task.getCronExp());
+                    //按新的cronExpression表达式构建一个新的trigger
+                    trigger = TriggerBuilder.newTrigger().withIdentity(task.getName(), task.getModule())
+                            .withSchedule(scheduleBuilder).build();
+                    scheduler.scheduleJob(jobDetail, trigger);
+                }
+                else
+                {
+                    //if (!trigger.getCronExpression().equals(task.getCronExp())) {
+                    // Trigger已存在，那么更新相应的定时设置
+                    CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(task.getCronExp());
+                    // 按新的cronExpression表达式重新构建trigger
+                    trigger = trigger.getTriggerBuilder().withIdentity(triggerKey).withSchedule(scheduleBuilder)
+                            .build();
+                    // 按新的trigger重新设置job执行
+                    scheduler.rescheduleJob(triggerKey, trigger);
+
+                }
+                logger.info("add job " + task.getName() + " finished");
+
             }
-            else
+            catch (Exception e)
             {
-                //if (!trigger.getCronExpression().equals(task.getCronExp())) {
-                // Trigger已存在，那么更新相应的定时设置
-                CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(task.getCronExp());
-                // 按新的cronExpression表达式重新构建trigger
-                trigger = trigger.getTriggerBuilder().withIdentity(triggerKey).withSchedule(scheduleBuilder).build();
-                // 按新的trigger重新设置job执行
-                scheduler.rescheduleJob(triggerKey, trigger);
-
+                logger.error("add job '{}' error: {}", task.getName(), e.getMessage());
+                throw new RuntimeException(e);
             }
-            logger.info("add job " + task.getName() + " finished");
-
         }
-        catch (Exception e)
+        else
         {
-            logger.error("add job '{}' error: {}", task.getName(), e.getMessage());
-            throw new RuntimeException(e);
+            // 表达式非法或者已过期 直接停止or删除
+            this.pauseJob(task);
+            //            this.deleteJob(task);
         }
+
     }
 
     /**

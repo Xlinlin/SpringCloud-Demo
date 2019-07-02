@@ -153,3 +153,7 @@ saveRegionCity(@RequestBody RegionCityDto regionCityDto)``
 
 20190624
 1. [入手Zookeeper](https://github.com/Xlinlin/SpringCloud-Demo/tree/master/SpringCloud-Zookeeper)
+
+20190702
+1. 新增Canal启动 [ServerRunningMonitor部分源码注解记录]()，
+2. 修复定时任务重新启动时加载启动状态且已过期的任务报错问题：[新增在添加任务是校验表达的合法性]()

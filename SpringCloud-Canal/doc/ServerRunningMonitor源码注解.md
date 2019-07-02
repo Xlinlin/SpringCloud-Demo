@@ -37,14 +37,12 @@ public ServerRunningMonitor(){
                 // 互斥设置false，内部使用CAS操作
                 mutex.set(false);
 
-                //  不未为释放状态、活动节点不会为空且为本机节点，则即时触发一下active抢占
+                //  不为释放状态、活动节点不会为空且为本机节点，则即时触发一下active抢占
                 if (!release && activeData != null && isMine(activeData.getAddress())) {
-                    // 如果上一次active的状态就是本机，则即时触发一下active抢占
                     initRunning();
                 } else {
                     // 否则就是等待delayTime，避免因网络瞬端或者zk异常，导致出现频繁的切换操作
                     delayExector.schedule(new Runnable() {
-
                         public void run() {
                             initRunning();
                         }
