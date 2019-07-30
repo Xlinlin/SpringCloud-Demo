@@ -159,4 +159,4 @@ saveRegionCity(@RequestBody RegionCityDto regionCityDto)``
 2. 修复定时任务重新启动时加载启动状态且已过期的任务报错问题：[新增在添加任务是校验表达的合法性](https://github.com/Xlinlin/SpringCloud-Demo/blob/master/SpringCloud-Quartz-JobService/src/main/java/com/xiao/springcloud/job/util/CronExpUtil.java)
 
 20190720
-1. Springboot-Admin 2.0服务端+Springboot-Admin 1.5.6客户端[集成使用]()，掌控你的微服务。
+1. Springboot-Admin 2.0服务端+Springboot-Admin 1.5.6客户端[集成使用](https://github.com/Xlinlin/SpringCloud-Demo/tree/master/SpringBoot-Admin)，掌控你的微服务。
