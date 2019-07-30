@@ -55,6 +55,22 @@
             <artifactId>spring-boot-starter-cache</artifactId>
         </dependency>
 
+        <!-- springboot-admin 1.5.6版本集合使用 -->
+        <!-- 监控数据 -->
+        <dependency>
+            <groupId>de.codecentric</groupId>
+            <artifactId>spring-boot-admin-starter-client</artifactId>
+            <version>1.5.6</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.jolokia</groupId>
+            <artifactId>jolokia-core</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>

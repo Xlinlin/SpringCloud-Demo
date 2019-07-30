@@ -43,6 +43,7 @@
         <module>SpringCloud-Docker</module>
         <module>SpringCloud-Canal</module>
         <module>SpringCloud-Zookeeper</module>
+        <module>SpringBoot-Admin</module>
     </modules>
 
 	<dependencyManagement>

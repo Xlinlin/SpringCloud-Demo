@@ -157,3 +157,6 @@ saveRegionCity(@RequestBody RegionCityDto regionCityDto)``
 20190702
 1. 新增Canal启动 [ServerRunningMonitor部分源码注解记录](https://github.com/Xlinlin/SpringCloud-Demo/blob/master/SpringCloud-Canal/doc/ServerRunningMonitor%E6%BA%90%E7%A0%81%E6%B3%A8%E8%A7%A3.md)，
 2. 修复定时任务重新启动时加载启动状态且已过期的任务报错问题：[新增在添加任务是校验表达的合法性](https://github.com/Xlinlin/SpringCloud-Demo/blob/master/SpringCloud-Quartz-JobService/src/main/java/com/xiao/springcloud/job/util/CronExpUtil.java)
+
+20190720
+1. Springboot-Admin 2.0服务端+Springboot-Admin 1.5.6客户端[集成使用]()，掌控你的微服务。

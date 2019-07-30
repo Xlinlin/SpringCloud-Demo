@@ -26,3 +26,16 @@ spring:
         binder:
           brokers: 192.168.206.203:9092
           zkNodes: 192.168.206.203:2181
+  #springboot-admin 1.5.6集成使用
+  boot:
+    admin:
+      auto-registration: true
+      # springboot admin的地址
+      url: http://localhost:8080
+      api-path: instances
+      client:
+        prefer-ip: true
+#不使用鉴权
+management:
+  security:
+    enabled: false

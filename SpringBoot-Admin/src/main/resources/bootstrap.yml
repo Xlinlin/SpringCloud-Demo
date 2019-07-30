@@ -1,0 +1,40 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: omni-service-admin
+  security:
+    user:
+      name: "admin"
+      password: "admin@123"
+
+#eureka:
+  #client:
+    #fetch-registry: true
+    #service-url:
+      #defaultZone: http://192.168.206.201:8888/eureka
+    #register-with-eureka: true
+    #registry-fetch-interval-seconds: 30
+  #instance:
+    #hostname: localhost
+    #prefer-ip-address: true
+    #lease-renewal-interval-in-seconds: 10
+    #lease-expiration-duration-in-seconds: 30
+    #health-check-url-path: /actuator/health
+    #metadata-map:
+      #user.name: ${spring.security.user.name}
+      #user.password: ${spring.security.user.password}
+#info:
+  #name: @project.name@
+  #groupId: @project.groupId@
+  #artifactId: @project.artifactId@
+  #version: @project.version@
+#management:
+  #endpoints:
+    #web:
+      #exposure:
+        #include: "*"
+      #base-path: /
+  #endpoint:
+    #health:
+      #show-details: ALWAYS
