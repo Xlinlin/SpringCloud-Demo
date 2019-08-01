@@ -160,3 +160,6 @@ saveRegionCity(@RequestBody RegionCityDto regionCityDto)``
 
 20190720
 1. Springboot-Admin 2.0服务端+Springboot-Admin 1.5.6客户端[集成使用](https://github.com/Xlinlin/SpringCloud-Demo/tree/master/SpringBoot-Admin)，掌控你的微服务。
+
+20190801
+1. [SpringBoot + SpringCloud + Feign + Sentinel 集成实现接口限流监控](https://github.com/Xlinlin/SpringCloud-Demo/tree/master/SpringCloud-Sentinel)
