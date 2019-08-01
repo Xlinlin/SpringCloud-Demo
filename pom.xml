@@ -44,6 +44,7 @@
         <module>SpringCloud-Canal</module>
         <module>SpringCloud-Zookeeper</module>
         <module>SpringBoot-Admin</module>
+        <module>SpringCloud-Sentinel</module>
     </modules>
 
 	<dependencyManagement>

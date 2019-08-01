@@ -1,0 +1,76 @@
+eureka:
+  instance:
+    hostname: localhost
+    instance-id: ${spring.cloud.client.ipAddress}:${server.port}
+    prefer-ip-address: true
+    ##设置心跳的周期间隔(默认90s)[如果10s没响应默认服务宕机]
+    lease-expiration-duration-in-seconds: 10
+    #设置心跳时间间隔(默认30s)[心跳时间2s]
+    lease-renewal-interval-in-seconds: 2
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8888/eureka/
+      #开启健康检查（需要spring-boot-starter-actuator依赖）
+      #healthcheck:
+       #enable: true
+feign:
+  #请求和响应进行GZIP压缩，以提高通信效率
+  compression:
+    request:
+      #配置请求GZIP压缩
+      enable: true
+      #配置压缩支持的MIME TYPE
+      mime-types: text/xml,application/xml,application/json
+      #配置压缩数据大小的下限
+      min-request-size: 208
+    #配置响应GZIP压缩
+    response:
+      enable: true
+
+ribbon:
+  #设置连接超时时间
+  ConnectTimeout: 600
+  #设置读取超时时间
+  ReadTimeout: 2000
+  #对所有操作请求都进行重试
+  OkToRetryOnAllOperations: true
+  #切换实例的重试次数
+  MaxAutoRetriesNextServer: 2
+  #对当前实例的重试次数
+  MaxAutoRetries: 1
+
+# 设置针对hello-service服务的连接超时时间
+#hello-service.ribbon.ConnectTimeout=600
+# 设置针对hello-service服务的读取超时时间
+#hello-service.ribbon.ReadTimeout=6000
+# 设置针对hello-service服务所有操作请求都进行重试
+#hello-service.ribbon.OkToRetryOnAllOperations=true
+# 设置针对hello-service服务切换实例的重试次数
+#hello-service.ribbon.MaxAutoRetriesNextServer=2
+# 设置针对hello-service服务的当前实例的重试次数
+#hello-service.ribbon.MaxAutoRetries=1
+
+hystrix:
+  # 线程池
+  threadpool:
+    default:
+      coreSize: 10
+  command:
+    default:
+      #fallback:
+        # 是否关闭回退方法
+        #enable: true
+      execution:
+        #关闭超时熔断功能
+        #timeout:
+         #enable: false
+        isolation:
+          thread:
+            #设置熔断超时时间，默认1S，容易出现 fallback available 异常
+            timeoutInMilliseconds: 5000
+# 设置熔断超时时间，针对接口设置，比如/hello接口
+#hystrix.command.hello.execution.isolation.thread.timeoutInMilliseconds=10000
+# 关闭熔断功能
+#hystrix.command.hello.execution.timeout.enabled=false
+
+

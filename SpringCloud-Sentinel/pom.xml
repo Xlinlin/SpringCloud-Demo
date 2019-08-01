@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>SpringCloud-Demo</artifactId>
+        <groupId>com.xiao.skywalking.demo</groupId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>SpringCloud-Sentinel</artifactId>
+    <packaging>pom</packaging>
+    <modules>
+        <module>SpringCloud-Sentinel-Eureka</module>
+        <module>SpringCloud-Sentinel-Producer</module>
+        <module>SpringCloud-Sentinel-Consumer</module>
+    </modules>
+
+    <repositories>
+        <repository>
+            <id>purcotton-repository</id>
+            <name>purcotton-repository</name>
+            <url>http://192.168.206.220:8081/nexus/content/groups/public/</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+</project>
