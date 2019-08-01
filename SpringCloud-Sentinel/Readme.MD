@@ -44,6 +44,7 @@ java -Dserver.port=8080 -jar sentinel-dashboard.jar
         <artifactId>spring-cloud-starter-openfeign</artifactId>
         <version>1.4.7.RELEASE</version>
     </dependency>
+ 
     开启sentinel支持
     # 使用阿里 sentinel监控
     feign.sentinel.enabled=true
