@@ -1,0 +1,13 @@
+server:
+  port: 8082
+spring:
+  application:
+    name: hystrix-consumer-service
+  cloud:
+    config:
+      uri: http://192.168.206.204:9000/config/
+      profile: dev
+      label: master
+      name: ${spring.application.name}
+      # 自定义配置中，是否将服务信息发布到配置中心
+      custom: false

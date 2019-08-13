@@ -1,0 +1,21 @@
+server:
+  port: 8888
+spring:
+  application:
+    name: hystrix-eureka-server
+eureka:
+  instance:
+    hostname: localhost
+    prefer-ip-address: true
+    instance-id: ${spring.cloud.client.ipAddress}:${server.port}
+  client:
+    register-with-eureka: true
+    fetch-registry: false
+    service-url:
+      defaultZone: http://localhost:8888/eureka/
+  server:
+    ##以下配置，生产环境不建议使用
+    ###自我保护机制关闭
+    enable-self-preservation: false
+    ## 清理间隔（单位毫秒，默认是60*1000）
+    eviction-interval-timer-in-ms: 2000

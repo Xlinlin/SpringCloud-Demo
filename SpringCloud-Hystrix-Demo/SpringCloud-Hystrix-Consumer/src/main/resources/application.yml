@@ -1,0 +1,119 @@
+eureka:
+  instance:
+    hostname: localhost
+    instance-id: ${spring.cloud.client.ipAddress}:${server.port}
+    prefer-ip-address: true
+    ##设置心跳的周期间隔(默认90s)[如果10s没响应默认服务宕机]
+    lease-expiration-duration-in-seconds: 10
+    #设置心跳时间间隔(默认30s)[心跳时间2s]
+    lease-renewal-interval-in-seconds: 2
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8888/eureka/
+      #开启健康检查（需要spring-boot-starter-actuator依赖）
+      #healthcheck:
+       #enable: true
+feign:
+  #请求和响应进行GZIP压缩，以提高通信效率
+  compression:
+    request:
+      #配置请求GZIP压缩
+      enable: true
+      #配置压缩支持的MIME TYPE
+      mime-types: text/xml,application/xml,application/json
+      #配置压缩数据大小的下限
+      min-request-size: 208
+    #配置响应GZIP压缩
+    response:
+      enable: true
+
+ribbon:
+  #设置连接超时时间
+  ConnectTimeout: 600
+  #设置读取超时时间
+  ReadTimeout: 5000
+  #对所有操作请求都进行重试
+  OkToRetryOnAllOperations: true
+  #切换实例的重试次数
+  MaxAutoRetriesNextServer: 2
+  #对当前实例的重试次数
+  MaxAutoRetries: 1
+
+# 设置针对hello-service服务的连接超时时间
+#hello-service.ribbon.ConnectTimeout=600
+# 设置针对hello-service服务的读取超时时间
+#hello-service.ribbon.ReadTimeout=6000
+# 设置针对hello-service服务所有操作请求都进行重试
+#hello-service.ribbon.OkToRetryOnAllOperations=true
+# 设置针对hello-service服务切换实例的重试次数
+#hello-service.ribbon.MaxAutoRetriesNextServer=2
+# 设置针对hello-service服务的当前实例的重试次数
+#hello-service.ribbon.MaxAutoRetries=1
+
+hystrix:
+  # 线程池
+  threadpool:
+    default:
+      #默认为10,基本得原则时保持线程池尽可能小，他主要是为了释放压力，防止资源被阻塞
+      coreSize: 50
+      ## 最大排队长度。默认-1,不能动态调整
+      maxQueueSize: 1000
+      #动态控制线程池队列的上限，即使maxQueueSize没有达到，达到queueSizeRejectionThreshold该值后，请求也会被拒绝，默认值5
+      #queueSizeRejectionThreshold: 800
+    #pref-producer-service:
+      #coreSize: 50
+      #maximumSize: 100
+      #keepAliveTimeMinutes: 1
+      #allowMaximumSizeToDivergeFromCoreSize: true
+  command:
+    ## 默认全局配置
+    default:
+      fallback:
+        # 是否关闭回退方法
+        #enable: true
+        #isolation:
+          #semaphore:
+            ## 当触发fallback时，并发最大出发fallback的数量，超过该数量直接拒绝服务
+            #maxConcurrentRequests: 1000
+      execution:
+        # 断路器
+        circuitBreaker:
+          #确定断路器是否用于跟踪运行状况和断路请求
+          #enable: true
+          #当在配置时间窗口内达到此数量的失败后，进行短路。默认20个，如：10s内请求失败数量达到20个，断路器开
+          requestVolumeThreshold: 20
+          #短路多久以后开始尝试是否恢复，默认5s,缺省情况采用的是连续错误次数来隔离，一旦一个实例访问成功，马上恢复实例的访问
+          sleepWindowInMilliseconds: 5000
+          #出错百分比阈值，当达到此阈值后，开始短路。默认50%,(建议业务不要使用)
+          #errorThresholdPercentage: 50
+          #强制打开熔断器，如果打开这个开关，那么拒绝所有request，默认false
+          #forceOpen: false
+          #强制关闭熔断器 如果这个开关打开circuit将一直关闭且忽略circuitBreaker.errorThresholdPercentage
+          #forceClosed: false
+          #关闭超时熔断功能
+        #timeout:
+         #enable: false
+        isolation:
+          # 隔离策略：有THREAD(默认)(单独的线程上执行，并发请求受线程池中的线程数量的限制)和SEMAPHORE(调用线程上执行，并发请求受到信号量计数的限制)
+          #strategy: THREAD
+          #semaphore:
+            #当触发fallback时，并发最大出发fallback的数量，超过该数量直接拒绝服务，默认10，SEMAPHORE模式有效
+            #maxConcurrentRequests: 10
+          thread:
+            #设置熔断超时时间，默认1S，容易出现 fallback available 异常
+            #在THREAD模式下，达到超时时间，可以中断，在SEMAPHORE模式下，会等待执行完成后，再去判断是否超时
+            timeoutInMilliseconds: 5000
+            #调用线程允许请求HystrixCommand.GetFallback()的最大数量，默认10
+            #maxConcurrentRequests: 10
+            #在发生超时时是否应中断,默认值：true,THREAD模式有效
+            #interruptOnTimeout: true
+            #当发生取消时，执行是否应该中断，默认值：true,THREAD模式有效
+            #interruptOnCancel: true
+    ## 接口级别配置 -- 移到配置中心
+    #ProducerFeign#timeout(String):
+     # execution:
+        #isolation:
+          #thread:
+            #timeoutInMilliseconds: 5000
+
+

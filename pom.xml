@@ -45,6 +45,7 @@
         <module>SpringCloud-Zookeeper</module>
         <module>SpringBoot-Admin</module>
         <module>SpringCloud-Sentinel</module>
+        <module>SpringCloud-Hystrix-Demo</module>
     </modules>
 
 	<dependencyManagement>
