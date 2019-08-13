@@ -70,8 +70,8 @@ hystrix:
            #timeoutInMilliseconds: 5000
 ```
 此外，hystrix使用[Archaius](https://github.com/Netflix/archaius)来提供动态属性修改的支持，扩展步骤：<br>
->> 1.初始化配置获取源，这里可以从配置中心、redis、zookeeper等，实现``com.netflix.config.PolledConfigurationSource``接口的poll方法，[参考类：DynamicConfigSource]()<br>
->> 2.配置并初始化自动配置``com.netflix.config.DynamicConfiguration``，通过定时任务去定时刷新的，[参考类：InitHystrixConfiguration]()<br>
+>> 1.初始化配置获取源，这里可以从配置中心、redis、zookeeper等，实现``com.netflix.config.PolledConfigurationSource``接口的poll方法，[参考类：DynamicConfigSource](https://github.com/Xlinlin/SpringCloud-Demo/blob/master/SpringCloud-Hystrix-Demo/SpringCloud-Hystrix-Consumer/src/main/java/com/xiao/hystrix/demo/consumer/dynamic/DynamicConfigSource.java)<br>
+>> 2.配置并初始化自动配置``com.netflix.config.DynamicConfiguration``，通过定时任务去定时刷新的，[参考类：InitHystrixConfiguration](https://github.com/Xlinlin/SpringCloud-Demo/blob/master/SpringCloud-Hystrix-Demo/SpringCloud-Hystrix-Consumer/src/main/java/com/xiao/hystrix/demo/consumer/dynamic/InitHystrixConfiguration.java)<br>
 >> 3.其他更多参考博文资料：[hystrix 简单使用以及动态配置更新](https://my.oschina.net/u/1169457/blog/1787414/)、[zookeeper的动态配置](https://github.com/tigerMoon/demo-hystrix-config)<br>
 
 以上能实现接口级别的隔离配置，来解决部分处理耗时的接口超时到时服务不可用的问题。<br>
@@ -98,10 +98,10 @@ hystrix:
 
 **此外，这里再扩展两个优化点**：<br>
 1. Hystrix请求缓存，请注意，仅针对同一线程内请求的缓存。这里使用注解来实现，步骤：<br>
->> 1.实现一个filter,用来拦截所有请求的时候，初始化hystrix的上下文，[参考类:HystrixCacheFilter]()<br>
->> 2.需要一个@ServletComponentScan注解来扫描到这个filter，[参考类：HystrixCacheConfiguration]()<br>
->> 3.接口上使用@CacheResult注解，[参考类:ProducerFeign]()<br>
+>> 1.实现一个filter,用来拦截所有请求的时候，初始化hystrix的上下文，[参考类:HystrixCacheFilter](https://github.com/Xlinlin/SpringCloud-Demo/tree/master/SpringCloud-Hystrix-Demo/SpringCloud-Hystrix-Consumer/src/main/java/com/xiao/hystrix/demo/consumer/filter)<br>
+>> 2.需要一个@ServletComponentScan注解来扫描到这个filter，[参考类：HystrixCacheConfiguration](https://github.com/Xlinlin/SpringCloud-Demo/blob/master/SpringCloud-Hystrix-Demo/SpringCloud-Hystrix-Consumer/src/main/java/com/xiao/hystrix/demo/consumer/config/HystrixCacheConfiguration.java)<br>
+>> 3.接口上使用@CacheResult注解，[参考类:ProducerFeign](https://github.com/Xlinlin/SpringCloud-Demo/blob/master/SpringCloud-Hystrix-Demo/SpringCloud-Hystrix-Consumer/src/main/java/com/xiao/hystrix/demo/consumer/feign/ProducerFeign.java)<br>
 
-2. 针对Feign服务接口做一层JVM缓存，提高短时间内重复请求的吞吐量和效率，本案例使用：springboot cache + caffeine 实现，接口上使用@Cacheable注解标记，[参考类:CaffeineCacheConfiguration]()<br>
+2. 针对Feign服务接口做一层JVM缓存，提高短时间内重复请求的吞吐量和效率，本案例使用：springboot cache + caffeine 实现，接口上使用@Cacheable注解标记，[参考类:CaffeineCacheConfiguration](https://github.com/Xlinlin/SpringCloud-Demo/blob/master/SpringCloud-Hystrix-Demo/SpringCloud-Hystrix-Consumer/src/main/java/com/xiao/hystrix/demo/consumer/config/CaffeineCacheConfiguration.java)<br>
  
-[Github-Demo地址]()
+[Github-Demo地址](https://github.com/Xlinlin/SpringCloud-Demo/tree/master/SpringCloud-Hystrix-Demo)

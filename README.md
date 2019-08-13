@@ -165,4 +165,4 @@ saveRegionCity(@RequestBody RegionCityDto regionCityDto)``
 1. [SpringBoot + SpringCloud + Feign + Sentinel 集成实现接口限流监控](https://github.com/Xlinlin/SpringCloud-Demo/tree/master/SpringCloud-Sentinel)
 
 20190813
-1. [SpringCloud + Feign + Hystrix 熔断、线程池的一些坑记录]()
+1. [SpringCloud + Feign + Hystrix 熔断、线程池的一些坑记录](https://github.com/Xlinlin/SpringCloud-Demo/tree/master/SpringCloud-Hystrix-Demo)
