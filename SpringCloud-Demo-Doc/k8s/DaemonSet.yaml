@@ -1,0 +1,24 @@
+# DaemonSet DS
+## RS 和RC都是用于K8S运行特定的POD数量，而 DS保证在每个节点上运行一个Pod，比如日志收集、监控、守护进程等
+
+## 创建DS：kubectl create -f DaemonSet.yaml
+## 查看DS：kubectl get ds
+
+apiVersion: apps/v1beat2
+kind: DaemontSet
+metadata:
+  name: service-monitor
+spec:
+  selector:
+    matchLabels:
+      app: monitor
+  template:
+    metadata:
+      labels:
+        app: app-monitor
+    sepc:
+      nodeSelector:   #模板包含一个节点选择器选择label包含app的标签节点
+        label: app
+      containers:
+        - name: main
+          image: luksa/app-monitor

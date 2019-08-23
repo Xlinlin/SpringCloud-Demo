@@ -1,0 +1,58 @@
+## Pod定义
+# Pod 一组容器定义，K8S中的基本构建模块
+# 主要包括：
+## metadata(命名空间、名称、标签以及容器其他信息)
+## spec(容器实际说明，容器、卷、其他数据)
+## status 容器状态
+## kubectl create -f Pod.yml  创建一个pod
+## kubectl get po podName -o -yaml 获取pod yaml定义
+
+# 查看pod日志(pod被删后日志也会被删除)
+## kubectl logs podName (输出pod内多个容器日志合并信息)
+## kubectl logs podName -c containerName (输出pod内指定容器的日志信息)
+## kubectl port-forward podName 8081:8080 (转发本地端口8081到pod端口8080，一般仅做调试使用)
+
+# Pod标签，类似分类，后续很多操作都可以以标签来做相关操作(如：金丝雀发布)
+## 添加标签: kubectl label pod podName labelName=labelValue1
+## 显示所有Pod标签信息: kubectl get pods --show-labels
+## 将指定标签做列展示: kubectl get po -L app,env
+## 修改标签: kubectl label pod podName labelName=labelValue2 --overwrite(一定要覆盖，否则仅警告不会修改标签)
+## 列出标签env=prod的pod: kubectl get po -l env=prod
+## 列出包含env标签的所有pod: kubectl get po -l env
+## 列出不包含env标签的所有pod: kubectl get po -l '!env'
+## 删除Pod: kubectl delete po podName
+## 按标签删除Pod: kubectl delete po -l env=prod
+## 命名空间删除Pod: kubectl delete ns custom-manager
+
+# 命名空间-资源分组、多租户
+## 列出命名空间: kubectl get -ns
+## 列出指定命名空间的Pod: kubectl get po --n(namespace) name
+## 创建命名空间: kubectl create namespace custom-manager
+## 为Pod添加命名空间: kubectl create -f pod.yml -n custom-manager
+
+# 存活探针
+## 主要有三种： HTTP GET、TCP、Exec(命令)，主要用户RC资源来判断Pod是否存活
+## 一些其他属性： delay 延迟、timeout 超时时间、period 周期、failure 失败次数
+
+apiVersion: v1  # k8s api版本
+kind: Pod   #资源类型为Pod
+metadata:
+  name: kubia-name  # Pod名称
+  labels:   #添加两个标签
+    app: manual
+    env: prod
+  namespace: custom-manager #指定命名空间
+spec:
+  #nodeSelector:
+    #gpu: "true" # 节点选择器仅pod部署到包含gpu=true的节点上
+  containers:
+    - image: luksa/kubia  #镜像路径
+      name: kubia # 容器名称
+      ports:
+        - containerPort: 8080 # 容器指定开放端口
+          protocal: TCP #交互协议
+      livenessProbe:  #存活探针
+        httpGet:   # HTTP GET
+          path: /  # 请求路径，尽可能返回，类似health健康检查
+          port: 8080  # 端口
+        initialDelaySeconds: 15  # 启动延迟15S启用存活探针，防止RC已启动就检测pod存活而导致不断重启

@@ -1,0 +1,24 @@
+# Job
+## 容器启动内部进程成功结束后， 不再重启容器，即Pod处于已完成状态
+## 创建：kubectl create -f Job.yaml
+## 查询：kubectl get jobs
+## 命令更改parallelism属性：kubectl scale job batch-job --replicas 3
+
+apiVersion: batch/v1  #batchApi组 v1版本
+kind: Job
+metadata:
+  name: batch-job
+spec:
+  completions: 5  # 顺序运行5个pod，串行
+  parallelism: 2  # 并行，这里指定最多2个pod并行
+  activeDeadlineSeconds: 10 #限制pod时间
+  backoffLimit: 6 #失败重试次数，默认6次
+  template:    ##使用模板创建pod
+    metadata:
+      labels:
+        app: batch-job   #依据模板中的标签 app=batch-job来创建
+    spec:
+      restartPolicy: OnFailure  # 不能指定Always为默认重启策略(容器结束时K8S做什么，默认Always),Job不需要限期运行，可设置OnFailure/Never
+      containers:
+        - name: main
+          image: luksa/batch-job

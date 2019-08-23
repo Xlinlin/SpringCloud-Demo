@@ -1,0 +1,26 @@
+# k8s RC(ReplicationController) example
+## RC 由三个关键部：Pod标签选择器、副本数量、Pod模板(Pod)
+## 创建RC：kubectl create -f ReplicationController.yml
+## 查看kubia RC的基本信息：kubectl describe rc kubia
+## 编辑RC配置：kubectl edit rc kubia
+## 扩容缩容：kubectl scale rc kubia --replicas=10  或者使用kubectl edit rc 来修改spec.replicas数量
+## 删除：kubectl delete rc kubia (--cascade==false 删除rc保留pod运行)
+
+apiVersion: v1  #k8s api 版本
+kind: ReplicationController   #指定资源为 RC
+metadata:
+  name: kubiaRC # RC资源名称
+spec:
+  replicas: 3  # pod实例数量,RC会始终保持该值指定的pod实例
+  selector:
+    app: kubia # RC的标签选择器，选择kubia标签的pod
+  template:  #pod模板定义
+    metadata:
+      labels:
+        app: kubia  #定义标签 app=kubia
+    spec:
+      containers:
+      - name: kubia  # pod名称
+        image: luksa/kubia  # 所需镜像
+        ports:  #对外部指定的端口
+          - containerPort: 8080

@@ -1,0 +1,30 @@
+# ReplicaSet(RS)
+## RS与RC功能类似，但比RC更强大，比如在标签控制方面(env=*)，RC也即将被遗弃，一般通常创建更高层及的Deployment资源时会自动创建RS
+## 创建 kubectl create -f ReplicaSet.yaml
+## 查看 kubectl get/describe rs
+
+
+apiVersion: apps/v1bate2  # apps组v1bate2版本，RS不是api v1版本中的功能
+kind: ReplicaSet
+metadata:
+  name: kubia
+spec:
+  replicas: 3
+  selector:
+    #matchLabels:  # 使用matchLabels 简单选择器
+      #app: kubia
+    matchExpressions:  ## 标表达式选择器 ,可以有多个表达式
+      - key: app  #要求该pod包含标签app，且标签的值必须是kubia
+        operator: In  #运算符：In NotIn Exists DoesNotExists
+        values:
+          - kubia
+  template:
+    metadata:
+      lables:
+        app: kubia  # 标签
+    spec:
+      containers:
+        - name: kubia
+          image: luksa/kubia #镜像
+          ports:
+            - containerPort: 8080
