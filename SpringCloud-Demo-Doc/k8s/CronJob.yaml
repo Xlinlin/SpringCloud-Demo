@@ -1,0 +1,24 @@
+# 定时任务
+## 通用linux cron任务
+## 会先创建job，在创建Pod
+## 正常情况只会创建一个pod，但也可能是两个，需要保证幂等性(业务逻辑)
+## 如果未创建，需要保证下一次执行任务必须是上一次任务执行完后的(业务逻辑)
+
+apiVersion: batch/v1beta1
+kind: CronJob
+metatata:
+  name: cron-job
+spec:
+  schedule: "0,15,30,45 * * * *"  ## 定时任务表达式，参考linux cron
+  startingDeadlineSeconds: 15     #延迟15s开始运行()
+  jobTemplate:                      ## 任务模板
+    spec:
+      template:                      ## pod模板
+        metadata:
+          labels:
+            app: cron-job
+        spec:
+          restartPolicy: OnFailure   #重启策略
+          containers:
+            - name: main
+              image: luksa/batch-job  # 镜像
