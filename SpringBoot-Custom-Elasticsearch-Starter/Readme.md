@@ -1,8 +1,43 @@
-**Elasticsearch Rest High Level Client Starter**
+**定制SpringBoot Starter 之Elasticsearch Rest High Level Client Starter**
+
+**1. 自定义SpringBoot Starter 三要素：**
+1.1.pom :
+```$xslt
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-autoconfigure</artifactId>
+        </dependency>
+
+        <!-- 将被@ConfigurationProperties注解的类的属性注入到元数据 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+```
+>1.2. 注解使用
+```$xslt
+@Data
+@ConfigurationProperties(prefix = ElasticsearchProperties.ELASTIC_SEARCH_PREFIX)
+public class ElasticsearchProperties{}
+
+@Configuration
+@EnableConfigurationProperties(ElasticsearchProperties.class)
+public class ElasticsearchAutoConfiguration{}
+```
+>1.3 EnableAutoConfiguration 利用SpringFactoriesLoader机制加载所有的AutoConfiguration类 META-INF/spring.factories
+```$xslt
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.xiao.custom.elasticsearch.start.autoconfig.ElasticsearchAutoConfiguration
+```
 
 Elasticsearch高级客户端打包集成为Springboot Starter包，详情参考[Example工程](https://github.com/Xlinlin/SpringCloud-Demo/tree/master/SpringBoot-Custom-Elasticsearch-Starter/Custom-Elasticsearch-Starter-Example)<p>
-使用说明：<p>
- **1. Pom引入**:<br>
+**2. Custom ElasticSearch High Level Rest Client Starter使用说明：**<p>
+>2.1Pom引入<br>
 ```$xslt
      
        <properties>
@@ -35,8 +70,7 @@ Elasticsearch高级客户端打包集成为Springboot Starter包，详情参考[
         </dependency>
        </dependencies>
 ```
-
- **2. 配置文件：**<pr>
+>2.2配置文件：<br>
 ```$xslt
 spring:
   elasticsearch:
@@ -67,13 +101,12 @@ spring:
       maxRetryTimeout: 30000
 
 ```
-
-**3. 代码引用：**<br>
+>2.3代码引用：<br>
 ```$xslt
     @Autowired
     private RestHighLevelClient restHighLevelClient;
 ```
-**4. ElasticSearch High Level Rest Client 增删改Demo:**<br>
+>2.4ElasticSearch High Level Rest Client 增删改Demo：<br>
 [ElasticsearchApplicationTest](https://github.com/Xlinlin/SpringCloud-Demo/blob/master/SpringBoot-Custom-Elasticsearch-Starter/Custom-Elasticsearch-Starter-Example/src/test/java/com/xiao/custom/elasticsearch/starter/example/ElasticsearchApplicationTest.java)<br>
 ```$xslt
    // 创建索引
