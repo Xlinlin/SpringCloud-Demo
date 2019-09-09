@@ -46,6 +46,7 @@
         <module>SpringBoot-Admin</module>
         <module>SpringCloud-Sentinel</module>
         <module>SpringCloud-Hystrix-Demo</module>
+        <module>SpringBoot-Custom-Elasticsearch-Starter</module>
     </modules>
 
 	<dependencyManagement>

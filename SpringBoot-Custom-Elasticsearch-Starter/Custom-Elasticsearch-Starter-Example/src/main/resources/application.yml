@@ -1,0 +1,31 @@
+spring:
+  elasticsearch:
+    rest:
+      clusterName: omni-dev-es
+      hosts:
+        -
+          hostname: 192.168.206.210
+          port: 9200
+          schema: http
+        #-
+          #hostname: 192.168.206.212
+          #port: 9200
+          #schema: http
+      #username: you username
+      #password: you passwd
+      # 连接超时时间,单位ms,默认1S
+      connectTimeout: 1000
+      # socket超时时间,单位ms,默认30S
+      socketTimeout: 30000
+      # 请求超时时间,单位ms,默认500ms
+      requestTimeout: 500
+      # 单机最大连接数,默认30个
+      maxConnect: 30
+      # 单机最大并发数,默认10个
+      maxConnectRoute: 10
+      # 最大重试时间,默认30S
+      maxRetryTimeout: 30000
+      # 高亮前缀
+      #highlightPre: <span style=\"color:red\">
+      # 高亮后缀
+      #highlightPost: </span>

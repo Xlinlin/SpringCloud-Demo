@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>1.5.9.RELEASE</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.xiao.skywalking.demo</groupId>
+    <artifactId>SpringBoot-Custom-Elasticsearch-Starter</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>Custom ElasticSearch High Level Rest Client Stater</name>
+    <packaging>pom</packaging>
+    <modules>
+        <module>Custom-Elasticsearch-Starter-Autoconfig</module>
+        <module>Custom-Elasticsearch-Starter</module>
+        <module>Custom-Elasticsearch-Starter-Example</module>
+    </modules>
+
+
+</project>
