@@ -1,7 +1,7 @@
 **定制SpringBoot Starter 之Elasticsearch Rest High Level Client Starter**
 
 **1. 自定义SpringBoot Starter 三要素：**
-1.1.pom :
+>1.1.pom :
 ```$xslt
         <dependency>
             <groupId>org.springframework.boot</groupId>
