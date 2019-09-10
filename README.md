@@ -171,4 +171,4 @@ saveRegionCity(@RequestBody RegionCityDto regionCityDto)``
 1. [定制SpringBoot Starter 之Elasticsearch Rest High Level Client Starter](https://github.com/Xlinlin/SpringCloud-Demo/tree/master/SpringBoot-Custom-Elasticsearch-Starter)
 
 20190910
-1. 启动脚本添加GC参数和skywalking探针
+1. [启动脚本添加GC参数和skywalking探针](https://github.com/Xlinlin/SpringCloud-Demo/blob/master/SpringCloud-Common/script/bootstrap.sh)
