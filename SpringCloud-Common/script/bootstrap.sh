@@ -3,11 +3,21 @@
 source /etc/profile
 
 SERVICE_NAME=appname
-SERVICE_HOME=/home/service/$SERVICE_NAME
-PROG=$SERVICE_HOME/
-PIDFILE=$SERVICE_HOME/$SERVICE_NAME.pid
-JARFILE=$SERVICE_HOME/$SERVICE_NAME.jar
-LOG_FILE=$SERVICE_NAME.log
+SERVICE_HOME=/home/admin/services
+PROG=$SERVICE_HOME/$SERVICE_NAME
+PIDFILE=$SERVICE_HOME/$SERVICE_NAME/$SERVICE_NAME.pid
+cd $SERVICE_HOME/$SERVICE_NAME
+
+# skywalking探针参数
+SKYWALKING_AGENT_PATH=/home/admin/agent/skywalking-agent.jar
+SKYWALKING_SERVCIE_NAME=$SERVICE_NAME
+
+# GC参数
+LOG_TIMESTAMP=`date "+%Y%m%d%H%M%S"`
+LOG_HOME=/data/logs/$SERVICE_NAME
+OOM_FILE=$LOG_HOME/oom-$LOG_TIMESTAMP.hprof
+GC_FILE=$LOG_HOME/gc-$LOG_TIMESTAMP.log
+
 
 #堆配置：服务模式(启动慢，一次编译，运行效率高)、最小内存512m、最大内存512m、年轻代大512m
 HEAP_OPTIONS="-server -Xms512m -Xmx512m -Xmn256m"
@@ -65,7 +75,9 @@ case "$1" in
            echo "-----Jave home: $JAVA_HOME"
            echo "-----Starting $PROG ..."
            echo "-----Java options: $JAVA_OPTS"
-           nohup java $JAVA_OPTS -jar $JARFILE  > $LOG_FILE 2>&1 &
+           #nohup java $JAVA_OPTS -jar $JARFILE  > $LOG_FILE 2>&1 &
+           # GC参数+skywalking探针设置
+           nohup  java -server -Xms2048m -Xmx2048m -XX:CMSInitiatingOccupancyFraction=80 -XX:+UseCMSInitiatingOccupancyOnly -XX:SurvivorRatio=8 -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=$OOM_FILE -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintHeapAtGC -Xloggc:$GC_FILE  -javaagent:$SKYWALKING_AGENT_PATH -Dskywalking.agent.service_name=$SKYWALKING_SERVCIE_NAME -jar $SERVICE_HOME/$SERVICE_NAME/$SERVICE_NAME.jar  > $SERVICE_NAME.log 2>&1 &
 
            RETVAL=$?
            if [ $RETVAL -eq 0 ]; then
