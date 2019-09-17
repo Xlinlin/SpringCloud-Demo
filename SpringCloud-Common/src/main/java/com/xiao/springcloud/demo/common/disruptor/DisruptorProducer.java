@@ -19,6 +19,7 @@ import java.util.concurrent.*;
 /**
  * [简要描述]: Disruptor生产者
  * [详细描述]:
+ * 严重警告：ringBufferSize的值设定需要保持理性的数量，环形队列是等着被替换而不是被回收，设置太大会撑爆你设定的JVM内存，最终导致OLD占满，接下来就是无限循环的FGC
  *
  * @author llxiao
  * @version 1.0, 2019/3/21 15:37
