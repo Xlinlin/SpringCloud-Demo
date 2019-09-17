@@ -1,7 +1,15 @@
 package com.xiao.custom.elasticsearch.starter.example;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.xiao.custom.elasticsearch.start.autoconfig.properties.ElasticsearchProperties;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.Header;
+import org.apache.http.HttpEntity;
+import org.apache.http.entity.ContentType;
+import org.apache.http.message.BasicHeader;
+import org.apache.http.nio.entity.NStringEntity;
+import org.apache.http.util.EntityUtils;
 import org.elasticsearch.ElasticsearchException;
 import org.elasticsearch.action.DocWriteRequest;
 import org.elasticsearch.action.DocWriteResponse;
@@ -28,6 +36,8 @@ import org.elasticsearch.action.support.master.AcknowledgedRequest;
 import org.elasticsearch.action.support.replication.ReplicationResponse;
 import org.elasticsearch.action.update.UpdateRequest;
 import org.elasticsearch.action.update.UpdateResponse;
+import org.elasticsearch.client.Response;
+import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.unit.ByteSizeUnit;
@@ -49,10 +59,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.IOException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -661,6 +668,42 @@ public class ElasticsearchApplicationTest
         // 创建索引API返回响应之前等待的活动分片副本数
         //        request.waitForActiveShards(2);
         //        request.waitForActiveShards(ActiveShardCount.DEFAULT);
+    }
+
+    /**
+     * [简要描述]:使用LowLevelClient 执行analyzer操作<br/>
+     * [详细描述]:<br/>
+     * <p>
+     * llxiao  2019/9/17 - 10:45
+     **/
+    @Test
+    public void testAnalysis()
+    {
+        RestClient lowLevelClient = restHighLevelClient.getLowLevelClient();
+        JSONObject entity = new JSONObject();
+        entity.put("analyzer", "ik_max_word");
+        entity.put("text", "我是中国人");
+        HttpEntity httpEntity = new NStringEntity(JSONObject.toJSONString(entity), ContentType.APPLICATION_JSON);
+
+        Map<String, String> params = Collections.emptyMap();
+        Header[] defaultHeaders = new Header[] { new BasicHeader("header", "value") };
+        try
+        {
+            Response response = lowLevelClient.performRequest("POST", "_analyze", params, httpEntity, defaultHeaders);
+            JSONObject tokens = JSONObject.parseObject(EntityUtils.toString(response.getEntity()));
+            JSONArray arrays = tokens.getJSONArray("tokens");
+            String[] result = new String[arrays.size()];
+            for (int i = 0; i < arrays.size(); i++)
+            {
+                JSONObject obj = JSONObject.parseObject(arrays.getString(i));
+                result[i] = obj.getString("token");
+            }
+            System.out.println(Arrays.toString(result));
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
     }
 
 }
