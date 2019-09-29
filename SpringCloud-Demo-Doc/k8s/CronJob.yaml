@@ -6,7 +6,7 @@
 
 apiVersion: batch/v1beta1
 kind: CronJob
-metatata:
+metadata:
   name: cron-job
 spec:
   schedule: "0,15,30,45 * * * *"  ## 定时任务表达式，参考linux cron

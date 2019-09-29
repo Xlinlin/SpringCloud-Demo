@@ -5,8 +5,9 @@
  * 创建时间:2017年4月20日
  */
 
-package com.xiao.springcloud.demo.common.util;
+package com.xiao.springcloud.demo.common.util.encode;
 
+import com.xiao.springcloud.demo.common.util.CodeFormatConstants;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Base64;
 

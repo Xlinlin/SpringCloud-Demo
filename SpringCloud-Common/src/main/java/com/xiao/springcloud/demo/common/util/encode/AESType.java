@@ -5,7 +5,7 @@
  * 创建时间:2017年3月13日
  */
 
-package com.xiao.springcloud.demo.common.util;
+package com.xiao.springcloud.demo.common.util.encode;
 
 /**
  * [简要描述]:AES加密类型枚举<br/>

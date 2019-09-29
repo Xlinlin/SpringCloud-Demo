@@ -5,7 +5,7 @@
  * 创建时间:2017年6月9日
  */
 
-package com.xiao.springcloud.demo.common.util;
+package com.xiao.springcloud.demo.common.util.encode;
 
 /**
  * [简要描述]:<br/>

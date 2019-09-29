@@ -5,7 +5,7 @@
  * 创建时间:2017年2月20日
 */
 
-package com.xiao.springcloud.demo.common.util;
+package com.xiao.springcloud.demo.common.util.encode;
 
 import org.apache.commons.codec.binary.Base64;
 

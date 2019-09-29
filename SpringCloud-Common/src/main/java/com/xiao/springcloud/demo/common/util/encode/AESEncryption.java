@@ -5,7 +5,7 @@
  * 创建时间:2017年3月13日
  */
 
-package com.xiao.springcloud.demo.common.util;
+package com.xiao.springcloud.demo.common.util.encode;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.DecoderException;

@@ -5,7 +5,7 @@
 ## 查看DS：kubectl get ds
 
 apiVersion: apps/v1beat2
-kind: DaemontSet
+kind: DaemonSet
 metadata:
   name: service-monitor
 spec:
