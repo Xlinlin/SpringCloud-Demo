@@ -20,7 +20,7 @@ import java.io.IOException;
  * @version 1.0, 2019/9/29 10:55
  * @since JDK 1.8
  */
-public class ImageDHasUtil
+public class ImageDHashUtil
 {
     /**
      * 计算dHash方法

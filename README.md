@@ -174,4 +174,4 @@ saveRegionCity(@RequestBody RegionCityDto regionCityDto)``
 1. [启动脚本添加GC参数和skywalking探针](https://github.com/Xlinlin/SpringCloud-Demo/blob/master/SpringCloud-Common/script/bootstrap.sh)
 
 20190929
-1. 新增图片比较工具类，比较两张图片是否相同：[DHashUtil](https://github.com/Xlinlin/SpringCloud-Demo/blob/master/SpringCloud-Common/src/main/java/com/xiao/springcloud/demo/common/util/image/ImageDHasUtil.java)&[PHashUtil](https://github.com/Xlinlin/SpringCloud-Demo/blob/master/SpringCloud-Common/src/main/java/com/xiao/springcloud/demo/common/util/image/ImagePHashUtil.java)
+1. 新增图片比较工具类，比较两张图片是否相同：[DHashUtil](https://github.com/Xlinlin/SpringCloud-Demo/blob/master/SpringCloud-Common/src/main/java/com/xiao/springcloud/demo/common/util/image/ImageDHashUtil.java)&[PHashUtil](https://github.com/Xlinlin/SpringCloud-Demo/blob/master/SpringCloud-Common/src/main/java/com/xiao/springcloud/demo/common/util/image/ImagePHashUtil.java)
