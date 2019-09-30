@@ -42,9 +42,9 @@ public class ImagePHashUtil
 
     private int matchThreshold = 5;
     /**
-     * 是否需要校验图片
+     * 是否需要校验图片，默认需要校验
      */
-    private boolean check = false;
+    private boolean check = true;
 
     private ColorConvertOp colorConvert = new ColorConvertOp(ColorSpace.getInstance(ColorSpace.CS_GRAY), null);
 
