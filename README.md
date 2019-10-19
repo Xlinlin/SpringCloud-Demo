@@ -175,3 +175,6 @@ saveRegionCity(@RequestBody RegionCityDto regionCityDto)``
 
 20190929
 1. 新增图片比较工具类，比较两张图片是否相同：[DHashUtil](https://github.com/Xlinlin/SpringCloud-Demo/blob/master/SpringCloud-Common/src/main/java/com/xiao/springcloud/demo/common/util/image/ImageDHashUtil.java)&[PHashUtil](https://github.com/Xlinlin/SpringCloud-Demo/blob/master/SpringCloud-Common/src/main/java/com/xiao/springcloud/demo/common/util/image/ImagePHashUtil.java)
+
+20191019
+1. redisson分布式锁库存使用，下单、取消单、出库单之jmeter ifelse程序并发测试--**预告**
