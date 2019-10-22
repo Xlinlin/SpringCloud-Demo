@@ -178,3 +178,6 @@ saveRegionCity(@RequestBody RegionCityDto regionCityDto)``
 
 20191019
 1. redisson分布式锁库存使用，下单、取消单、出库单之jmeter ifelse程序并发测试--**预告**
+
+20191022
+1. [Springboot官方文档-配置新-Tomcat优化](https://docs.spring.io/spring-boot/docs/2.2.1.BUILD-SNAPSHOT/reference/html/appendix-application-properties.html#server-properties)
