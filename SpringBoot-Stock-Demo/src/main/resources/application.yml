@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: stock-demo
+server:
+  port: 7878
+  ## tomcat 最大线程池配置
+  tomcat:
+    # 最大连接数
+    max-connections: 10000
+    # 最大线程数
+    max-threads: 500
+    # 最小线程数
+    min-spare-threads: 20
+    #最大队列长度
+    accept-count: 1000
+redisson:
+  host: redis://192.168.206.204:6789
+  password: jl!@12
+thread:
+  pool:
+    core: 50
+    max: 100
+  queue:
+    capacity: 10000
+hikari-jdbc-url: jdbc:mysql://192.168.206.201:3306/basisdb?useSSL=false&allowMultiQueries=true
+hikari-jdbc-username: basisuser
+hikari-jdbc-password: Basisuser123
+hikari-jdbc-driver-class-name: com.mysql.jdbc.Driver
+hikari-jdbc-pool-size: 10

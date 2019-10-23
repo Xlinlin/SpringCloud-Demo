@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true">
+    <!-- logback加载优先于application.yml文件，因此需要从bootstrap.yml文件中读取spring.application.name信息 -->
+    <springProperty scope="context" name="springAppName" source="spring.application.name"/>
+    <springProperty scope="context" name="ip" source="spring.cloud.client.ipAddress"/>
+    <springProperty scope="context" name="active" source="spring.profiles.active"/>
+    <!-- 日志在工程中的输出位置 -->
+    <!-- 控制台的日志输出样式 -->
+    <property name="CONSOLE_LOG_PATTERN"
+              value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n"/>
+
+    <!-- 控制台Appender -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符-->
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+
+    <!-- <logger name="org.springframework.web" level="ERROR" /> -->
+    <logger name="org.apache.http" level="ERROR"/>
+    <logger name="com.netflix.discovery" level="ERROR"/>
+    <logger name="org.apache.tomcat" level="ERROR"/>
+    <logger name="org.apache.zookeeper" level="ERROR"/>
+    <logger name="com.netflix.discovery.shared.resolver.aws.ConfigClusterResolver" level="ERROR"/>
+    <!-- 启动的时候一些日志屏蔽 -->
+    <logger name="com.netflix.discovery" level="ERROR"/>
+    <logger name="org.apache" level="ERROR"/>
+    <logger name="org.springframework.jmx.export.annotation.AnnotationMBeanExporter" level="ERROR"/>
+    <logger name="org.springframework.boot.actuate.endpoint.mvc" level="ERROR"/>
+    <logger name="org.springframework.boot.web.servlet.FilterRegistrationBean" level="ERROR"/>
+    <logger name="org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainer" level="ERROR"/>
+    <logger name="com.netflix.config.sources.URLConfigurationSource" level="ERROR"/>
+    <logger name="com.netflix.discovery.shared.resolver.aws.ConfigClusterResolver" level="ERROR"/>
+    <logger name="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping" level="ERROR"/>
+    <logger name="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping" level="ERROR"/>
+    <logger name="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter" level="ERROR"/>
+    <logger name="org.springframework.ui.freemarker.SpringTemplateLoader" level="ERROR"/>
+    <logger name="org.springframework.context.annotation.AnnotationConfigApplicationContext" level="ERROR"/>
+    <logger name="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor" level="ERROR"/>
+    <logger name="org.springframework.beans.factory.support.DefaultListableBeanFactory" level="ERROR"/>
+    <logger name="org.springframework.boot.actuate.endpoint.jmx.EndpointMBeanExporter" level="ERROR"/>
+
+    <root level="INFO">
+        <appender-ref ref="STDOUT"/>
+    </root>
+
+</configuration>
