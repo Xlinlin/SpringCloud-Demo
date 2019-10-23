@@ -23,12 +23,12 @@
    >(7) 查看进程、端口是否启动：``jps 或 ps -ef|grep stock_demo 或 lsof -i:7878``<br>
    >(8) 配好nginx跳转
    >(9) 下载[jmeter](http://jmeter.apache.org/download_jmeter.cgi) ,解压进入jmeter目录，双击：ApacheJMeter<br>
-   >(10) 文件->打开->找到doc下的[.jmx](https://github.com/Xlinlin/SpringCloud-Demo/blob/master/SpringBoot-Stock-Demo/doc/stock_demo_jmeter.jmx)文件，大概的画面：![alt Jmeter脚本样例](https://github.com/Xlinlin/SpringCloud-Demo/blob/master/SpringBoot-Stock-Demo/doc/stock_demo_jmeter.png)<br>
+   >(10) 文件->打开->找到doc下的[.jmx](https://github.com/Xlinlin/SpringCloud-Demo/blob/master/SpringBoot-Stock-Demo/doc/stock_demo_jmeter.jmx)文件，大概的画面：![](https://github.com/Xlinlin/SpringCloud-Demo/blob/master/SpringBoot-Stock-Demo/doc/stock_demo_jmeter.png)<br>
    >(11) 修改远程服务器地址信息为你的nginx服务<br>
    >(12) 修改你的数据地址，此处需要将mysql的驱动jar包引入jmeter/lib目录下<br>
    >(13) 线程、参数、请求调整好后，然后点击启动(Ctrl+R)<br>
    部分截图：
-   >(14) 后台日志![alt 日志打印](https://github.com/Xlinlin/SpringCloud-Demo/blob/master/SpringBoot-Stock-Demo/doc/sever_console_log.png)
-   >(15) 库存表![alt 库存记录](https://github.com/Xlinlin/SpringCloud-Demo/blob/master/SpringBoot-Stock-Demo/doc/stock_query.png)
-   >(16) 订单表![alt 订单记录](https://github.com/Xlinlin/SpringCloud-Demo/blob/master/SpringBoot-Stock-Demo/doc/order_query.png)
+   >(14) 后台日志![](https://github.com/Xlinlin/SpringCloud-Demo/blob/master/SpringBoot-Stock-Demo/doc/sever_console_log.png)
+   >(15) 库存表![](https://github.com/Xlinlin/SpringCloud-Demo/blob/master/SpringBoot-Stock-Demo/doc/stock_query.png)
+   >(16) 订单表![](https://github.com/Xlinlin/SpringCloud-Demo/blob/master/SpringBoot-Stock-Demo/doc/order_query.png)
    
