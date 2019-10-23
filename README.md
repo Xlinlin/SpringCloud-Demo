@@ -181,3 +181,6 @@ saveRegionCity(@RequestBody RegionCityDto regionCityDto)``
 
 20191022
 1. [Springboot官方文档-配置新-Tomcat优化](https://docs.spring.io/spring-boot/docs/2.2.1.BUILD-SNAPSHOT/reference/html/appendix-application-properties.html#server-properties)
+
+20191023
+1. [Jmeter+Springboot+Redisson分布式锁并发订单操作(下单、取消单、完成单、加库存)](https://github.com/Xlinlin/SpringCloud-Demo/tree/master/SpringBoot-Stock-Demo)
