@@ -23,7 +23,8 @@
    >(7) 查看进程、端口是否启动：``jps 或 ps -ef|grep stock_demo 或 lsof -i:7878``<br>
    >(8) 配好nginx跳转
    >(9) 下载[jmeter](http://jmeter.apache.org/download_jmeter.cgi) ,解压进入jmeter目录，双击：ApacheJMeter<br>
-   >(10) 文件->打开->找到doc下的[.jmx](https://github.com/Xlinlin/SpringCloud-Demo/blob/master/SpringBoot-Stock-Demo/doc/stock_demo_jmeter.jmx)文件，大概的画面：![](https://github.com/Xlinlin/SpringCloud-Demo/blob/master/SpringBoot-Stock-Demo/doc/stock_demo_jmeter.jpg?raw=true)<br>
+   >(10) 文件->打开->找到doc下的[.jmx](https://github.com/Xlinlin/SpringCloud-Demo/blob/master/SpringBoot-Stock-Demo/doc/stock_demo_jmeter.jmx)文件，大概的画面：<br>
+   ![](https://github.com/Xlinlin/SpringCloud-Demo/blob/master/SpringBoot-Stock-Demo/doc/stock_demo_jmeter.jpg?raw=true)<br>
    >(11) 修改远程服务器地址信息为你的nginx服务<br>
    >(12) 修改你的数据地址，此处需要将mysql的驱动jar包引入jmeter/lib目录下<br>
    >(13) 线程、参数、请求调整好后，然后点击启动(Ctrl+R)<br>
