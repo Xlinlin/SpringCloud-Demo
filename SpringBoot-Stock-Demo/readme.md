@@ -32,4 +32,12 @@
    >(14) 后台日志![](https://github.com/Xlinlin/SpringCloud-Demo/blob/master/SpringBoot-Stock-Demo/doc/sever_console_log.jpg?raw=true)
    >(15) 库存表![](https://github.com/Xlinlin/SpringCloud-Demo/blob/master/SpringBoot-Stock-Demo/doc/stock_query.jpg?raw=true)
    >(16) 订单表![](https://github.com/Xlinlin/SpringCloud-Demo/blob/master/SpringBoot-Stock-Demo/doc/order_query.jpg?raw=true)
-   
+5. 遗留一个业务问题：<br>
+   总库存(Total) = 可用库存(Ava) + 预占库存(Prev)<br>
+   A:下单：T   A-  P+ <br>
+   B:取消：T   A+  P- <br>
+   C:出库：T-  A   P- <br>
+   D:同步库存+：T+ A+ P <br>
+   E:同步库存-：T- A- P <br>
+   如果仅仅只是 A+B 或者 A+C 或A B C并发跑能保证 T=P+A <br>
+   但是 A+C +D +E 并发跑，就一定会出现 打破这个 T=P+A的平衡，这个要业务逻辑要怎么处理？有大佬解答？<br>
