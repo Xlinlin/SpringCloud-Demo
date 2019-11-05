@@ -184,3 +184,6 @@ saveRegionCity(@RequestBody RegionCityDto regionCityDto)``
 
 20191023
 1. [Jmeter+Springboot+Redisson分布式锁并发订单操作(下单、取消单、完成单、加库存)](https://github.com/Xlinlin/SpringCloud-Demo/tree/master/SpringBoot-Stock-Demo)
+
+20191105
+1. Api对外接口统一返回值，如：{"code":200,"erroMsg":"",data:{}}，[参考实现](https://github.com/Xlinlin/SpringCloud-Demo/blob/master/SpringCloud-Consumer/src/main/java/com/xiao/skywalking/consumer/common/advice/UnifiedReturnAdvice.java)
