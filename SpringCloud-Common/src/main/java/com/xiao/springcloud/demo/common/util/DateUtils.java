@@ -14,7 +14,7 @@ import java.util.Date;
 public class DateUtils
 {
     /**
-     * [简要描述]:获取下一天的0点时间<br/>
+     * [简要描述]:获取下一天的0点时间·<br/>
      * [详细描述]:<br/>
      *
      * @return long
@@ -22,12 +22,25 @@ public class DateUtils
      **/
     public static Date getNextDay()
     {
-        //得到一个Calendar实例
         Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR, 24);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.MILLISECOND, 0);
-        return new Date(calendar.getTimeInMillis());
+        calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar
+                .get(Calendar.DAY_OF_MONTH), 0, 0, 0);
+        calendar.add(Calendar.DAY_OF_MONTH, 1);
+        return calendar.getTime();
+    }
+
+    /**
+     * [简要描述]:获取当天最后的时间：23:59:59<br/>
+     * [详细描述]:<br/>
+     *
+     * @return java.util.Date
+     * llxiao  2019/11/7 - 19:49
+     **/
+    public static Date getDayEnd()
+    {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar
+                .get(Calendar.DAY_OF_MONTH), 23, 59, 59);
+        return calendar.getTime();
     }
 }
