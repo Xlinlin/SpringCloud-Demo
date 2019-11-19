@@ -187,3 +187,13 @@ saveRegionCity(@RequestBody RegionCityDto regionCityDto)``
 
 20191105
 1. Api对外接口统一返回值，如：{"code":200,"erroMsg":"",data:{}}，[参考实现](https://github.com/Xlinlin/SpringCloud-Demo/blob/master/SpringCloud-Consumer/src/main/java/com/xiao/skywalking/consumer/common/advice/UnifiedReturnAdvice.java)
+
+20191119
+1. Springboot 的Rest请求返回的Response中的HTTP响应行只有：HTTP/1.1 200 {OK},无OK返回导致老的http客户端无法识别，是因为springboot 1.4以上版本将tomcat升级到了8.5.x以后的版本，如果需要支持，需要设置tomcat的版本低于8.5的版本，设置：
+    ```$xslt
+    <properties>
+      <tomcat.version>8.0.29</tomcat.version>
+    </properties> 
+    ```
+    [参考资料1](http://www.mamicode.com/info-detail-2280850.html);<br>
+    [参考资料2](https://stackoverflow.com/questions/49610522/spring-boot-return-http-1-1-200-not-http-1-1-200-ok);
