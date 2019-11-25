@@ -197,3 +197,6 @@ saveRegionCity(@RequestBody RegionCityDto regionCityDto)``
     ```
     [参考资料1](http://www.mamicode.com/info-detail-2280850.html);<br>
     [参考资料2](https://stackoverflow.com/questions/49610522/spring-boot-return-http-1-1-200-not-http-1-1-200-ok);
+    
+20191125
+1. [Gitlab+P3C-PMD(ali)标准化你团队的代码.doc](https://github.com/Xlinlin/SpringCloud-Demo/blob/master/SpringCloud-Demo-Doc/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/Gitlab%2BP3C-PMD(Aliyun)%E6%A0%87%E5%87%86%E5%8C%96%E4%BD%A0%E5%9B%A2%E9%98%9F%E7%9A%84%E4%BB%A3%E7%A0%81.docx)
