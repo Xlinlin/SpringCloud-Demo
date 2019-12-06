@@ -202,4 +202,4 @@ saveRegionCity(@RequestBody RegionCityDto regionCityDto)``
 1. [Gitlab+P3C-PMD(ali)标准化你团队的代码.doc](https://github.com/Xlinlin/SpringCloud-Demo/blob/master/SpringCloud-Demo-Doc/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/Gitlab%2BP3C-PMD(Aliyun)%E6%A0%87%E5%87%86%E5%8C%96%E4%BD%A0%E5%9B%A2%E9%98%9F%E7%9A%84%E4%BB%A3%E7%A0%81.docx)
 
 20191206
-1. [SpringCloud RestTemplate 封装stater]()支持使用http连接池、okhttp等
+1. [SpringCloud RestTemplate 封装stater](https://github.com/Xlinlin/SpringCloud-Demo/tree/master/SpringCloud-Custom-RestTemplate-Stater)支持使用http连接池、okhttp等
