@@ -12,7 +12,7 @@
     <artifactId>custom-config-server</artifactId>
 
     <properties>
-        <netty.version>4.1.25.Final</netty.version>
+        <netty.version>4.1.42.Final</netty.version>
     </properties>
 
     <dependencies>
@@ -89,7 +89,7 @@
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-core</artifactId>
-            <version>RELEASE</version>
+            <version>4.1.12</version>
             <scope>compile</scope>
         </dependency>
 
