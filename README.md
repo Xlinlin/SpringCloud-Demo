@@ -203,3 +203,6 @@ saveRegionCity(@RequestBody RegionCityDto regionCityDto)``
 
 20191206
 1. [SpringCloud RestTemplate 封装stater](https://github.com/Xlinlin/SpringCloud-Demo/tree/master/SpringCloud-Custom-RestTemplate-Stater)支持使用http连接池、okhttp等
+
+20191208
+1. [Linux之netstat命令]()-服务自动化发布时以此结果为依据停止服务
