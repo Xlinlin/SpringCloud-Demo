@@ -15,9 +15,9 @@ oldwarn="99000"
 metawarn="99900"
 
 # 手机号码，多个用逗号隔开
-mobile="17727821863"
+mobile=
 # 短信发送url地址
-sendsms="http://api.pureh2b.com/dreamWebSms/batchSend"
+sendsms=
 jsonhead="Content-type:application/json"
 
 ## 当前日期
@@ -113,7 +113,7 @@ do
    echo $jvm
 
    #echo "JVM告警信息：${jvm}"
-   smsContent='{"mobile":"'$mobile'","content":"'$jvm'","userid":"WL0001","pwd":"123456"}'
+   smsContent='{"mobile":"'$mobile'","content":"'$jvm'","userid":"0001","pwd":"123456"}'
    #echo "JVM告警发送短信内容: ${smsContent}"
    # -s 不输出请求信息
    smsResult=$(curl -H ${jsonhead} -X POST -s -d "${smsContent}" ${sendsms})
