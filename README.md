@@ -212,3 +212,6 @@ saveRegionCity(@RequestBody RegionCityDto regionCityDto)``
 
 20200104
 1. Shell脚本+jstat+curl+crontab 监控JVM发短信[脚本](https://github.com/Xlinlin/SpringCloud-Demo/blob/master/SpringCloud-Demo-Doc/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/monitor-jstat.sh)
+
+20200111
+1. [基于Springboot1.5.9+SpringCloud+Zipkin+ELK链路跟踪实现](https://github.com/Xlinlin/spingcloud-zipkin-elk-demo)
