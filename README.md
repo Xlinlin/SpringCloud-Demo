@@ -215,3 +215,6 @@ saveRegionCity(@RequestBody RegionCityDto regionCityDto)``
 
 20200111
 1. [基于Springboot1.5.9+SpringCloud+Zipkin+ELK链路跟踪实现](https://github.com/Xlinlin/spingcloud-zipkin-elk-demo)
+
+20200114
+1. String字符GBK和UTF编码格式长度判断以及截取
