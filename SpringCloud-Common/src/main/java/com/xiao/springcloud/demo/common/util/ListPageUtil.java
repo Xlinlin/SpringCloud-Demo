@@ -178,7 +178,7 @@ public final class ListPageUtil<T>
         System.out.println("List size: " + listPageUtil.getListSize());
         System.out.println("Page count: " + listPageUtil.getPageCount());
         System.out.println("Page size: " + listPageUtil.getPageSize());
-        System.out.println("Fist page: " + listPageUtil.getFistPage());
+        System.out.println("First page: " + listPageUtil.getFistPage());
         System.out.println("Last page: " + listPageUtil.getLastPage());
         while (listPageUtil.hasNext())
         {
