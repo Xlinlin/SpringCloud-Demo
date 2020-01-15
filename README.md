@@ -218,3 +218,6 @@ saveRegionCity(@RequestBody RegionCityDto regionCityDto)``
 
 20200114
 1. String字符GBK和UTF编码格式长度判断以及截取
+
+20200115
+1. 经常用到对list进行分页批处理，写了[工具类]()一劳永逸
