@@ -220,4 +220,4 @@ saveRegionCity(@RequestBody RegionCityDto regionCityDto)``
 1. String字符GBK和UTF编码格式长度判断以及截取
 
 20200115
-1. 经常用到对list进行分页批处理，写了[工具类]()一劳永逸
+1. 经常用到对list进行分页批处理，写了[工具类](https://github.com/Xlinlin/SpringCloud-Demo/blob/master/SpringCloud-Common/src/main/java/com/xiao/springcloud/demo/common/util/ListPageUtil.java)一劳永逸
