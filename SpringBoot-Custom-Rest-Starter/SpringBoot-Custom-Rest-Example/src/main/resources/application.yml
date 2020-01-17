@@ -1,0 +1,20 @@
+rest:
+  # okhttp 配置
+  okhttp:
+    enable: false
+    connection-timeout: 12000
+    read-timeout: 30000
+    write-timeout: 12000
+  # http pool
+  pool:
+    enable: true
+    max-total: 20
+    default-max-per-route: 2
+    validate-after-inactivity: 2000
+    connect-timeout: 10000
+    connection-request-timeout: 10000
+    socket-timeout: 10000
+  http:
+    service:
+      sync: true
+      async: false

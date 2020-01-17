@@ -49,6 +49,7 @@
         <module>SpringBoot-Custom-Elasticsearch-Starter</module>
         <module>SpringBoot-Stock-Demo</module>
 		<module>SpringCloud-Custom-RestTemplate-Stater</module>
+        <module>SpringBoot-Custom-Rest-Starter</module>
 	</modules>
 
 	<dependencyManagement>
