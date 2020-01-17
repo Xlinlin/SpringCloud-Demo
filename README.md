@@ -223,4 +223,4 @@ saveRegionCity(@RequestBody RegionCityDto regionCityDto)``
 1. 经常用到对list进行分页批处理，写了[工具类](https://github.com/Xlinlin/SpringCloud-Demo/blob/master/SpringCloud-Common/src/main/java/com/xiao/springcloud/demo/common/util/ListPageUtil.java)一劳永逸
 
 20200117
-1. 封装RestTemplate,支持okhttp,httpool,支持同步和异步请求,[ReadMe.MD]()
+1. 封装RestTemplate,支持okhttp,httpool,支持同步和异步请求,[ReadMe.MD](https://github.com/Xlinlin/SpringCloud-Demo/tree/master/SpringBoot-Custom-Rest-Starter)

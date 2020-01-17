@@ -4,9 +4,9 @@ Springboot Rest Template配置
 2. 引入pom:
     ```$xslt
     <dependency>
-        <groupId>com.purcotton.omni</groupId>
-        <artifactId>omni-common-rest-starter</artifactId>
-        <version>${project.version}</version>
+        <groupId>com.xiao.skywalking.demo</groupId>
+        <artifactId>SpringBoot-Custom-Rest-Autconfigure</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
     </dependency>
     ```
 
