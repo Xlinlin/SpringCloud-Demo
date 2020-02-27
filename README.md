@@ -226,4 +226,4 @@ saveRegionCity(@RequestBody RegionCityDto regionCityDto)``
 1. 封装RestTemplate,支持okhttp,httpool,支持同步和异步请求,[ReadMe.MD](https://github.com/Xlinlin/SpringCloud-Demo/tree/master/SpringBoot-Custom-Rest-Starter)
 
 20200224
-1. Springboot web应用签名包括工具类,[传送链接](https://github.com/Xlinlin/SpringCloud-Demo/tree/master/SpringCloud-Common/src/main/java/com/xiao/springcloud/demo/common/util/sign)
+1. Springboot web应用签名包括工具类,[传送链接](https://github.com/Xlinlin/SpringCloud-Demo/tree/master/SpringCloud-Common/src/main/java/com/xiao/springcloud/demo/common/sign)
