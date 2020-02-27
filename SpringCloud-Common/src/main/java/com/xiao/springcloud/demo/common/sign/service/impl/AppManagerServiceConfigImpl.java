@@ -1,6 +1,6 @@
 package com.xiao.springcloud.demo.common.sign.service.impl;
 
-import omni.purcotton.omni.inface.center.common.sign.service.AppManagerService;
+import com.xiao.springcloud.demo.common.sign.service.AppManagerService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;

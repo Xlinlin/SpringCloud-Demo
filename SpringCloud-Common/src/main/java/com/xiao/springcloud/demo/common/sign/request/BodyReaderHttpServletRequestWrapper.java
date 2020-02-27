@@ -1,7 +1,7 @@
 package com.xiao.springcloud.demo.common.sign.request;
 
+import com.xiao.springcloud.demo.common.sign.SignConstants;
 import lombok.extern.slf4j.Slf4j;
-import omni.purcotton.omni.inface.center.common.sign.SignConstants;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.ReadListener;

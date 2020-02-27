@@ -1,11 +1,9 @@
 package com.xiao.springcloud.demo.common.sign.annotation;
 
-import com.purcotton.omni.common.exception.CommonException;
+import com.xiao.springcloud.demo.common.exception.CommonException;
+import com.xiao.springcloud.demo.common.sign.SignConstants;
+import com.xiao.springcloud.demo.common.sign.service.AppManagerService;
 import lombok.extern.slf4j.Slf4j;
-import omni.purcotton.omni.inface.center.common.CommonConstants;
-import omni.purcotton.omni.inface.center.common.exception.InterfaceErrorCodeEnum;
-import omni.purcotton.omni.inface.center.common.sign.SignConstants;
-import omni.purcotton.omni.inface.center.common.sign.service.AppManagerService;
 import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -66,16 +64,14 @@ public class DisposeSignService
             if (StringUtils.isBlank(clientSign))
             {
                 log.error("请求服务器URL:{}缺少签名参数!", uri);
-                throw new CommonException(InterfaceErrorCodeEnum.PARAM_IS_NULL.getCode(), String
-                        .format(InterfaceErrorCodeEnum.PARAM_IS_NULL.getMessage(), SignConstants.SIGN_NAME));
+                throw new CommonException(1002, "缺少签名参数");
             }
             String appId = String.valueOf(header.get(SignConstants.APP_ID));
 
             if (StringUtils.isBlank(appId))
             {
                 log.error("请求服务器URL:{}缺少AppId参数!", uri);
-                throw new CommonException(InterfaceErrorCodeEnum.PARAM_IS_NULL.getCode(), String
-                        .format(InterfaceErrorCodeEnum.PARAM_IS_NULL.getMessage(), SignConstants.APP_ID));
+                throw new CommonException(1002, "缺少appid参数!");
             }
 
             // 暂时保留
@@ -88,13 +84,13 @@ public class DisposeSignService
                 {
                     log.error("Appid:{} 请求服务器URL: {}，请求签名错误!", appId, uri);
                     log.error("客户端签名：{}，服务端签名：{}", clientSign, serverSign);
-                    throw new CommonException(InterfaceErrorCodeEnum.VERIFY_SIGNAT_FAILED);
+                    throw new CommonException(1000, "签名错误!");
                 }
             }
             else
             {
                 log.error("请求服务器URL:{},App ID: {}非法请求", uri, appId);
-                throw new CommonException(InterfaceErrorCodeEnum.ILLEGAL_REQUEST);
+                throw new CommonException(1001, "请求非法，无appid");
             }
             return joinPoint.proceed(args);
         }
@@ -108,7 +104,7 @@ public class DisposeSignService
 
     private Map<String, String> assembleHeader(HttpServletRequest request)
     {
-        Map<String, String> header = new HashMap<>(CommonConstants.INIT_COLLECTION_SIZE);
+        Map<String, String> header = new HashMap<>(16);
         Enumeration<String> enumeration = request.getHeaderNames();
         while (enumeration.hasMoreElements())
         {
