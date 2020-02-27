@@ -1,4 +1,4 @@
-package com.xiao.springcloud.demo.common.util.sign;
+package com.xiao.springcloud.demo.common.sign.util;
 
 import org.apache.commons.lang3.StringUtils;
 
