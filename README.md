@@ -230,3 +230,6 @@ saveRegionCity(@RequestBody RegionCityDto regionCityDto)``
 
 20200229
 1. K8S Cluster[安装文档](https://github.com/Xlinlin/SpringCloud-Demo/blob/master/SpringCloud-Demo-Doc/k8s/K8S%20Linux%20%20Centos%207%E5%AE%89%E8%A3%85.docx)
+
+20200422
+1. Sonarqube+Gitlab-CICD构建代[码质量管理平台]()
