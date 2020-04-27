@@ -1,0 +1,50 @@
+
+EJECT=0
+JAVA_HOME=/usr/local/java8
+BASE_PATH=$(cd `dirname $0`; pwd)
+
+while read oldrev newrev refname; do
+    echo 'old version:'${oldrev}
+    echo 'new version:'${newrev}
+    echo 'branc:'${refname}
+    
+    if [ "$oldrev" = "0000000000000000000000000000000000000000" ];then
+        oldrev="${newrev}^"
+    fi
+
+    FILES=`git diff --name-only ${oldrev} ${newrev}  | grep -e "\.java$"`
+
+    if [ -n "$FILES" ]; then
+        TEMPDIR=$BASE_PATH/"tmp"
+        for FILE in ${FILES}; do
+            mkdir -p "${TEMPDIR}/`dirname ${FILE}`" >/dev/null
+            git show $newrev:$FILE > ${TEMPDIR}/${FILE}
+        done;
+       
+        MAIN_JAVA_PATH=$TEMPDIR'/src/main'
+        #echo 'Temp update files path: '$MAIN_JAVA_PATH
+
+        #FILES_TO_CHECK=`find $MAIN_JAVA_PATH -name '*.java'`
+        
+        #echo 'Check files:'${FILES_TO_CHECK}
+        echo 'Aliyun p3c-pmd check starting.....'
+        
+        #echo 'Current shell Path:' $BASE_PATH
+        #echo 'JAVA_HOME:' $JAVA_HOME
+        #echo 'Root directory for java sources: '$MAIN_JAVA_PATH
+      
+        #$JAVA_HOME/bin/java -Dpmd.language=en -cp $BASE_PATH/p3c-pmd-2.0.0.jar net.sourceforge.pmd.PMD -d $MAIN_JAVA_PATH -R rulesets/java/ali-comment.xml,rulesets/java/ali-concurrent.xml,rulesets/java/ali-constant.xml,rulesets/java/ali-exception.xml,rulesets/java/ali-flowcontrol.xml,rulesets/java/ali-naming.xml,rulesets/java/ali-oop.xml,rulesets/java/ali-orm.xml,rulesets/java/ali-other.xml,rulesets/java/ali-set.xml -f text
+       
+       $JAVA_HOME/bin/java -Dpmd.language=en -cp $BASE_PATH/p3c-pmd-2.0.0.jar net.sourceforge.pmd.PMD -d $MAIN_JAVA_PATH -R rulesets/java/ali-comment.xml,rulesets/java/ali-concurrent.xml,rulesets/java/ali-constant.xml,rulesets/java/ali-exception.xml,rulesets/java/ali-flowcontrol.xml,rulesets/java/ali-naming.xml,rulesets/java/ali-oop.xml,rulesets/java/ali-other.xml,rulesets/java/ali-set.xml -f text 
+       REJECT=$?
+      
+       echo 'Aliyun p3c-pmd check end...'
+
+       #REJECT=1
+       echo $REJECT
+
+       rm -rf $TEMPDIR
+    fi
+done
+
+exit $REJECT

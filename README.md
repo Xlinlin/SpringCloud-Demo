@@ -233,3 +233,6 @@ saveRegionCity(@RequestBody RegionCityDto regionCityDto)``
 
 20200422
 1. Sonarqube+Gitlab-CICD构建[代码质量管理平台](https://github.com/Xlinlin/SpringCloud-Demo/blob/master/SpringCloud-Demo-Doc/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90)
+
+20200426
+1. 完善代码质量[监控体系]()

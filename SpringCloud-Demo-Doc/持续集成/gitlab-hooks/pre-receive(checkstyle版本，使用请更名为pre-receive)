@@ -1,0 +1,54 @@
+
+EJECT=0
+#JAVA_HOME=/usr/local/java8
+JAVA_HOME=/usr/local/jdk1.8.0_141
+BASE_PATH=$(cd `dirname $0`; pwd)
+
+while read oldrev newrev refname; do
+    echo 'old version:'${oldrev}
+    echo 'new version:'${newrev}
+    echo 'branc:'${refname}
+    
+    if [ "$oldrev" = "0000000000000000000000000000000000000000" ];then
+        oldrev="${newrev}^"
+    fi
+
+    FILES=`git diff --name-only ${oldrev} ${newrev}  | grep -e "\.java$"`
+
+    if [ -n "$FILES" ]; then
+        TEMPDIR=$BASE_PATH/"tmp"
+        for FILE in ${FILES}; do
+            mkdir -p "${TEMPDIR}/`dirname ${FILE}`" >/dev/null
+            git show $newrev:$FILE > ${TEMPDIR}/${FILE}
+        done;
+       
+        MAIN_JAVA_PATH=$TEMPDIR'/src/main'
+        #echo 'Temp update files path: '$MAIN_JAVA_PATH
+
+        #FILES_TO_CHECK=`find $MAIN_JAVA_PATH -name '*.java'`
+        
+        #echo 'Check files:'${FILES_TO_CHECK}
+        echo 'Cheet Checkstyle code starting.....'
+        
+        #echo 'Current shell Path:' $BASE_PATH
+        #echo 'JAVA_HOME:' $JAVA_HOME
+        #echo 'Root directory for java sources: '$MAIN_JAVA_PATH
+      
+       CHECK_RESULT=`$JAVA_HOME/bin/java -jar $BASE_PATH/checkstyle-8.16-all.jar -c $BASE_PATH/Cheetah_Checkstyle_ruleset.xml $MAIN_JAVA_PATH`
+       if [[ $CHECK_RESULT =~ "[WARN]" ]]; then
+         echo $CHECK_RESULT | sed 's/\[WARN\]/\n/g'
+         REJECT=1
+       else
+         REJECT=0
+       fi
+      
+       echo 'Cheetah Checkstyle end...'
+
+       #REJECT=1
+       echo $REJECT
+
+       rm -rf $TEMPDIR
+    fi
+done
+
+exit $REJECT
