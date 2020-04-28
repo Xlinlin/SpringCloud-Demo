@@ -1,0 +1,245 @@
+#!/bin/bash
+
+##脚本提供功能：Commit提交的Message和代码规范是否符合统一规范
+##分三个部分：
+# 1.变量定义部分
+# 2.校验部分：注释校验&代码分析
+# 3.初始化入口
+## 校验流程：
+# 1.先做提交注释校验，校验的规则：是否已${TYPE_LIST}定义的开头，且内容长度是否大于${COMMIT_MESSAGE_MIN_LENGTH}
+# 2.如果是master分之，修改了pom文件还会校验是否存在snapshot版本的jar
+# 3.最后代码规范校验
+
+####### 初始化变量部分 #########
+
+## 定义java_home变量 需要修改你配置的java_home
+JAVA_HOME=/usr/local/jdk1.8.0_141
+## 是否开启commit message的校验：0是，1否
+CHECK_COMMIT_MESSAGE_ON=0
+## 是否开启代码检查：0是，1否
+CHECK_CODE_RULE_ON=0
+## 是否校验master上的pom文件是否包含snapshot：0是，1否
+CHECK_MASTER_POM_SNAPSHOT_ON=1
+## 注释内容最小长度，默认20
+COMMIT_MESSAGE_MIN_LENGTH=20
+### 代码校验规则：0使用阿里云P3C规则，1使用checkStyle
+CODE_RULE_TYPE=0
+
+## 定义提交开头类型字符规则
+## e.g: fix:测试提交bug修复，Bug编号#12 
+TYPE_LIST=(
+         'feat:'   #新功能feature
+         'update:' #在feat内修改
+         'fix:'  #修补bug
+         'docs:'  #文档
+         'style:' #格式化，不影响代码运行的变动
+         'refactor:' #重构 
+         'pref:'  #性能优化
+         'test:'  #增加测试
+         'chore:'  #构建过程或辅助工具的变动
+         #'[ci skip]'  #忽略校验
+)
+
+EJECT=0
+BASE_PATH=$(cd `dirname $0`; pwd)
+
+declare -a regex_list
+arrLen=${#TYPE_LIST[@]}
+for ((i=0;i<$arrLen;i++)) do
+  regex_list[i]='^'${TYPE_LIST[i]}
+done
+regex_list[$arrLen+1]='^[ci skip]:'
+
+#echo "reg_list=== "${regex_list[@]}
+
+
+separator="|"
+## 合并成一个完整的正则表达式
+regex="$( printf "${separator}%s" "${regex_list[@]}" )"
+#echo "type regex: "$regex
+## 去除头部的 |
+regex=${regex:${#separator}}
+#echo "regex: "$regex
+
+tips_msg="$( printf "${separator}%s" "${TYPE_LIST[@]}" )"
+tips_msg=${tips_msg:${#separator}}
+####### 初始化变量部分 #########
+
+####### 校验部分：注释校验&代码分析###########
+## 校验commit message
+validate_commit_message()
+{
+   oldrev=$(git rev-parse $1)
+   newrev=$(git rev-parse $2)
+   refname="$3"
+   #echo 'Old version: '$oldrev
+   #echo 'New version: '$newrev
+   #echo 'Branch: '$refname
+
+   ## git 命令
+   #GITCMD="git"
+   ## 按时间倒序列出 commit  找出两个版本之间差异的版本号集合  oldrev~newrev
+   commitList=`git rev-list $oldrev..$newrev`
+   #echo 'commitList: '$commitList
+   
+   split=($commitList)
+   #echo 'split: '$split
+   
+   # 遍历数组
+   for s in ${split[@]}
+   do
+      #echo “$s”
+      #通过版本号获取仓库中对象实体的类型、大小和内容的信息
+      #比如提交人、作者、邮件、提交时间、提交内容等
+      currentContent=`git cat-file commit $s`
+      #echo 'Commit obj: '$currentContent
+      #获取提交内容
+      msg=`git cat-file commit $s | sed '1,/^$/d'`
+      #echo 'msg: '$msg
+	  
+	  ## merge合并分之直接放行
+	  if [[ $msg == *"Merge branch"* ]]; then
+        echo "Merge branch...skip the checking"
+	  else
+
+		## 做内容校验
+		match=`echo $msg | grep -nE "(${regex})"`
+		#echo 'Match result: '$match  
+		  
+		## 找到匹配说明是符合规范的
+		if [ "${match}" != "" ]; then
+			  
+			## 校验注释长度
+			msg_length=${#msg}
+			#echo "Msg length: ${msg_length}"
+			if [[ ${msg_length} -lt ${COMMIT_MESSAGE_MIN_LENGTH} ]]; then
+				echo -e "Error: Commit message should be bigger than ${COMMIT_MESSAGE_MIN_LENGTH} and current commit message length: ${msg_length}"
+				exit 1
+			fi
+			 
+			### 找到匹配内容做相应处理，如fix ,校验pom文件等
+			#if [[ "${match}" =~ "fix:" ]]; then
+				## 如果是修补bug，规范有点获取到fix中的ID，然后调用禅道对外的API关闭，其他场景类似
+			#fi         
+			 
+			# 是否开启校验和master分之
+			isMaster=$(echo $refname | grep "master$")
+			if [ $CHECK_MASTER_POM_SNAPSHOT_ON == 0 ] && [ -n "$isMaster" ]; then
+			  # 如果是master分之，并且pom文件发生了变更，判断pom文件是否含有sonapshot的引用
+			  pomfile=`git diff --name-only ${oldrev} ${newrev} | grep -e "pom\.xml"`
+			  if [[ "${pomfile}" != "" ]]; then
+				#echo $pomfile
+				## 获取pom文件更新的内容
+				pomcontent=`git show $newrev:$pomfile`
+				#echo $pomcontent
+				## 校验pom文件是否包含snapshot版本
+				if [[ $pomcontent =~ 'SNAPSHOT' ]]; then
+				   echo -e "Error: Snapshot version cannot exist in master branch!"
+				   exit 1
+				fi
+			  fi 
+			fi
+			 
+			## 其他操作
+			echo "Commit Success!"   
+		  else
+			echo -e "Error: Commit comments message should be started with [${tips_msg}]..."
+			exit 1    
+		  fi  
+	  fi
+   done
+}
+
+## 代码校验
+validate_code_rules()
+{
+   echo 'End code analysis!'
+   oldrev=$(git rev-parse $1)
+   newrev=$(git rev-parse $2)
+   refname="$3"
+   #echo 'Old version: '$oldrev
+   #echo 'New version: '$newrev
+   #echo 'Branch: '$refname
+   
+   FILES=`git diff --name-only ${oldrev} ${newrev}  | grep -e "\.java$"`
+
+   if [ -n "$FILES" ]; then
+      TEMPDIR=$BASE_PATH/"tmp"
+      for FILE in ${FILES}; do
+          mkdir -p "${TEMPDIR}/`dirname ${FILE}`" >/dev/null
+          git show $newrev:$FILE > ${TEMPDIR}/${FILE}
+      done;
+       
+      MAIN_JAVA_PATH=$TEMPDIR'/src/main'
+      #echo 'Temp update files path: '$MAIN_JAVA_PATH
+
+      #FILES_TO_CHECK=`find $MAIN_JAVA_PATH -name '*.java'`
+        
+      #echo 'Check files:'${FILES_TO_CHECK}
+        echo 'Aliyun p3c-pmd check starting.....'
+        
+      #echo 'Current shell Path:' $BASE_PATH
+      #echo 'JAVA_HOME:' $JAVA_HOME
+      #echo 'Root directory for java sources: '$MAIN_JAVA_PATH
+      
+	  if [[ $CODE_RULE_TYPE == 0 ]]; then 
+	     ## 需要阿里云P3C的插件包p3c-pmd-2.0.0.jar与该脚本在同级目录下
+	     echo 'Code analysis for Aliyun-p3c..'
+	     #$JAVA_HOME/bin/java -Dpmd.language=en -cp $BASE_PATH/p3c-pmd-2.0.0.jar net.sourceforge.pmd.PMD -d $MAIN_JAVA_PATH -R rulesets/java/ali-comment.xml,rulesets/java/ali-concurrent.xml,rulesets/java/ali-constant.xml,rulesets/java/ali-exception.xml,rulesets/java/ali-flowcontrol.xml,rulesets/java/ali-naming.xml,rulesets/java/ali-oop.xml,rulesets/java/ali-orm.xml,rulesets/java/ali-other.xml,rulesets/java/ali-set.xml -f text 
+         $JAVA_HOME/bin/java -Dpmd.language=en -cp $BASE_PATH/p3c-pmd-2.0.0.jar net.sourceforge.pmd.PMD -d $MAIN_JAVA_PATH -R rulesets/java/ali-comment.xml,rulesets/java/ali-concurrent.xml,rulesets/java/ali-constant.xml,rulesets/java/ali-exception.xml,rulesets/java/ali-flowcontrol.xml,rulesets/java/ali-naming.xml,rulesets/java/ali-oop.xml,rulesets/java/ali-other.xml,rulesets/java/ali-set.xml -f text 
+		 RESULT=$?
+		 #echo $RESULT
+		 if [ $RESULT -gt 0 ]; then
+		    exit 1;
+		 fi
+	  elif [[ $CODE_RULE_TYPE == 1 ]]; then
+	     ## 需要CheckStyle插件包checkstyle-8.16-all与该脚本在同级目录下，并且需要对应的CheckStyle.xml模板文件e.g:Cheetah_Checkstyle_ruleset.xml
+	     echo 'Code analysis for CheckStyle..'
+         CHECK_RESULT=`$JAVA_HOME/bin/java -jar $BASE_PATH/checkstyle-8.16-all.jar -c $BASE_PATH/Cheetah_Checkstyle_ruleset.xml $MAIN_JAVA_PATH`
+		 if [[ $CHECK_RESULT =~ "[WARN]" ]]; then
+		   echo $CHECK_RESULT | sed 's/\[WARN\]/\n/g'
+		   exit 1
+		 fi     
+      else
+	     echo "Unsupported code validation rule,Please contact the administrator to check the configuration of [CODE_RULE_TYPE] in pre-receive script!"
+	     exit 1
+	  fi
+      
+      echo 'End code analysis!'
+
+      rm -rf $TEMPDIR
+   fi
+}
+####### 校验部分：注释校验&代码分析###########
+
+####### 执行入口###########
+pre_receive()
+{
+    #commit message 校验
+	if [[ $CHECK_COMMIT_MESSAGE_ON == 0 ]]; then
+	   validate_commit_message $1 $2 $3
+	fi
+    
+    #代码规则检查
+	if [[ $CHECK_CODE_RULE_ON == 0 ]]; then
+	   validate_code_rules $1 $2 $3
+	fi
+}
+
+# update hook触发会带参数执行if逻辑
+# hooks脚本触发无参数执行else逻辑
+if [ -n "$1" -a -n "$2" -a -n "$3" ]; then
+    # Output to the terminal in command line mode - if someone wanted to
+    # resend an email; they could redirect the output to sendmail
+    # themselves
+    pre_receive $2 $3 $1
+    #echo $1'+'$2'+'$3
+else
+    while read oldrev newrev refname
+    do
+       pre_receive $oldrev $newrev $refname
+       #echo $oldrev' '$newrev' '$refname
+    done
+fi
+####### 执行入口###########
+exit 0
