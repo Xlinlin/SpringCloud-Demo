@@ -40,19 +40,17 @@ TYPE_LIST=(
          #'[ci skip]'  #忽略校验
 )
 
-EJECT=0
+## 获取当前路径
 BASE_PATH=$(cd `dirname $0`; pwd)
 
+#定义和组装校验规则
 declare -a regex_list
 arrLen=${#TYPE_LIST[@]}
 for ((i=0;i<$arrLen;i++)) do
   regex_list[i]='^'${TYPE_LIST[i]}
 done
 regex_list[$arrLen+1]='^[ci skip]:'
-
 #echo "reg_list=== "${regex_list[@]}
-
-
 separator="|"
 ## 合并成一个完整的正则表达式
 regex="$( printf "${separator}%s" "${regex_list[@]}" )"
@@ -61,6 +59,7 @@ regex="$( printf "${separator}%s" "${regex_list[@]}" )"
 regex=${regex:${#separator}}
 #echo "regex: "$regex
 
+## 定义注释出错提示信息
 tips_msg="$( printf "${separator}%s" "${TYPE_LIST[@]}" )"
 tips_msg=${tips_msg:${#separator}}
 ####### 初始化变量部分 #########
@@ -97,63 +96,61 @@ validate_commit_message()
       msg=`git cat-file commit $s | sed '1,/^$/d'`
       #echo 'msg: '$msg
 	  
-	  ## merge合并分之直接放行
-	  if [[ $msg == *"Merge branch"* ]]; then
+	    ## merge合并分之直接放行
+	    if [[ $msg == *"Merge branch"* ]]; then
         echo "Merge branch...skip the checking"
-	  else
+	    else
+		    ## 做内容校验
+		    match=`echo $msg | grep -nE "(${regex})"`
+		    #echo 'Match result: '$match
 
-		## 做内容校验
-		match=`echo $msg | grep -nE "(${regex})"`
-		#echo 'Match result: '$match  
-		  
-		## 找到匹配说明是符合规范的
-		if [ "${match}" != "" ]; then
-			  
-			## 校验注释长度
-			msg_length=${#msg}
-			#echo "Msg length: ${msg_length}"
-			if [[ ${msg_length} -lt ${COMMIT_MESSAGE_MIN_LENGTH} ]]; then
-				echo -e "Error: Commit message should be bigger than ${COMMIT_MESSAGE_MIN_LENGTH} and current commit message length: ${msg_length}"
-				exit 1
-			fi
-			 
-			### 找到匹配内容做相应处理，如fix ,校验pom文件等
-			#if [[ "${match}" =~ "fix:" ]]; then
-				## 如果是修补bug，规范有点获取到fix中的ID，然后调用禅道对外的API关闭，其他场景类似
-			#fi         
-			 
-			# 是否开启校验和master分之
-			isMaster=$(echo $refname | grep "master$")
-			if [ $CHECK_MASTER_POM_SNAPSHOT_ON == 0 ] && [ -n "$isMaster" ]; then
-			  # 如果是master分之，并且pom文件发生了变更，判断pom文件是否含有sonapshot的引用
-			  pomfile=`git diff --name-only ${oldrev} ${newrev} | grep -e "pom\.xml"`
-			  if [[ "${pomfile}" != "" ]]; then
-				#echo $pomfile
-				## 获取pom文件更新的内容
-				pomcontent=`git show $newrev:$pomfile`
-				#echo $pomcontent
-				## 校验pom文件是否包含snapshot版本
-				if [[ $pomcontent =~ 'SNAPSHOT' ]]; then
-				   echo -e "Error: Snapshot version cannot exist in master branch!"
-				   exit 1
-				fi
-			  fi 
-			fi
-			 
-			## 其他操作
-			echo "Commit Success!"   
-		  else
-			echo -e "Error: Commit comments message should be started with [${tips_msg}]..."
-			exit 1    
-		  fi  
-	  fi
+		    ## 找到匹配说明是符合规范的
+		    if [ "${match}" != "" ]; then
+          ## 校验注释长度
+          msg_length=${#msg}
+          #echo "Msg length: ${msg_length}"
+          if [[ ${msg_length} -lt ${COMMIT_MESSAGE_MIN_LENGTH} ]]; then
+            echo -e "Error: Commit message should be bigger than ${COMMIT_MESSAGE_MIN_LENGTH} and current commit message length: ${msg_length}"
+            exit 1
+          fi
+
+          ### 找到匹配内容做相应处理，如fix ,校验pom文件等
+          #if [[ "${match}" =~ "fix:" ]]; then
+            ## 如果是修补bug，规范有点获取到fix中的ID，然后调用禅道对外的API关闭，其他场景类似
+          #fi
+
+          # 是否开启校验和master分之
+          isMaster=$(echo $refname | grep "master$")
+          if [ $CHECK_MASTER_POM_SNAPSHOT_ON == 0 ] && [ -n "$isMaster" ]; then
+            # 如果是master分之，并且pom文件发生了变更，判断pom文件是否含有sonapshot的引用
+            pomfile=`git diff --name-only ${oldrev} ${newrev} | grep -e "pom\.xml"`
+            if [[ "${pomfile}" != "" ]]; then
+              #echo $pomfile
+              ## 获取pom文件更新的内容
+              pomcontent=`git show $newrev:$pomfile`
+              #echo $pomcontent
+              ## 校验pom文件是否包含snapshot版本
+              if [[ $pomcontent =~ 'SNAPSHOT' ]]; then
+                echo -e "Error: Snapshot version cannot exist in master branch!"
+                exit 1
+              fi
+            fi
+          fi
+
+          ## 其他操作
+          echo "Commit Success!"
+        else
+          echo -e "Error: Commit comments message should be started with [${tips_msg}]..."
+          exit 1
+        fi
+		  fi
    done
 }
 
 ## 代码校验
 validate_code_rules()
 {
-   echo 'End code analysis!'
+   echo 'Start code analysis!'
    oldrev=$(git rev-parse $1)
    newrev=$(git rev-parse $2)
    refname="$3"
@@ -176,34 +173,35 @@ validate_code_rules()
       #FILES_TO_CHECK=`find $MAIN_JAVA_PATH -name '*.java'`
         
       #echo 'Check files:'${FILES_TO_CHECK}
-        echo 'Aliyun p3c-pmd check starting.....'
+      echo 'Aliyun p3c-pmd check starting.....'
         
       #echo 'Current shell Path:' $BASE_PATH
       #echo 'JAVA_HOME:' $JAVA_HOME
       #echo 'Root directory for java sources: '$MAIN_JAVA_PATH
       
-	  if [[ $CODE_RULE_TYPE == 0 ]]; then 
-	     ## 需要阿里云P3C的插件包p3c-pmd-2.0.0.jar与该脚本在同级目录下
-	     echo 'Code analysis for Aliyun-p3c..'
-	     #$JAVA_HOME/bin/java -Dpmd.language=en -cp $BASE_PATH/p3c-pmd-2.0.0.jar net.sourceforge.pmd.PMD -d $MAIN_JAVA_PATH -R rulesets/java/ali-comment.xml,rulesets/java/ali-concurrent.xml,rulesets/java/ali-constant.xml,rulesets/java/ali-exception.xml,rulesets/java/ali-flowcontrol.xml,rulesets/java/ali-naming.xml,rulesets/java/ali-oop.xml,rulesets/java/ali-orm.xml,rulesets/java/ali-other.xml,rulesets/java/ali-set.xml -f text 
-         $JAVA_HOME/bin/java -Dpmd.language=en -cp $BASE_PATH/p3c-pmd-2.0.0.jar net.sourceforge.pmd.PMD -d $MAIN_JAVA_PATH -R rulesets/java/ali-comment.xml,rulesets/java/ali-concurrent.xml,rulesets/java/ali-constant.xml,rulesets/java/ali-exception.xml,rulesets/java/ali-flowcontrol.xml,rulesets/java/ali-naming.xml,rulesets/java/ali-oop.xml,rulesets/java/ali-other.xml,rulesets/java/ali-set.xml -f text 
-		 RESULT=$?
-		 #echo $RESULT
-		 if [ $RESULT -gt 0 ]; then
-		    exit 1;
-		 fi
-	  elif [[ $CODE_RULE_TYPE == 1 ]]; then
-	     ## 需要CheckStyle插件包checkstyle-8.16-all与该脚本在同级目录下，并且需要对应的CheckStyle.xml模板文件e.g:Cheetah_Checkstyle_ruleset.xml
-	     echo 'Code analysis for CheckStyle..'
-         CHECK_RESULT=`$JAVA_HOME/bin/java -jar $BASE_PATH/checkstyle-8.16-all.jar -c $BASE_PATH/Cheetah_Checkstyle_ruleset.xml $MAIN_JAVA_PATH`
-		 if [[ $CHECK_RESULT =~ "[WARN]" ]]; then
-		   echo $CHECK_RESULT | sed 's/\[WARN\]/\n/g'
-		   exit 1
-		 fi     
+      if [[ $CODE_RULE_TYPE == 0 ]]; then
+         ## 需要阿里云P3C的插件包p3c-pmd-2.0.0.jar与该脚本在同级目录下
+         echo 'Code analysis for Aliyun-p3c..'
+         #$JAVA_HOME/bin/java -Dpmd.language=en -cp $BASE_PATH/p3c-pmd-2.0.0.jar net.sourceforge.pmd.PMD -d $MAIN_JAVA_PATH -R rulesets/java/ali-comment.xml,rulesets/java/ali-concurrent.xml,rulesets/java/ali-constant.xml,rulesets/java/ali-exception.xml,rulesets/java/ali-flowcontrol.xml,rulesets/java/ali-naming.xml,rulesets/java/ali-oop.xml,rulesets/java/ali-orm.xml,rulesets/java/ali-other.xml,rulesets/java/ali-set.xml -f text
+           $JAVA_HOME/bin/java -Dpmd.language=en -cp $BASE_PATH/p3c-pmd-2.0.0.jar net.sourceforge.pmd.PMD -d $MAIN_JAVA_PATH -R rulesets/java/ali-comment.xml,rulesets/java/ali-concurrent.xml,rulesets/java/ali-constant.xml,rulesets/java/ali-exception.xml,rulesets/java/ali-flowcontrol.xml,rulesets/java/ali-naming.xml,rulesets/java/ali-oop.xml,rulesets/java/ali-other.xml,rulesets/java/ali-set.xml -f text
+       RESULT=$?
+       #echo $RESULT
+       if [ $RESULT -gt 0 ]; then
+          exit 1;
+       fi
+      elif [[ $CODE_RULE_TYPE == 1 ]]; then
+         ## 需要CheckStyle插件包checkstyle-8.16-all与该脚本在同级目录下，并且需要对应的CheckStyle.xml模板文件e.g:Cheetah_Checkstyle_ruleset.xml
+         echo 'Code analysis for CheckStyle..'
+           CHECK_RESULT=`$JAVA_HOME/bin/java -jar $BASE_PATH/checkstyle-8.16-all.jar -c $BASE_PATH/Cheetah_Checkstyle_ruleset.xml $MAIN_JAVA_PATH`
+       if [[ $CHECK_RESULT =~ "[WARN]" ]]; then
+         echo $CHECK_RESULT | sed 's/\[WARN\]/\n/g'
+         exit 1
+       fi
       else
-	     echo "Unsupported code validation rule,Please contact the administrator to check the configuration of [CODE_RULE_TYPE] in pre-receive script!"
-	     exit 1
-	  fi
+         ## 不支持的检查操作
+         echo "Unsupported code validation rule,Please contact the administrator to check the configuration of [CODE_RULE_TYPE] in pre-receive script!"
+         exit 1
+      fi
       
       echo 'End code analysis!'
 
