@@ -26,14 +26,14 @@ COMMIT_MESSAGE_MIN_LENGTH=20
 CODE_RULE_TYPE=0
 
 ## 定义提交开头类型字符规则
-## e.g: fix:测试提交bug修复，Bug编号#12 
+## e.g: fix:测试提交bug修复，Bug编号#12
 TYPE_LIST=(
          'feat:'   #新功能feature
          'update:' #在feat内修改
          'fix:'  #修补bug
          'docs:'  #文档
          'style:' #格式化，不影响代码运行的变动
-         'refactor:' #重构 
+         'refactor:' #重构
          'pref:'  #性能优化
          'test:'  #增加测试
          'chore:'  #构建过程或辅助工具的变动
@@ -80,10 +80,10 @@ validate_commit_message()
    ## 按时间倒序列出 commit  找出两个版本之间差异的版本号集合  oldrev~newrev
    commitList=`git rev-list $oldrev..$newrev`
    #echo 'commitList: '$commitList
-   
+
    split=($commitList)
    #echo 'split: '$split
-   
+
    # 遍历数组
    for s in ${split[@]}
    do
@@ -95,7 +95,7 @@ validate_commit_message()
       #获取提交内容
       msg=`git cat-file commit $s | sed '1,/^$/d'`
       #echo 'msg: '$msg
-	  
+
 	    ## merge合并分之直接放行
 	    if [[ $msg == *"Merge branch"* ]]; then
         echo "Merge branch...skip the checking"
@@ -157,7 +157,7 @@ validate_code_rules()
    #echo 'Old version: '$oldrev
    #echo 'New version: '$newrev
    #echo 'Branch: '$refname
-   
+
    FILES=`git diff --name-only ${oldrev} ${newrev}  | grep -e "\.java$"`
 
    if [ -n "$FILES" ]; then
@@ -166,19 +166,19 @@ validate_code_rules()
           mkdir -p "${TEMPDIR}/`dirname ${FILE}`" >/dev/null
           git show $newrev:$FILE > ${TEMPDIR}/${FILE}
       done;
-       
+
       MAIN_JAVA_PATH=$TEMPDIR'/src/main'
       #echo 'Temp update files path: '$MAIN_JAVA_PATH
 
       #FILES_TO_CHECK=`find $MAIN_JAVA_PATH -name '*.java'`
-        
+
       #echo 'Check files:'${FILES_TO_CHECK}
       echo 'Aliyun p3c-pmd check starting.....'
-        
+
       #echo 'Current shell Path:' $BASE_PATH
       #echo 'JAVA_HOME:' $JAVA_HOME
       #echo 'Root directory for java sources: '$MAIN_JAVA_PATH
-      
+
       if [[ $CODE_RULE_TYPE == 0 ]]; then
          ## 需要阿里云P3C的插件包p3c-pmd-2.0.0.jar与该脚本在同级目录下
          echo 'Code analysis for Aliyun-p3c..'
@@ -202,7 +202,7 @@ validate_code_rules()
          echo "Unsupported code validation rule,Please contact the administrator to check the configuration of [CODE_RULE_TYPE] in pre-receive script!"
          exit 1
       fi
-      
+
       echo 'End code analysis!'
 
       rm -rf $TEMPDIR
@@ -217,7 +217,7 @@ pre_receive()
 	if [[ $CHECK_COMMIT_MESSAGE_ON == 0 ]]; then
 	   validate_commit_message $1 $2 $3
 	fi
-    
+
     #代码规则检查
 	if [[ $CHECK_CODE_RULE_ON == 0 ]]; then
 	   validate_code_rules $1 $2 $3
@@ -241,3 +241,8 @@ else
 fi
 ####### 执行入口###########
 exit 0
+
+### 参考文献：
+# https://www.jianshu.com/p/73073bab7337
+# https://www.jianshu.com/p/b87ca8615c9c
+# https://blog.csdn.net/u012465508/article/details/80788557

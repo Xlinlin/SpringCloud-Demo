@@ -1,0 +1,116 @@
+before_script:
+  - echo "每个job之前都会执行"
+after_script:
+  - echo "每个job之后都会执行"
+
+#全局变量定义，在job中使用 ${variableName}
+#内置变量：CI_COMMIT_REF_NAME（项目所在的分支或标签名称）、CI_JOB_NAME（任务名称）、CI_JOB_STAGE（任务阶段）
+variables:
+  # 定义拉取代码的方式，有3种：clone/fetch/none，默认为clone，速度最慢，每步job都会重新clone一次代码。我们一般将它设置为none，
+  # 在具体任务里设置为fetch就可以满足需求，毕竟不是每步都需要新代码，那也不符合我们测试的流程
+  GIT_STRATEGY: "none" #GIT策略，
+
+# 来指定需要在job之间缓存的文件或目录
+cache:
+  #因为缓存为不同管道和任务间共享，可能会覆盖，所以有时需要设置key
+  key: ${CI_COMMIT_REF_NAME}  # 启用每分支缓存
+  #key: "$CI_JOB_NAME/$CI_COMMIT_REF_NAME" # 启用每个任务和每个分支缓存
+  untracked: true    #缓存所有Git未跟踪的文件
+  #paths:    #缓存哪些文件/文件夹
+    #- node_modules/
+    #- dist/
+
+#表示构建阶段，主要包含 build、test、deploy三个阶段，任务将按此顺序执行
+# build阶段job并行，所有build执行ok并行test阶段job，所有test执行ok并行deploy，全部ok标记success，否则标记failure
+# yml文件中如未明确定义stages，默认取值就是：build、test、deploy，job中未指定stage，默认取值test
+stages:
+  - build
+  - test
+  - deploy
+
+# Jobs 表示构建工作，表示某个 Stage 里面执行的工作,可以在 Stages 里面定义多个 Jobs
+# 定义job任务，job_name 全局唯一且不能是关键字
+test-job1:
+  # test阶段执行
+  stage: test
+  tags:
+    - xx  #注册runner的标签
+  only:
+    - dev # 只有dev分支提交代码才会执行这个任务
+    - /^future-.*$/  #正则匹配，只有future-开头的分支执行
+  script:  #要执行的内容，脚本
+    - echo "I am job1"
+    - echo "Just from dev&future-* branch and test phase!"
+  # 代码覆盖率设置
+  coverage: '/Code coverage: \d+\.\d+/'
+  # 指定该任务执行完毕后，哪些目录或文件需要保留，打成zip包供后续使用
+  artifacts:
+    path:
+      - public
+  # 定义此作业完成部署的环境名称，job将会执行部署到production环境
+  #environment:
+    #name: production
+
+test-job2:
+  # 默认stage阶段为 test
+  stage: test
+  only:
+    - master # 只有Master分支有提交代码才会执行
+  script:
+    - echo "Trigger for master branch!"
+  allow_failure: true #允许失败，即不影响下一步构建
+
+build-job:
+  stage: build
+  except:
+    - dev # 除dev环境，其他分之提交点都会执行
+  script:
+    - echo "Trigger without dev branc!"
+  # when触发条件
+  # on_success、on_failure、always、manual(手动)
+  # 不管前面步骤是否成功，都会执行
+  when: always
+
+############################ yml高级用法###########################
+# .开头的job忽略执行，做继承、模板方法等
+# &(锚)使用隐藏的key,*(aliases)别名做job模板，后续job可以<<(继承)
+.general: &job_template
+  stage: deploy
+  script:
+    - echo 'Job template'
+    - path/shell.sh  #执行一个脚本
+  only:
+    - master
+  tags:
+    - runnerTag
+
+# 生产job
+.prod: &prod
+  # 继承general
+  <<: *job_template
+  # 重写script
+  script:
+    - echo 'Prod branch!'
+
+# 各环境配置
+.test: &test
+  <<: *job_template
+  script:
+    - echo 'Dev branch!'
+  only:
+    - test
+
+.dev: &dev
+  <<: *job_template
+  script:
+    - echo 'Dev branch!'
+  only:
+    - dev
+    - /^feture-*$/
+
+prod-job:
+  <<: *prod
+test-job:
+  <<: *test
+dev-job:
+  <<: *dev
