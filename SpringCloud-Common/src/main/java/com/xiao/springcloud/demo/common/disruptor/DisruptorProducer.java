@@ -12,6 +12,8 @@ import com.xiao.springcloud.demo.common.disruptor.service.DisruptorService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationListener;
+import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
 import java.util.concurrent.*;
@@ -27,7 +29,7 @@ import java.util.concurrent.*;
  */
 @Component
 @Slf4j
-public class DisruptorProducer implements DisposableBean
+public class DisruptorProducer implements DisposableBean, ApplicationListener<ContextRefreshedEvent>
 {
     /**
      * RingBuffer 大小，必须是 2 的 N 次方；
@@ -152,4 +154,9 @@ public class DisruptorProducer implements DisposableBean
         this.isStart = true;
     }
 
+    @Override
+    public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
+        log.info("Start disruptor..........");
+        doStart();
+    }
 }

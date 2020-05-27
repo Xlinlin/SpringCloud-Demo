@@ -239,3 +239,6 @@ saveRegionCity(@RequestBody RegionCityDto regionCityDto)``
 
 20200508
 1. SpringCloud Gateway + nacos实现灰度， + ribbon实现全链路版本请求，[详情](https://github.com/Xlinlin/SpringCloud-Gateway-Canary)
+
+20200527
+1. 添加docker-build脚本，执行脚本构建镜像并推送到私服仓库

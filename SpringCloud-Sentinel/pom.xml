@@ -16,15 +16,4 @@
         <module>SpringCloud-Sentinel-Producer</module>
         <module>SpringCloud-Sentinel-Consumer</module>
     </modules>
-
-    <repositories>
-        <repository>
-            <id>purcotton-repository</id>
-            <name>purcotton-repository</name>
-            <url>http://192.168.206.220:8081/nexus/content/groups/public/</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
 </project>

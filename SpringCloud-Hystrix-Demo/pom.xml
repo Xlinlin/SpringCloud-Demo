@@ -14,14 +14,4 @@
     <modelVersion>4.0.0</modelVersion>
     <packaging>pom</packaging>
 
-    <repositories>
-        <repository>
-            <id>purcotton-repository</id>
-            <name>purcotton-repository</name>
-            <url>http://192.168.206.220:8081/nexus/content/groups/public/</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
 </project>
