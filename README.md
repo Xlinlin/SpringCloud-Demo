@@ -242,3 +242,7 @@ saveRegionCity(@RequestBody RegionCityDto regionCityDto)``
 
 20200527
 1. [添加docker-build脚本，执行脚本构建镜像并推送到私服仓库](https://github.com/Xlinlin/SpringCloud-Demo/blob/master/SpringCloud-Docker/docker-build.sh)
+
+20200528
+1. swagger2 创建[api文档]()整理
+2. [docker-swarm集群监控文档]()整理
