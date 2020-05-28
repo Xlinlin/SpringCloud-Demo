@@ -1,0 +1,42 @@
+# cAdvisor+InfluxDB+Grafana
+version: "3.4"
+
+services:
+  influx:
+    #image: influxdb
+    image: tutum/influxdb:0.9
+    ports:
+      - "8083:8083"
+      - "8086:8086"
+    volumes:
+      - influx:/var/lib/influxdb
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+      placement:
+        constraints:
+          - node.role == manager
+    environment:
+      - PRE_CREATE_DB=cadvisor
+
+  cadvisor:
+    image: google/cadvisor
+    hostname: '{{.Node.Hostname}}'
+    command: -logtostderr -docker_only -storage_driver=influxdb -storage_driver_db=cadvisor -storage_driver_host=influx:8086
+    ports:
+      - "8180:8180"
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    depends_on:
+      - influx
+    deploy:
+      mode: global
+volumes:
+  influx:
+    driver: local
+  grafana:
+    driver: local
