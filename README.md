@@ -246,3 +246,6 @@ saveRegionCity(@RequestBody RegionCityDto regionCityDto)``
 20200528
 1. swagger2 创建[api文档](https://github.com/Xlinlin/SpringCloud-Demo/blob/master/SpringCloud-Demo-Doc/swagger%E7%94%9F%E6%88%90html%E6%96%87%E4%BB%B6.pdf)整理
 2. [docker-swarm集群监控文档](https://github.com/Xlinlin/SpringCloud-Demo/tree/master/SpringCloud-Demo-Doc/docker)整理
+
+20200529
+1. 补充swarm集群部署springcloud项目，[详细文档]()
