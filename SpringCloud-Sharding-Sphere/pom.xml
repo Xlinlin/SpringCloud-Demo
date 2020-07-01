@@ -13,7 +13,7 @@
         <sharding-sphere.version>3.0.0</sharding-sphere.version>
         <mybatis.version>3.4.2</mybatis.version>
         <mybatis-spring.version>1.3.0</mybatis-spring.version>
-        <mysql-connector-java.version>5.1.42</mysql-connector-java.version>
+        <mysql-connector-java.version>8.0.16</mysql-connector-java.version>
     </properties>
 
     <artifactId>SpringCloud-Sharding-Sphere</artifactId>
