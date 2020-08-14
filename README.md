@@ -249,3 +249,6 @@ saveRegionCity(@RequestBody RegionCityDto regionCityDto)``
 
 20200529
 1. 补充swarm集群部署springcloud项目，[详细文档](https://github.com/Xlinlin/SpringCloud-Demo/blob/master/SpringCloud-Demo-Doc/docker/docker-swarm-springcloud.md)
+
+20200814
+1. 新gitlab使用代码规则校验说明，[详情参考](https://github.com/Xlinlin/SpringCloud-Demo/blob/master/SpringCloud-Demo-Doc/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/gitlab-hooks/pre-receive)
