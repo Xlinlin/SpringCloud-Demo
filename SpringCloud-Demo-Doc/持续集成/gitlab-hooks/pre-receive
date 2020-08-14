@@ -9,11 +9,17 @@
 # 1.先做提交注释校验，校验的规则：是否已${TYPE_LIST}定义的开头，且内容长度是否大于${COMMIT_MESSAGE_MIN_LENGTH}
 # 2.如果是master分之，修改了pom文件还会校验是否存在snapshot版本的jar
 # 3.最后代码规范校验
+## (单个项目校验)文件放置目录
+# 1./var/opt/gitlab/git-data/repositories/@hashed/xx/xx/xx.git或者/var/opt/gitlab/git-data/repositories/${group}/${project_name}.git/
+# 2.创建custom_hooks目录
+# 3.在custom_hooks目录下创建pre-receive文件，并保持776可执行权限，且保持该文件权限：chown git:git pre-receive 以及阿里云的p3c-pmd的jar包权限
+# 4.给chown -R git:git custom_hooks
+# 5.官方文档说明：https://docs.gitlab.com/ee/administration/custom_hooks.html#setup
 
 ####### 初始化变量部分 #########
 
 ## 定义java_home变量 需要修改你配置的java_home
-JAVA_HOME=/usr/local/jdk1.8.0_141
+JAVA_HOME=your_java_home
 ## 是否开启commit message的校验：0是，1否
 CHECK_COMMIT_MESSAGE_ON=0
 ## 是否开启代码检查：0是，1否
@@ -167,7 +173,7 @@ validate_code_rules()
           git show $newrev:$FILE > ${TEMPDIR}/${FILE}
       done;
 
-      MAIN_JAVA_PATH=$TEMPDIR'/src/main'
+      #MAIN_JAVA_PATH=$TEMPDIR'/src/main'
       #echo 'Temp update files path: '$MAIN_JAVA_PATH
 
       #FILES_TO_CHECK=`find $MAIN_JAVA_PATH -name '*.java'`
@@ -183,12 +189,14 @@ validate_code_rules()
          ## 需要阿里云P3C的插件包p3c-pmd-2.0.0.jar与该脚本在同级目录下
          echo 'Code analysis for Aliyun-p3c..'
          #$JAVA_HOME/bin/java -Dpmd.language=en -cp $BASE_PATH/p3c-pmd-2.0.0.jar net.sourceforge.pmd.PMD -d $MAIN_JAVA_PATH -R rulesets/java/ali-comment.xml,rulesets/java/ali-concurrent.xml,rulesets/java/ali-constant.xml,rulesets/java/ali-exception.xml,rulesets/java/ali-flowcontrol.xml,rulesets/java/ali-naming.xml,rulesets/java/ali-oop.xml,rulesets/java/ali-orm.xml,rulesets/java/ali-other.xml,rulesets/java/ali-set.xml -f text
-           $JAVA_HOME/bin/java -Dpmd.language=en -cp $BASE_PATH/p3c-pmd-2.0.0.jar net.sourceforge.pmd.PMD -d $MAIN_JAVA_PATH -R rulesets/java/ali-comment.xml,rulesets/java/ali-concurrent.xml,rulesets/java/ali-constant.xml,rulesets/java/ali-exception.xml,rulesets/java/ali-flowcontrol.xml,rulesets/java/ali-naming.xml,rulesets/java/ali-oop.xml,rulesets/java/ali-other.xml,rulesets/java/ali-set.xml -f text
-       RESULT=$?
-       #echo $RESULT
-       if [ $RESULT -gt 0 ]; then
-          exit 1;
-       fi
+         #$JAVA_HOME/bin/java -Dpmd.language=en -cp $BASE_PATH/p3c-pmd-2.0.0.jar net.sourceforge.pmd.PMD -d $MAIN_JAVA_PATH -R rulesets/java/ali-comment.xml,rulesets/java/ali-concurrent.xml,rulesets/java/ali-constant.xml,rulesets/java/ali-exception.xml,rulesets/java/ali-flowcontrol.xml,rulesets/java/ali-naming.xml,rulesets/java/ali-oop.xml,rulesets/java/ali-other.xml,rulesets/java/ali-set.xml -f text
+         # 使用 tmp目录，原MAIN_JAVA_PATH拼接有问题，新版gitlab无项目路径
+	 $JAVA_HOME/bin/java -Dpmd.language=en -cp $BASE_PATH/p3c-pmd-2.0.0.jar net.sourceforge.pmd.PMD -d $TEMPDIR -R rulesets/java/ali-comment.xml,rulesets/java/ali-concurrent.xml,rulesets/java/ali-constant.xml,rulesets/java/ali-exception.xml,rulesets/java/ali-flowcontrol.xml,rulesets/java/ali-naming.xml,rulesets/java/ali-oop.xml,rulesets/java/ali-other.xml,rulesets/java/ali-set.xml -f text
+	 RESULT=$?
+         #echo $RESULT
+         if [ $RESULT -gt 0 ]; then
+           exit 1;
+         fi
       elif [[ $CODE_RULE_TYPE == 1 ]]; then
          ## 需要CheckStyle插件包checkstyle-8.16-all与该脚本在同级目录下，并且需要对应的CheckStyle.xml模板文件e.g:Cheetah_Checkstyle_ruleset.xml
          echo 'Code analysis for CheckStyle..'
