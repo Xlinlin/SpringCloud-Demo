@@ -196,6 +196,8 @@ validate_code_rules()
 	 RESULT=$?
          #echo $RESULT
          if [ $RESULT -gt 0 ]; then
+	   ## 删除tmp目录，不影响下一个提交
+	   rm -rf $TEMPDIR
            exit 1;
          fi
       elif [[ $CODE_RULE_TYPE == 1 ]]; then
@@ -204,11 +206,15 @@ validate_code_rules()
            CHECK_RESULT=`$JAVA_HOME/bin/java -jar $BASE_PATH/checkstyle-8.16-all.jar -c $BASE_PATH/Cheetah_Checkstyle_ruleset.xml $MAIN_JAVA_PATH`
        if [[ $CHECK_RESULT =~ "[WARN]" ]]; then
          echo $CHECK_RESULT | sed 's/\[WARN\]/\n/g'
+	 ## 删除tmp目录，不影响下一个提交
+	 rm -rf $TEMPDIR
          exit 1
        fi
       else
          ## 不支持的检查操作
          echo "Unsupported code validation rule,Please contact the administrator to check the configuration of [CODE_RULE_TYPE] in pre-receive script!"
+	 ## 删除tmp目录，不影响下一个提交
+	 rm -rf $TEMPDIR
          exit 1
       fi
 
