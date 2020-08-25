@@ -173,7 +173,8 @@ validate_code_rules()
           git show $newrev:$FILE > ${TEMPDIR}/${FILE}
       done;
 
-      #MAIN_JAVA_PATH=$TEMPDIR'/src/main'
+      # 多级项目目录支持
+      MAIN_JAVA_PATH=$TEMPDIR'/**/src/main'
       #echo 'Temp update files path: '$MAIN_JAVA_PATH
 
       #FILES_TO_CHECK=`find $MAIN_JAVA_PATH -name '*.java'`
@@ -191,7 +192,7 @@ validate_code_rules()
          #$JAVA_HOME/bin/java -Dpmd.language=en -cp $BASE_PATH/p3c-pmd-2.0.0.jar net.sourceforge.pmd.PMD -d $MAIN_JAVA_PATH -R rulesets/java/ali-comment.xml,rulesets/java/ali-concurrent.xml,rulesets/java/ali-constant.xml,rulesets/java/ali-exception.xml,rulesets/java/ali-flowcontrol.xml,rulesets/java/ali-naming.xml,rulesets/java/ali-oop.xml,rulesets/java/ali-orm.xml,rulesets/java/ali-other.xml,rulesets/java/ali-set.xml -f text
          #$JAVA_HOME/bin/java -Dpmd.language=en -cp $BASE_PATH/p3c-pmd-2.0.0.jar net.sourceforge.pmd.PMD -d $MAIN_JAVA_PATH -R rulesets/java/ali-comment.xml,rulesets/java/ali-concurrent.xml,rulesets/java/ali-constant.xml,rulesets/java/ali-exception.xml,rulesets/java/ali-flowcontrol.xml,rulesets/java/ali-naming.xml,rulesets/java/ali-oop.xml,rulesets/java/ali-other.xml,rulesets/java/ali-set.xml -f text
          # 使用 tmp目录，原MAIN_JAVA_PATH拼接有问题，新版gitlab无项目路径
-	 $JAVA_HOME/bin/java -Dpmd.language=en -cp $BASE_PATH/p3c-pmd-2.0.0.jar net.sourceforge.pmd.PMD -d $TEMPDIR -R rulesets/java/ali-comment.xml,rulesets/java/ali-concurrent.xml,rulesets/java/ali-constant.xml,rulesets/java/ali-exception.xml,rulesets/java/ali-flowcontrol.xml,rulesets/java/ali-naming.xml,rulesets/java/ali-oop.xml,rulesets/java/ali-other.xml,rulesets/java/ali-set.xml -f text
+	 $JAVA_HOME/bin/java -Dpmd.language=en -cp $BASE_PATH/p3c-pmd-2.0.0.jar net.sourceforge.pmd.PMD -d $MAIN_JAVA_PATH -R rulesets/java/ali-comment.xml,rulesets/java/ali-concurrent.xml,rulesets/java/ali-constant.xml,rulesets/java/ali-exception.xml,rulesets/java/ali-flowcontrol.xml,rulesets/java/ali-naming.xml,rulesets/java/ali-oop.xml,rulesets/java/ali-other.xml,rulesets/java/ali-set.xml -f text
 	 RESULT=$?
          #echo $RESULT
          if [ $RESULT -gt 0 ]; then
