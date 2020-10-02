@@ -252,3 +252,7 @@ saveRegionCity(@RequestBody RegionCityDto regionCityDto)``
 
 20200814
 1. 新gitlab使用代码规则校验说明，[详情参考](https://github.com/Xlinlin/SpringCloud-Demo/blob/master/SpringCloud-Demo-Doc/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/gitlab-hooks/pre-receive)
+
+20201002
+1. 说明：本仓库的代码以springboot 1.0版本，工作中已使用2.0以上版本，很多新的分享会单独创建git项目
+2. 基于nacos或eureka实现 服务级别的灰度，支持网关、feign自由插件[详情参考](https://github.com/Xlinlin/canary)
