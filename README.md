@@ -1,5 +1,6 @@
 # spring-cloud-demo
 ## 不定期更新与记录在springcloud开发中所遇到的坑以及解决方法
+## 说明：由于版本不兼容，很多核心、重点的技术难题都以单独的项目形式提交，并同时更新到csdn，如有需要请关注：https://blog.csdn.net/xiaoll880214?type=blog
 
 初始化添加
 1. spring-cloud skywalking demo
