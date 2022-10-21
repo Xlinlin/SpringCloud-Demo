@@ -13,7 +13,7 @@
     <name>Custom ElasticSearch High Level Rest Client Stater AutoConfigure</name>
 
     <properties>
-        <elasticsearch.version>6.3.2</elasticsearch.version>
+        <elasticsearch.version>6.8.15</elasticsearch.version>
     </properties>
 
     <dependencies>
